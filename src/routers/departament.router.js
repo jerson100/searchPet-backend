@@ -5,7 +5,7 @@ const {validateRequest} = require("../middlewares/validateRequest");
 const DepartamentRouter = Router();
 
 DepartamentRouter.route("/")
-    .get(validateRequest(DepartamentController.getAllDepartaments()))
-    .post(validateRequest(DepartamentController.createDepartament()))
+    .get(validateRequest(DepartamentController.getAllDepartaments))
+    .post(validateRequest(DepartamentController.createDepartament))
 
 module.exports = DepartamentRouter

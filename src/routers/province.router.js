@@ -4,7 +4,7 @@ const {validateRequest} = require("../middlewares/validateRequest");
 const ProvinceRouter = Router();
 
 ProvinceRouter.route("/")
-    .get(validateRequest(ProvinceController.getAllProvinces()))
-    .post(validateRequest(ProvinceController.createProvince()))
+    .get(validateRequest(ProvinceController.getAllProvinces))
+    .post(validateRequest(ProvinceController.createProvince))
 
 module.exports = ProvinceRouter

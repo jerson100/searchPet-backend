@@ -4,8 +4,8 @@ const {validateRequest} = require("../middlewares/validateRequest");
 const DisctrictRouter = Router();
 
 DisctrictRouter.route("/")
-    .get(validateRequest(DisctrictController.getAllDistricts()))
-    .post(validateRequest(DisctrictController.createDistrict()));
+    .get(validateRequest(DisctrictController.getAllDistricts))
+    .post(validateRequest(DisctrictController.createDistrict));
 
 module.exports = DisctrictRouter;
 

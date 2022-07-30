@@ -1,11 +1,11 @@
 const User = require("../models/User/user.model");
 
-const getAllUsers = () => async (req, res) => {
+const getAllUsers = async (req, res) => {
     const users = await User.find({},{password:0});
     return res.status(200).json(users);
 };
 
-const createUser = () => async (req, res) => {
+const createUser = async (req, res) => {
     const {
         name,
         paternalSurname,

@@ -1,6 +1,6 @@
 const {Departament} = require("../models/Departament/departament.model");
 
-const createDepartament = () => async (req, res) => {
+const createDepartament = async (req, res) => {
     const newDepartament = await Departament({
         name: req.body.name
     })
@@ -8,7 +8,7 @@ const createDepartament = () => async (req, res) => {
     return res.status(201).json(newDepartament);
 }
 
-const getAllDepartaments = () => async (req, res) => {
+const getAllDepartaments = async (req, res) => {
     const departaments = await Departament.find();
     return res.json(departaments);
 };
