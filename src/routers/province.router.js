@@ -16,7 +16,7 @@ ProvinceRouter.route("/")
 
 ProvinceRouter.route("/:idProvince")
     .get(
-        validateSchema(ProvinceGetSchemaValidation),
+        validateSchema(ProvinceGetSchemaValidation, "params"),
         validateRequest(ProvinceController.findProvinceById)
     )
     .put(

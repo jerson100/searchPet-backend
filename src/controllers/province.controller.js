@@ -32,7 +32,7 @@ const updateProvince = async (req, res) => {
 }
 
 const findProvinceById = async (req, res) => {
-    const province = await User.findById(req.params.idProvince);
+    const province = await Province.findById(req.params.idProvince);
     return res.json(province);
 };
 
