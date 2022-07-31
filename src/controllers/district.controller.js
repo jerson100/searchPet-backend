@@ -13,7 +13,7 @@ const getAllDistricts = async (req, res) => {
 };
 
 const deleteDistrict = async (req, res) => {
-    const deletedDistrict = await District.findByIdAndUpdate(req.params.idDisctrict, {
+    const deletedDistrict = await District.findByIdAndUpdate(req.params.idDistrict, {
         $set: {
             status: 0
         }
@@ -21,8 +21,30 @@ const deleteDistrict = async (req, res) => {
     return res.send();
 }
 
+const updateDistrict = async (req, res) => {
+    const updatedDistrict = await District.findByIdAndUpdate(req.params.idDistrict, {
+        $set: req.body
+    },{
+        new: true
+    });
+    return res.json(updatedDistrict)
+}
+
+const findDistrictById = async (req, res) => {
+    const district = await District.findById(req.params.idDistrict);
+    return res.json(district);
+};
+
+const deleteAllDistricts = async (req, res) => {
+    const deletedDistricts = await District.deleteMany();
+    return res.send();
+}
+
 module.exports = {
     createDistrict,
     getAllDistricts,
-    deleteDistrict
+    deleteDistrict,
+    updateDistrict,
+    findDistrictById,
+    deleteAllDistricts
 }
