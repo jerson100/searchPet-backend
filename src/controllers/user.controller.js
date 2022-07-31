@@ -25,7 +25,13 @@ const createUser = async (req, res) => {
     return res.status(201).json(newUserObj);
 };
 
+const deleteUser = async (req, res) => {
+    const deletedUser = await User.findByIdAndRemove(req.user.idUser);
+    res.status(200).send();
+};
+
 module.exports = {
     getAllUsers,
-    createUser
+    createUser,
+    deleteUser
 }
