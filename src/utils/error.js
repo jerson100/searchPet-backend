@@ -17,5 +17,4 @@ class SchemaValidationError extends Error {
     }
 }
 
-
 module.exports = {ServerError, SchemaValidationError}

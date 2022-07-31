@@ -1,11 +1,16 @@
 const {Router} = require("express");
 const {validateRequest} = require("../middlewares/validateRequest");
+const {validateSchema} = require("../middlewares/validateSchema");
 const UserController = require("../controllers/user.controller");
+const {UserCreationSchemaValidation} = require("../models/User/user.validation");
 const UserRouter = Router();
 
 UserRouter.route("/")
     .get(validateRequest(UserController.getAllUsers))
-    .post(validateRequest(UserController.createUser))
+    .post(
+        validateSchema(UserCreationSchemaValidation),
+        validateRequest(UserController.createUser)
+    )
     .delete(validateRequest(UserController.deleteUser))
 
 /*
