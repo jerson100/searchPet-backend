@@ -2,7 +2,9 @@ const {Router} = require("express");
 const {validateRequest} = require("../middlewares/validateRequest");
 const {validateSchema} = require("../middlewares/validateSchema");
 const UserController = require("../controllers/user.controller");
-const {UserCreationSchemaValidation} = require("../models/User/user.validation");
+const {UserCreationSchemaValidation, UserUpdateSchemaValidation, PatchUserUpdateSchemaValidation,
+    UserGetSchemaValidation
+} = require("../models/User/user.validation");
 const UserRouter = Router();
 
 UserRouter.route("/")
@@ -11,7 +13,7 @@ UserRouter.route("/")
         validateSchema(UserCreationSchemaValidation),
         validateRequest(UserController.createUser)
     )
-    .delete(validateRequest(UserController.deleteUser))
+    .delete(validateRequest(UserController.deleteAllUser))
 
 /*
 * Solo el administrador va a poder eliminar a cualquier tipo de usuario
@@ -19,6 +21,20 @@ UserRouter.route("/")
 * aún no está implementado...
 * */
 UserRouter.route("/:idUser")
+    .get(
+        validateSchema(UserGetSchemaValidation,"params"),
+        validateRequest(UserController.findUserById)
+    )
+    .put(
+        validateSchema(UserGetSchemaValidation,"params"),
+        validateSchema(UserUpdateSchemaValidation),
+        validateRequest(UserController.updateUser)
+    )
+    .patch(
+        validateSchema(UserGetSchemaValidation,"params"),
+        validateSchema(PatchUserUpdateSchemaValidation),
+        validateRequest(UserController.updateUser)
+    )
     .delete(validateRequest(UserController.deleteUser))
 
 module.exports = UserRouter;

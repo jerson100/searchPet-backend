@@ -17,7 +17,8 @@ const UserSchema  = new Schema({
         instagram: String,
         whatsapp: String
     },
-    urlImageProfile: String
+    urlImageProfile: String,
+    status: Number
 }, {
     timestamps: true
 });

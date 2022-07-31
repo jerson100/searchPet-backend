@@ -6,19 +6,7 @@ const getAllUsers = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-    const {
-        name,
-        paternalSurname,
-        maternalSurname,
-        birthday,
-        username,
-        password,
-        idDistrict
-    } = req.body;
-    const newUser = await User({
-        name, paternalSurname, maternalSurname,
-        birthday, username, password, idDistrict
-    })
+    const newUser = await User(req.body)
     await newUser.save();
     const newUserObj = newUser.toObject();
     delete newUserObj.password;
@@ -26,12 +14,38 @@ const createUser = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-    const deletedUser = await User.findByIdAndRemove(req.user.idUser);
+    const deletedUser = await User.findByIdAndUpdate(req.params.idUser, {
+        $set: {
+            status: 0
+        }
+    });
     return res.status(200).send();
 };
+
+const updateUser = async (req, res) => {
+    const updatedUser = await User.findByIdAndUpdate(req.params.idUser, {
+        $set: req.body
+    },{
+        new: true
+    });
+    return res.json(updatedUser)
+}
+
+const findUserById = async (req, res) => {
+    const user = await User.findById(req.params.idUser);
+    return res.json(user);
+};
+
+const deleteAllUser = async (req, res) => {
+    const deletedUsers = await User.deleteMany();
+    return res.send();
+}
 
 module.exports = {
     getAllUsers,
     createUser,
-    deleteUser
+    deleteUser,
+    updateUser,
+    findUserById,
+    deleteAllUser
 }
