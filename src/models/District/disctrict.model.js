@@ -5,7 +5,8 @@ const DistrictSchema = new Schema({
     idProvince: {
         type: Schema.Types.ObjectId,
         ref: "Province"
-    }
+    },
+    status: Number,
 }, {timestamps: true})
 
 const District = model("District", DistrictSchema);

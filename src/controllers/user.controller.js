@@ -27,7 +27,7 @@ const createUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     const deletedUser = await User.findByIdAndRemove(req.user.idUser);
-    res.status(200).send();
+    return res.status(200).send();
 };
 
 module.exports = {

@@ -1,7 +1,8 @@
 const {Schema, model} = require("mongoose");
 
 const DepartamentSchema = new Schema({
-    name: String
+    name: String,
+    status: Number
 }, {timestamps: true})
 
 const Departament = model("Departament", DepartamentSchema);

@@ -12,4 +12,13 @@ const getAllProvinces = async (req, res) => {
     return res.json(provinces);
 }
 
-module.exports = {createProvince, getAllProvinces}
+const deleteProvince = async (req, res) => {
+    const deletedProvince = await Province.findByIdAndUpdate(req.params.idProvince, {
+        $set: {
+            status: 0
+        }
+    })
+    return res.send();
+}
+
+module.exports = {createProvince, getAllProvinces, deleteProvince}

@@ -7,5 +7,8 @@ DisctrictRouter.route("/")
     .get(validateRequest(DisctrictController.getAllDistricts))
     .post(validateRequest(DisctrictController.createDistrict));
 
+DisctrictRouter.route("/:idDisctrict")
+    .delete(validateRequest(DisctrictController.deleteDistrict))
+
 module.exports = DisctrictRouter;
 

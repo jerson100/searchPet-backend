@@ -8,4 +8,7 @@ DepartamentRouter.route("/")
     .get(validateRequest(DepartamentController.getAllDepartaments))
     .post(validateRequest(DepartamentController.createDepartament))
 
+DepartamentRouter.route("/:idDepartament")
+    .delete(validateRequest(DepartamentController.deleteDepartament))
+
 module.exports = DepartamentRouter

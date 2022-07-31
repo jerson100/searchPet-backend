@@ -5,7 +5,8 @@ const ProvinceSchema = new Schema({
     idDepartament: {
         ref: "Departament",
         type: Schema.Types.ObjectId
-    }
+    },
+    status: Number
 }, {timestamps: true})
 
 const Province = model("Province", ProvinceSchema);

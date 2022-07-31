@@ -7,4 +7,7 @@ ProvinceRouter.route("/")
     .get(validateRequest(ProvinceController.getAllProvinces))
     .post(validateRequest(ProvinceController.createProvince))
 
+ProvinceRouter.route("/:idProvince")
+    .delete(validateRequest(ProvinceController.deleteProvince))
+
 module.exports = ProvinceRouter

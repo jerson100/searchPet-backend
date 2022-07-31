@@ -13,4 +13,15 @@ const getAllDepartaments = async (req, res) => {
     return res.json(departaments);
 };
 
-module.exports = {createDepartament, getAllDepartaments}
+const deleteDepartament = async (req, res) => {
+    const deletedDepartament = await Departament.findByIdAndUpdate(req.params.idDepartament, {
+        $set: {
+            status: 0
+        }
+    });
+    console.log(deletedDepartament)
+    //comprobamos si se realizö la actualización para enviar una respuesta u otra
+    return res.send();
+}
+
+module.exports = {createDepartament, getAllDepartaments, deleteDepartament}

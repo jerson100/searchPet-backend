@@ -12,7 +12,17 @@ const getAllDistricts = async (req, res) => {
     return res.json(districts);
 };
 
+const deleteDistrict = async (req, res) => {
+    const deletedDistrict = await District.findByIdAndUpdate(req.params.idDisctrict, {
+        $set: {
+            status: 0
+        }
+    })
+    return res.send();
+}
+
 module.exports = {
     createDistrict,
-    getAllDistricts
+    getAllDistricts,
+    deleteDistrict
 }
