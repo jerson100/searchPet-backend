@@ -9,7 +9,6 @@ const getAllUsers = async (req, res) => {
 
 const createUser = async (req, res) => {
     const password = await generatePassword(req.body.password);
-    console.log(password);
     const newUser = await User({
         ...req.body,
         password: password
