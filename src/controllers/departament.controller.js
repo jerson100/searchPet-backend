@@ -1,7 +1,12 @@
 const {Departament} = require("../models/Departament/departament.model");
-const {District} = require("../models/District/disctrict.model");
+const {DepartamentExistenceException, DepartamentNotFoundException} = require("../models/Departament/departament.exception");
 
 const createDepartament = async (req, res) => {
+    const dp = await Departament.findOne({
+        name: req.body.name,
+        status: 1
+    });
+    if(dp) throw new DepartamentExistenceException();
     const newDepartament = await Departament({
         name: req.body.name
     })
@@ -10,21 +15,38 @@ const createDepartament = async (req, res) => {
 }
 
 const getAllDepartaments = async (req, res) => {
-    const departaments = await Departament.find();
+    const departaments = await Departament.find({status: 1});
     return res.json(departaments);
 };
 
 const deleteDepartament = async (req, res) => {
-    const deletedDepartament = await Departament.findByIdAndUpdate(req.params.idDepartament, {
+    const dp = await Departament.findOne({
+        _id: req.params.idDepartament,
+        status: 1
+    });
+    if(!dp) throw new DepartamentNotFoundException();
+    await Departament.findByIdAndUpdate(req.params.idDepartament, {
         $set: {
             status: 0
         }
     });
     //comprobamos si se realizö la actualización para enviar una respuesta u otra
-    return res.send();
+    return res.status(204).send();
 }
 
 const updateDepartament = async (req, res) => {
+    const dp = await Departament.findOne({
+        _id: req.params.idDepartament,
+        status: 1
+    });
+    if(!dp) throw new DepartamentNotFoundException();
+    const findDepartamentEqualName = await Departament.findOne({
+        _id: {
+            $ne: req.params.idDepartament
+        },
+        name: req.body.name
+    })
+    if(findDepartamentEqualName) throw new DepartamentExistenceException();
     const updatedDepartament = await Departament.findByIdAndUpdate(req.params.idDepartament, {
         $set: req.body
     },{
@@ -34,13 +56,14 @@ const updateDepartament = async (req, res) => {
 }
 
 const findDepartamentById = async (req, res) => {
-    const departament = await Departament.findById(req.params.idDepartament);
+    const departament = await Departament.findOne({_id: req.params.idDepartament, status: 1});
+    if(!departament)  throw new DepartamentNotFoundException();
     return res.json(departament);
 };
 
 const deleteAllDepartaments = async (req, res) => {
-    const deletedDepartaments = await Departament.deleteMany();
-    return res.send();
+    await Departament.deleteMany({status: 1});
+    return res.status(204).send();
 }
 
 module.exports = {
