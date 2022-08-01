@@ -5,6 +5,12 @@ const generatePassword = async (plainText) => {
     return password;
 };
 
+const verifyPassword = async (plainText, encryptedText) => {
+    const equalsP = await bcrypt.compare(plainText, encryptedText);
+    return equalsP;
+}
+
 module.exports = {
-    generatePassword
+    generatePassword,
+    verifyPassword
 }

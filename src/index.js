@@ -8,6 +8,7 @@ const UserRouter = require("./routers/Users.router");
 const DepartamentRouter = require("./routers/departament.router");
 const ProvinceRouter = require("./routers/province.router");
 const DistrictRouter = require("./routers/district.router");
+const AuthRouter = require("./routers/auth.router");
 
 connectMongoDB();
 
@@ -19,6 +20,7 @@ app.use(`/api/${process.env.API_VERSION}/users`, UserRouter);
 app.use(`/api/${process.env.API_VERSION}/departaments`, DepartamentRouter);
 app.use(`/api/${process.env.API_VERSION}/provinces`, ProvinceRouter);
 app.use(`/api/${process.env.API_VERSION}/districts`, DistrictRouter);
+app.use(`/api/${process.env.API_VERSION}/auth`, AuthRouter);
 
 app.listen(process.env.PORT, () => {
     console.log(`El servidor está escuchando en el puerto ${process.env.PORT}`)

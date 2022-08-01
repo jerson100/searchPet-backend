@@ -42,6 +42,11 @@ const PatchUserUpdateSchemaValidation = Joi.object({
     urlImageProfile: Joi.string()
 });
 
+const LoginSchemaValidation = Joi.object({
+    username: Joi.string().regex(/[a-z\d]+/).required(),
+    password: Joi.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,20}$/).required()
+});
+
 const UserGetSchemaValidation = Joi.object({
    idUser: Joi.string().regex(/^[a-fA-F\d]{24}$/).required()
 });
@@ -50,5 +55,6 @@ module.exports = {
     UserCreationSchemaValidation,
     UserUpdateSchemaValidation,
     PatchUserUpdateSchemaValidation,
-    UserGetSchemaValidation
+    UserGetSchemaValidation,
+    LoginSchemaValidation
 }

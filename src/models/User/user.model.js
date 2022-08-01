@@ -18,7 +18,14 @@ const UserSchema  = new Schema({
         whatsapp: String
     },
     urlImageProfile: String,
-    status: Number
+    status: {
+        type: Number,
+        default: 1
+    },
+    typeUser: {
+        type: String,
+        default: "user"
+    }
 }, {
     timestamps: true
 });
