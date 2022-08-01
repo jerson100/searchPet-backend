@@ -17,7 +17,7 @@ const verifyAccessToken = (typeUser) => {
             const token = verifyToken(authorization.slice(7));
             const us = await User.findById(token._id);
             if(us.status !== 1) {
-                next(new UnauthorizedUserException());
+                next(new UnauthorizedUserException("El usuario no se encuentra activo o no existe"));
                 return;
             }
             if( typeUser && token.typeUser !== typeUser){

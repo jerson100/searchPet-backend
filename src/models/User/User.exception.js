@@ -22,8 +22,26 @@ class ForbiddenUserException extends Error{
     }
 }
 
+class ExistingUserException extends Error{
+    constructor(msg="Ya existe un usuario con ese username", status=400) {
+        super(msg);
+        this.status = status;
+        this.name = "ExistingUserException";
+    }
+}
+
+class NotFoundUserException extends Error{
+    constructor(msg="No se encontró el usuario", status=404) {
+        super(msg);
+        this.status = status;
+        this.name = "NotFoundUserException";
+    }
+}
+
 module.exports = {
     TokenException,
     UnauthorizedUserException,
-    ForbiddenUserException
+    ForbiddenUserException,
+    ExistingUserException,
+    NotFoundUserException
 }

@@ -1,6 +1,6 @@
 const User = require("../models/User/user.model");
-const bcrypt = require("bcrypt");
 const {generatePassword} = require("../utils/password");
+const {ExistingUserException, NotFoundUserException} = require("../models/User/User.exception");
 
 const getAllUsers = async (req, res) => {
     const users = await User.find({},{password:0});
@@ -9,6 +9,8 @@ const getAllUsers = async (req, res) => {
 
 const createUser = async (req, res) => {
     const password = await generatePassword(req.body.password);
+    const user = await findUs(req.body.username);
+    if(user) throw new ExistingUserException();
     const newUser = await User({
         ...req.body,
         password: password
@@ -19,21 +21,31 @@ const createUser = async (req, res) => {
     return res.status(201).json(newUserObj);
 };
 
+const findUs = async (idUser) => {
+    const us = await User.findOne({_id: idUser});
+    return us;
+}
+
 const deleteUser = async (req, res) => {
-    const deletedUser = await User.findByIdAndUpdate(req.params.idUser, {
-        $set: {
-            status: 0
-        }
+    const us = await findUs(req.params.idUser);
+    if(!us || !us.status) throw new NotFoundUserException();
+    await User.findByIdAndUpdate(req.params.idUser, {
+        $set: { status: 0 }
     });
-    return res.status(200).send();
+    return res.status(204).send();
 };
 
 const updateUser = async (req, res) => {
+    const us = await findUs(req.params.idUser);
+    if(!us || !us.status) throw new NotFoundUserException();
     const updatedUser = await User.findByIdAndUpdate(req.params.idUser, {
         $set: req.body
     },{
         new: true
     });
+    if(updatedUser){
+
+    }
     return res.json(updatedUser)
 }
 

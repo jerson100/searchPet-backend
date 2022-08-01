@@ -7,7 +7,7 @@ const {UserCreationSchemaValidation, UserUpdateSchemaValidation, PatchUserUpdate
 } = require("../models/User/user.validation");
 const {verifyAccessToken} = require("../middlewares/verifyAccessToken");
 const {User} = require("../utils/consts");
-const {isMyAccount} = require("../middlewares/isMyAccount");
+const {accessUserCrud} = require("../middlewares/accessUserCrud");
 const UserRouter = Router();
 
 UserRouter.route("/")
@@ -24,33 +24,29 @@ UserRouter.route("/")
         validateRequest(UserController.deleteAllUser)
     )
 
-/*
-* Solo el administrador va a poder eliminar a cualquier tipo de usuario
-* por ende a este punto final nadie más va a tener acceso.
-* aún no está implementado...
-* */
 UserRouter.route("/:idUser")
     .get(
         validateSchema(UserGetSchemaValidation,"params"),
         validateRequest(UserController.findUserById)
     )
     .put(
-        verifyAccessToken(),
-        isMyAccount,
         validateSchema(UserGetSchemaValidation,"params"),
+        verifyAccessToken(),
+        accessUserCrud([User.TYPES.ADMIN]),
         validateSchema(UserUpdateSchemaValidation),
         validateRequest(UserController.updateUser)
     )
     .patch(
-        verifyAccessToken(),
-        isMyAccount,
         validateSchema(UserGetSchemaValidation,"params"),
+        verifyAccessToken(),
+        accessUserCrud([User.TYPES.ADMIN]),
         validateSchema(PatchUserUpdateSchemaValidation),
         validateRequest(UserController.updateUser)
     )
     .delete(
+        validateSchema(UserGetSchemaValidation,"params"),
         verifyAccessToken(),
-        isMyAccount,
+        accessUserCrud([User.TYPES.ADMIN]),
         validateRequest(UserController.deleteUser)
     )
 
