@@ -1,4 +1,6 @@
 const User = require("../models/User/user.model");
+const bcrypt = require("bcrypt");
+const {generatePassword} = require("../utils/password");
 
 const getAllUsers = async (req, res) => {
     const users = await User.find({},{password:0});
@@ -6,7 +8,12 @@ const getAllUsers = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-    const newUser = await User(req.body)
+    const password = await generatePassword(req.body.password);
+    console.log(password);
+    const newUser = await User({
+        ...req.body,
+        password: password
+    })
     await newUser.save();
     const newUserObj = newUser.toObject();
     delete newUserObj.password;
