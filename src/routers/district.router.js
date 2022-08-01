@@ -2,7 +2,9 @@ const {Router} = require("express");
 const DisctrictController = require("../controllers/district.controller");
 const {validateRequest} = require("../middlewares/validateRequest");
 const {validateSchema} = require("../middlewares/validateSchema");
-const {DistrictGetSchemaValidation, DistrictUpdateSchemaValidation, PatchDistrictUpdateSchemaValidation} = require("../models/District/district,validation");
+const {DistrictGetSchemaValidation, DistrictUpdateSchemaValidation, PatchDistrictUpdateSchemaValidation,
+    DistrictCreationSchemaValidation
+} = require("../models/District/district,validation");
 const {verifyAccessToken} = require("../middlewares/verifyAccessToken");
 const {User} = require("../utils/consts");
 const DisctrictRouter = Router();
@@ -13,6 +15,7 @@ DisctrictRouter.route("/")
     )
     .post(
         verifyAccessToken(User.TYPES.ADMIN),
+        validateSchema(DistrictCreationSchemaValidation),
         validateRequest(DisctrictController.createDistrict)
     )
     .delete(
