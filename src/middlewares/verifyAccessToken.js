@@ -2,7 +2,7 @@ const User = require("../models/User/user.model");
 const {verifyToken} = require("../utils/token");
 const { UnauthorizedUserException, TokenException, ForbiddenUserException} = require("../models/User/User.exception");
 
-const verifyAccessToken = (typeuser) => {
+const verifyAccessToken = (typeUser) => {
     return async (req, res, next) => {
         const {authorization} = req.headers;
         if(!authorization){
@@ -20,13 +20,14 @@ const verifyAccessToken = (typeuser) => {
                 next(new UnauthorizedUserException());
                 return;
             }
-            if(typeUser && token.typeUser !== typeuser){
+            if( typeUser && token.typeUser !== typeUser){
                 next(new ForbiddenUserException());
                 return;
             }
             req.user = token;
             next()
         }catch(e){
+            console.log(e)
             next(new TokenException());
         }
     }

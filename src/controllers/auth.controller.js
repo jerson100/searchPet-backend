@@ -26,7 +26,7 @@ const login = async (req, res) => {
         name: userD.name,
         paternalSurname: userD.paternalSurname,
         maternalSurname: userD.maternalSurname,
-        typeUser: userD.typeUser  || "administrador"
+        typeUser: userD.typeUser
     });
     return res.json({
         accessToken: accessToken,
