@@ -47,7 +47,7 @@ const PatchUserUpdateSchemaValidation = Joi.object({
 });
 
 const LoginSchemaValidation = Joi.object({
-    username: Joi.string().regex(/[a-z\d]+/).required(),
+    email: Joi.string().regex(/[a-z\d]+/).required(),
     password: Joi.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,20}$/).required()
 });
 

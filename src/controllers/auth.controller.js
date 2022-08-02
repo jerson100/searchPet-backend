@@ -5,14 +5,16 @@ const {generateAccessToken, verifyToken} = require("../utils/token");
 const login = async (req, res) => {
     const {email, password} = req.body;
     const user = await User.findOne({
-        email: email
-    }, {password: 0});
+        email: email,
+        status: 1
+    }, {status:0});
     if(!user){
         return res.status(401).json({
             message: "Email o contraseña incorrectos"
         })
     }
     const ePass = await verifyPassword(password, user._doc.password);
+    console.log(password)
     if(!ePass){
         return res.status(401).json({
             message: "Email o contraseña incorrectos"

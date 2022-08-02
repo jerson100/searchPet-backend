@@ -15,6 +15,7 @@ const createUser = async (req, res) => {
     const district = await District.findOne({_id: req.body.district, status: 1});
     if(!district) throw new UserCreationException("No se pudo crear un usuario porque el distrito no existe");
     const password = await generatePassword(req.body.password);
+    console.log(password)
     const newUser = await User({
         ...req.body,
         password: password

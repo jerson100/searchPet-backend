@@ -1,6 +1,6 @@
 const User = {
     TYPES: {
-        ADMIN: "administrador",
+        ADMIN: "administrator",
         USER: "user"
     }
 }
