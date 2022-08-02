@@ -3,34 +3,32 @@ const {verifyPassword} = require("../utils/password");
 const {generateAccessToken, verifyToken} = require("../utils/token");
 
 const login = async (req, res) => {
-    const {username, password} = req.body;
+    const {email, password} = req.body;
     const user = await User.findOne({
-        username: username
-    });
+        email: email
+    }, {password: 0});
     if(!user){
         return res.status(401).json({
-            message: "Usuario o contraseña incorrecto"
+            message: "Email o contraseña incorrectos"
         })
     }
-    const ePass = await verifyPassword(password, user.password);
+    const ePass = await verifyPassword(password, user._doc.password);
     if(!ePass){
         return res.status(401).json({
-            message: "Usuario o contraseña incorrecto"
+            message: "Email o contraseña incorrectos"
         })
     }
-    const userD = user._doc;
-    delete userD.password;
     const accessToken =  generateAccessToken({
-        _id: userD._id,
-        username: userD.username,
-        name: userD.name,
-        paternalSurname: userD.paternalSurname,
-        maternalSurname: userD.maternalSurname,
-        typeUser: userD.typeUser
+        _id: user._doc._id,
+        username: user._doc.username,
+        name: user._doc.name,
+        paternalSurname: user._doc.paternalSurname,
+        maternalSurname: user._doc.maternalSurname,
+        typeUser: user._doc.typeUser
     });
     return res.json({
         accessToken: accessToken,
-        user: userD
+        user: user._doc
     });
 };
 
