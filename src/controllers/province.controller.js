@@ -11,14 +11,15 @@ const createProvince = async (req, res) => {
     const province = await Province.findOne({name: name, status: 1});
     if (province) throw new ProvinceExistenceException();
     const departamentObj = await Departament.findOne({_id: departament, status: 1});
-    if (!departamentObj) throw new DepartamentNotFoundException("No existe el departamento para el idDepartament");
+    if (!departamentObj) throw new DepartamentNotFoundException("No existe el departamento especificado");
     const newProvince = await Province({name, departament});
     await newProvince.save();
+    delete newProvince._doc.status;
     return res.status(201).json(newProvince);
 }
 
 const getAllProvinces = async (req, res) => {
-    const provinces = await Province.find({status: 1});
+    const provinces = await Province.find({status: 1}, {status: 0});
     return res.json(provinces);
 }
 
@@ -54,11 +55,12 @@ const updateProvince = async (req, res) => {
     }, {
         new: true
     });
+    delete updatedProvince._doc.status;
     return res.json(updatedProvince)
 }
 
 const findProvinceById = async (req, res) => {
-    const province = await Province.findOne({_id: req.params.idProvince, status: 1});
+    const province = await Province.findOne({_id: req.params.idProvince, status: 1},{status:0});
     if(!province) throw new ProvinceNotFoundException();
     return res.json(province);
 };
