@@ -7,7 +7,8 @@ const UserSchema  = new Schema({
     birthday: Date,
     username: String,
     password: String,
-    idDistrict: {
+    email: String,
+    district: {
         type: Schema.Types.ObjectId,
         ref: "District"
     },

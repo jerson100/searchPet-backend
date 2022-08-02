@@ -9,7 +9,7 @@ const obj = {
     //Mínimo 10 y máximo 20 caracteres, al menos una letra mayúscula,
     //una letra minúscula, un número y un carácter especial:
     password: Joi.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,20}$/).required(),
-    idDistrict: Joi.string().regex(/^[a-fA-F\d]{24}$/).required(),
+    district: Joi.string().regex(/^[a-fA-F\d]{24}$/).required(),
     socialNetWorks: Joi.object({
         facebook: Joi.string(),
         twitter: Joi.string(),
@@ -32,7 +32,7 @@ const PatchUserUpdateSchemaValidation = Joi.object({
     //Mínimo 10 y máximo 20 caracteres, al menos una letra mayúscula,
     //una letra minúscula, un número y un carácter especial:
     password: Joi.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,20}$/),
-    idDistrict: Joi.string().regex(/^[a-fA-F\d]{24}$/),
+    district: Joi.string().regex(/^[a-fA-F\d]{24}$/),
     socialNetWorks: Joi.object({
         facebook: Joi.string(),
         twitter: Joi.string(),
