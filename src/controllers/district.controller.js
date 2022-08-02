@@ -11,11 +11,12 @@ const createDistrict = async (req, res) => {
     if(!provinceObj) throw new ProvinceNotFoundException();
     const newDistrict = await District({name, province});
     await newDistrict.save();
+    delete newDistrict._doc.status;
     return res.status(201).json(newDistrict);
 }
 
 const getAllDistricts = async (req, res) => {
-    const districts = await District.find({status: 1});
+    const districts = await District.find({status: 1},{status: 0});
     return res.json(districts);
 };
 
@@ -34,7 +35,7 @@ const updateDistrict = async (req, res) => {
     const district = await District.findOne({ _id:req.params.idDistrict, status: 1})
     if(!district) throw new DistrictNotFoundException();
     if(req.body.name){
-        const disF = await District.findOne({name: req.body.name, status: 1});
+        const disF = await District.findOne({_id: {$ne: req.params.idDistrict},name: req.body.name, status: 1});
         if(disF)throw new DistrictExistenceException();
     }
     if(req.body.province){
@@ -46,14 +47,13 @@ const updateDistrict = async (req, res) => {
     },{
         new: true
     });
+    delete updatedDistrict._doc.status;
     return res.json(updatedDistrict)
 }
 
 const findDistrictById = async (req, res) => {
-    const district = await District.findOne({_id: req.params.idDistrict, status: 1});
-    if(!district){
-        throw new DistrictNotFoundException();
-    }
+    const district = await District.findOne({_id: req.params.idDistrict, status: 1},{status:0});
+    if(!district) throw new DistrictNotFoundException();
     return res.json(district);
 };
 
