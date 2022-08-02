@@ -6,7 +6,7 @@ db.getCollection("users").aggregate(
         {
             $match: {
                 status: 1,
-                
+                _id: ObjectId("62e915377cd264f35dee6048")
             }
         },
 
@@ -34,23 +34,15 @@ db.getCollection("users").aggregate(
                         }
                     }
                 ],
-                as: "idDistrict"
+                as: "district"
             }
-            
-            // Uncorrelated Subqueries
-            // (supported as of MongoDB 3.6)
-            // {
-            //    from: "<collection to join>",
-            //    let: { <var_1>: <expression>, …, <var_n>: <expression> },
-            //    pipeline: [ <pipeline to execute on the collection to join> ],
-            //    as: "<output array field>"
-            // }
+
         },
 
         // Stage 3
         {
             $unwind: {
-                path: "$idDistrict",
+                path: "$district",
                 preserveNullAndEmptyArrays: true // optional
             }
         },
@@ -58,7 +50,8 @@ db.getCollection("users").aggregate(
         // Stage 4
         {
             $project: {
-                "password":0
+                password:0,
+                status: 0
             }
         }
     ],
@@ -67,7 +60,5 @@ db.getCollection("users").aggregate(
     {
 
     }
-
-    // Created with Studio 3T, the IDE for MongoDB - https://studio3t.com/
 
 );

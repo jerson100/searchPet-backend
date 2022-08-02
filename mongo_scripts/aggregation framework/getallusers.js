@@ -15,7 +15,7 @@ db.getCollection("users").aggregate(
             {
                 from: "districts",
                 let: {
-                    idDistrict: "$idDistrict"
+                    idDistrict: "$district"
                 },
                 pipeline: [
                     {
@@ -29,11 +29,11 @@ db.getCollection("users").aggregate(
                     {
                         $project: {
                             "name": 1,
-                            "idProvince":1
+                            "province":1
                         }
                     }
                 ],
-                as: "idDistrict"
+                as: "district"
             }
 
         },
@@ -41,8 +41,16 @@ db.getCollection("users").aggregate(
         // Stage 3
         {
             $unwind: {
-                path: "$idDistrict",
-                preserveNullAndEmptyArrays: true
+                path: "$district",
+                preserveNullAndEmptyArrays: true // optional
+            }
+        },
+
+        // Stage 4
+        {
+            $project: {
+                password:0,
+                status: 0
             }
         }
     ],
