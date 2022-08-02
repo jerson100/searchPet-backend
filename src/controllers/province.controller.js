@@ -7,12 +7,12 @@ const {Departament} = require("../models/Departament/departament.model");
 const {DepartamentNotFoundException} = require("../models/Departament/departament.exception");
 
 const createProvince = async (req, res) => {
-    const {idDepartament, name} = req.body;
+    const {departament, name} = req.body;
     const province = await Province.findOne({name: name, status: 1});
     if (province) throw new ProvinceExistenceException();
-    const departament = await Departament.findOne({_id: idDepartament, status: 1});
-    if (!departament) throw new DepartamentNotFoundException("No existe el departamento para el idDepartament");
-    const newProvince = await Province({name, idDepartament});
+    const departamentObj = await Departament.findOne({_id: departament, status: 1});
+    if (!departamentObj) throw new DepartamentNotFoundException("No existe el departamento para el idDepartament");
+    const newProvince = await Province({name, departament});
     await newProvince.save();
     return res.status(201).json(newProvince);
 }
@@ -45,12 +45,9 @@ const updateProvince = async (req, res) => {
         })
         if(ProvinceExists) throw new ProvinceExistenceException();
     }
-    if(req.body.idDepartament){
-        const departament = await Departament.findOne({ _id: req.body.idDepartament, status: 1 });
-        console.log(req.body)
-        if(!departament){
-            throw new ProvinceUpdateException("No actualizó la provincia porque el departamento no existe");
-        }
+    if(req.body.departament){
+        const departament = await Departament.findOne({ _id: req.body.departament, status: 1 });
+        if(!departament)throw new ProvinceUpdateException("No actualizó la provincia porque el departamento no existe");
     }
     const updatedProvince = await Province.findByIdAndUpdate(req.params.idProvince, {
         $set: req.body
@@ -62,9 +59,7 @@ const updateProvince = async (req, res) => {
 
 const findProvinceById = async (req, res) => {
     const province = await Province.findOne({_id: req.params.idProvince, status: 1});
-    if(!province){
-        throw new ProvinceNotFoundException();
-    }
+    if(!province) throw new ProvinceNotFoundException();
     return res.json(province);
 };
 

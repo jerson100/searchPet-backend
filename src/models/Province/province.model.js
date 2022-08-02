@@ -2,7 +2,7 @@ const {Schema, model} = require("mongoose");
 
 const ProvinceSchema = new Schema({
     name: String,
-    idDepartament: {
+    departament: {
         ref: "Departament",
         type: Schema.Types.ObjectId
     },

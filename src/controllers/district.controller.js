@@ -4,12 +4,12 @@ const {DistrictNotFoundException, DistrictExistenceException} = require("../mode
 const {ProvinceNotFoundException} = require("../models/Province/province.exception");
 
 const createDistrict = async (req, res) => {
-    const {idProvince, name} = req.body;
+    const {province, name} = req.body;
     const district = await District.findOne({ name: req.body.name, status: 1})
     if(district) throw new DistrictExistenceException();
-    const province = await Province.findOne({_id: idProvince, status: 1});
-    if(!province) throw new ProvinceNotFoundException();
-    const newDistrict = await District({name, idProvince});
+    const provinceObj = await Province.findOne({_id: province, status: 1});
+    if(!provinceObj) throw new ProvinceNotFoundException();
+    const newDistrict = await District({name, province});
     await newDistrict.save();
     return res.status(201).json(newDistrict);
 }
@@ -37,8 +37,8 @@ const updateDistrict = async (req, res) => {
         const disF = await District.findOne({name: req.body.name, status: 1});
         if(disF)throw new DistrictExistenceException();
     }
-    if(req.body.idProvince){
-        const province = await Province.findOne({_id: req.body.idProvince, status: 1});
+    if(req.body.province){
+        const province = await Province.findOne({_id: req.body.province, status: 1});
         if(!province) throw new ProvinceNotFoundException();
     }
     const updatedDistrict = await District.findByIdAndUpdate(req.params.idDistrict, {
