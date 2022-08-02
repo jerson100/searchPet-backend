@@ -27,7 +27,6 @@ const verifyAccessToken = (typeUser) => {
             req.user = token;
             next()
         }catch(e){
-            console.log(e)
             next(new TokenException());
         }
     }

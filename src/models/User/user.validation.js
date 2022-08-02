@@ -7,6 +7,7 @@ const obj = {
     birthday: Joi.date().format("DD/MM/YYYY"),
     username: Joi.string().regex(/[a-z\d]+/).required(),
     email: Joi.string().email().required(),
+    direction: Joi.string().min(2).max(100),
     //Mínimo 10 y máximo 20 caracteres, al menos una letra mayúscula,
     //una letra minúscula, un número y un carácter especial:
     password: Joi.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,20}$/).required(),
@@ -31,6 +32,7 @@ const PatchUserUpdateSchemaValidation = Joi.object({
     birthday: Joi.date().format("DD/MM/YYYY"),
     username: Joi.string().regex(/[a-z\d]+/),
     email: Joi.string().email(),
+    direction: Joi.string().min(2).max(100),
     //Mínimo 10 y máximo 20 caracteres, al menos una letra mayúscula,
     //una letra minúscula, un número y un carácter especial:
     password: Joi.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,20}$/),

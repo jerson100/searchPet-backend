@@ -1,4 +1,5 @@
 const {Schema, model} = require("mongoose");
+const {User} = require("../User/user.model");
 
 const DistrictSchema = new Schema({
     name: String,

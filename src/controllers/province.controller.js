@@ -31,6 +31,7 @@ const deleteProvince = async (req, res) => {
             status: 0
         }
     })
+    await province.changeStatus(0)
     return res.status(204).send();
 }
 

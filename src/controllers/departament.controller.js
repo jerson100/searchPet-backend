@@ -34,7 +34,7 @@ const deleteDepartament = async (req, res) => {
             status: 0
         }
     });
-    //comprobamos si se realizö la actualización para enviar una respuesta u otra
+    await dp.changeStatus(0);
     return res.status(204).send();
 }
 
