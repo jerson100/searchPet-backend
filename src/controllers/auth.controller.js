@@ -14,7 +14,6 @@ const login = async (req, res) => {
         })
     }
     const ePass = await verifyPassword(password, user._doc.password);
-    console.log(password)
     if(!ePass){
         return res.status(401).json({
             message: "Email o contraseña incorrectos"
@@ -28,6 +27,8 @@ const login = async (req, res) => {
         maternalSurname: user._doc.maternalSurname,
         typeUser: user._doc.typeUser
     });
+    delete user._doc.password;
+    delete user._doc.status;
     return res.json({
         accessToken: accessToken,
         user: user._doc
