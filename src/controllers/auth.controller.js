@@ -9,13 +9,13 @@ const login = async (req, res) => {
         status: 1
     }, {status:0});
     if(!user){
-        return res.status(401).json({
+        return res.status(400).json({
             message: "Email o contraseña incorrectos"
         })
     }
     const ePass = await verifyPassword(password, user._doc.password);
     if(!ePass){
-        return res.status(401).json({
+        return res.status(400).json({
             message: "Email o contraseña incorrectos"
         })
     }
@@ -35,6 +35,21 @@ const login = async (req, res) => {
     });
 };
 
+const getToken = async (req, res) => {
+    const idUser = req.user._id;
+    const user = await User.findOne({
+        _id: idUser,
+        status: 1
+    }, {status:0});
+    if(!user) return res.status(401).send();
+    delete user._doc.password;
+    delete user._doc.status;
+    return res.json({
+        user: user._doc
+    });
+};
+
 module.exports = {
-    login
+    login,
+    getToken
 }
