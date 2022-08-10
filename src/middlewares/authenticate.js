@@ -2,7 +2,7 @@ const User = require("../models/User/user.model");
 const {verifyToken} = require("../utils/token");
 const { UnauthorizedUserException, TokenException, ForbiddenUserException} = require("../models/User/User.exception");
 
-const verifyAccessToken = (typeUser, codeStatus) => {
+const authenticate = (typeUser, codeStatus) => {
     return async (req, res, next) => {
         const {authorization} = req.headers;
         if(!authorization){
@@ -33,5 +33,5 @@ const verifyAccessToken = (typeUser, codeStatus) => {
 }
 
 module.exports = {
-    verifyAccessToken
+    authenticate
 }

@@ -3,7 +3,7 @@ const {validateSchema} = require("../../middlewares/validateSchema");
 const {validateRequest} = require("../../middlewares/validateRequest");
 const AuthController = require("../../controllers/auth.controller");
 const {LoginSchemaValidation} = require("../../models/User/user.validation");
-const {verifyAccessToken} = require("../../middlewares/verifyAccessToken");
+const {authenticate} = require("../../middlewares/authenticate");
 const AuthRouter = Router();
 
 AuthRouter.post("/login",
@@ -12,7 +12,7 @@ AuthRouter.post("/login",
 )
 
 AuthRouter.get("/token",
-    verifyAccessToken(null,400),
+    authenticate(null,400),
     validateRequest(AuthController.getToken)
 )
 

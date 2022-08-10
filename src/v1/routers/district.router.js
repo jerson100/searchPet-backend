@@ -5,7 +5,7 @@ const {validateSchema} = require("../../middlewares/validateSchema");
 const {DistrictGetSchemaValidation, DistrictUpdateSchemaValidation, PatchDistrictUpdateSchemaValidation,
     DistrictCreationSchemaValidation
 } = require("../../models/District/district,validation");
-const {verifyAccessToken} = require("../../middlewares/verifyAccessToken");
+const {authenticate} = require("../../middlewares/authenticate");
 const {User} = require("../../utils/consts");
 const DisctrictRouter = Router();
 
@@ -14,12 +14,12 @@ DisctrictRouter.route("/")
         validateRequest(DisctrictController.getAllDistricts)
     )
     .post(
-        verifyAccessToken(User.TYPES.ADMIN),
+        authenticate(User.TYPES.ADMIN),
         validateSchema(DistrictCreationSchemaValidation),
         validateRequest(DisctrictController.createDistrict)
     )
     .delete(
-        verifyAccessToken(User.TYPES.ADMIN),
+        authenticate(User.TYPES.ADMIN),
         validateRequest(DisctrictController.deleteAllDistricts)
     )
 
@@ -29,19 +29,19 @@ DisctrictRouter.route("/:idDistrict")
         validateRequest(DisctrictController.getOneDistrictById)
     )
     .put(
-        verifyAccessToken(User.TYPES.ADMIN),
+        authenticate(User.TYPES.ADMIN),
         validateSchema(DistrictGetSchemaValidation, "params"),
         validateSchema(DistrictUpdateSchemaValidation),
         validateRequest(DisctrictController.updateDistrict)
     )
     .patch(
-        verifyAccessToken(User.TYPES.ADMIN),
+        authenticate(User.TYPES.ADMIN),
         validateSchema(DistrictGetSchemaValidation, "params"),
         validateSchema(PatchDistrictUpdateSchemaValidation),
         validateRequest(DisctrictController.updateDistrict)
     )
     .delete(
-        verifyAccessToken(User.TYPES.ADMIN),
+        authenticate(User.TYPES.ADMIN),
         validateRequest(DisctrictController.deleteDistrict)
     )
 

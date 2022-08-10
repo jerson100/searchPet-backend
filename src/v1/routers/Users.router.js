@@ -5,14 +5,14 @@ const UserController = require("../../controllers/user.controller");
 const {UserCreationSchemaValidation, UserUpdateSchemaValidation, PatchUserUpdateSchemaValidation,
     UserGetSchemaValidation
 } = require("../../models/User/user.validation");
-const {verifyAccessToken} = require("../../middlewares/verifyAccessToken");
+const {authenticate} = require("../../middlewares/authenticate");
 const {User} = require("../../utils/consts");
 const {accessUserCrud} = require("../../middlewares/accessUserCrud");
 const UserRouter = Router();
 
 UserRouter.route("/")
     .get(
-        verifyAccessToken(User.TYPES.ADMIN),
+        authenticate(User.TYPES.ADMIN),
         validateRequest(UserController.getAllUsers)
     )
     .post(
@@ -20,7 +20,7 @@ UserRouter.route("/")
         validateRequest(UserController.createUser)
     )
     .delete(
-        verifyAccessToken(User.TYPES.ADMIN),
+        authenticate(User.TYPES.ADMIN),
         validateRequest(UserController.deleteAllUser)
     )
 
@@ -31,21 +31,21 @@ UserRouter.route("/:idUser")
     )
     .put(
         validateSchema(UserGetSchemaValidation,"params"),
-        verifyAccessToken(),
+        authenticate(),
         accessUserCrud([User.TYPES.ADMIN]),
         validateSchema(UserUpdateSchemaValidation),
         validateRequest(UserController.updateUser)
     )
     .patch(
         validateSchema(UserGetSchemaValidation,"params"),
-        verifyAccessToken(),
+        authenticate(),
         accessUserCrud([User.TYPES.ADMIN]),
         validateSchema(PatchUserUpdateSchemaValidation),
         validateRequest(UserController.updateUser)
     )
     .delete(
         validateSchema(UserGetSchemaValidation,"params"),
-        verifyAccessToken(),
+        authenticate(),
         accessUserCrud([User.TYPES.ADMIN]),
         validateRequest(UserController.deleteUser)
     )
