@@ -1,12 +1,12 @@
 const {Router} = require("express");
-const DisctrictController = require("../controllers/district.controller");
-const {validateRequest} = require("../middlewares/validateRequest");
-const {validateSchema} = require("../middlewares/validateSchema");
+const DisctrictController = require("../../controllers/district.controller");
+const {validateRequest} = require("../../middlewares/validateRequest");
+const {validateSchema} = require("../../middlewares/validateSchema");
 const {DistrictGetSchemaValidation, DistrictUpdateSchemaValidation, PatchDistrictUpdateSchemaValidation,
     DistrictCreationSchemaValidation
-} = require("../models/District/district,validation");
-const {verifyAccessToken} = require("../middlewares/verifyAccessToken");
-const {User} = require("../utils/consts");
+} = require("../../models/District/district,validation");
+const {verifyAccessToken} = require("../../middlewares/verifyAccessToken");
+const {User} = require("../../utils/consts");
 const DisctrictRouter = Router();
 
 DisctrictRouter.route("/")
@@ -26,7 +26,7 @@ DisctrictRouter.route("/")
 DisctrictRouter.route("/:idDistrict")
     .get(
         validateSchema(DistrictGetSchemaValidation, "params"),
-        validateRequest(DisctrictController.findDistrictById)
+        validateRequest(DisctrictController.getOneDistrictById)
     )
     .put(
         verifyAccessToken(User.TYPES.ADMIN),

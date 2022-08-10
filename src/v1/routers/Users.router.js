@@ -1,13 +1,13 @@
 const {Router} = require("express");
-const {validateRequest} = require("../middlewares/validateRequest");
-const {validateSchema} = require("../middlewares/validateSchema");
-const UserController = require("../controllers/user.controller");
+const {validateRequest} = require("../../middlewares/validateRequest");
+const {validateSchema} = require("../../middlewares/validateSchema");
+const UserController = require("../../controllers/user.controller");
 const {UserCreationSchemaValidation, UserUpdateSchemaValidation, PatchUserUpdateSchemaValidation,
     UserGetSchemaValidation
-} = require("../models/User/user.validation");
-const {verifyAccessToken} = require("../middlewares/verifyAccessToken");
-const {User} = require("../utils/consts");
-const {accessUserCrud} = require("../middlewares/accessUserCrud");
+} = require("../../models/User/user.validation");
+const {verifyAccessToken} = require("../../middlewares/verifyAccessToken");
+const {User} = require("../../utils/consts");
+const {accessUserCrud} = require("../../middlewares/accessUserCrud");
 const UserRouter = Router();
 
 UserRouter.route("/")

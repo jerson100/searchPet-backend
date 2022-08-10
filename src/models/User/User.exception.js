@@ -46,11 +46,20 @@ class NotFoundUserException extends Error{
     }
 }
 
+class LoginUserException extends Error{
+    constructor(msg="Email o contraseña incorrectos", status=400) {
+        super(msg);
+        this.status = status;
+        this.name = "LoginUserException";
+    }
+}
+
 module.exports = {
     TokenException,
     UnauthorizedUserException,
     ForbiddenUserException,
     ExistingUserException,
     NotFoundUserException,
-    UserCreationException
+    UserCreationException,
+    LoginUserException
 }

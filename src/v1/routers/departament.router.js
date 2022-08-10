@@ -1,10 +1,10 @@
 const {Router} = require("express");
-const DepartamentController = require("../controllers/departament.controller");
-const {validateRequest} = require("../middlewares/validateRequest");
-const {validateSchema} = require("../middlewares/validateSchema");
-const {DepartamentGetSchemaValidation, DepartamentUpdateSchemaValidation, PatchDepartamentUpdateSchemaValidation} = require("../models/Departament/departament.validation");
-const {verifyAccessToken} = require("../middlewares/verifyAccessToken");
-const {User} = require("../utils/consts");
+const DepartamentController = require("../../controllers/departament.controller");
+const {validateRequest} = require("../../middlewares/validateRequest");
+const {validateSchema} = require("../../middlewares/validateSchema");
+const {DepartamentGetSchemaValidation, DepartamentUpdateSchemaValidation, PatchDepartamentUpdateSchemaValidation} = require("../../models/Departament/departament.validation");
+const {verifyAccessToken} = require("../../middlewares/verifyAccessToken");
+const {User} = require("../../utils/consts");
 
 const DepartamentRouter = Router();
 

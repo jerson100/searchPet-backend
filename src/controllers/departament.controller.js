@@ -1,77 +1,32 @@
-const {Departament} = require("../models/Departament/departament.model");
-const {
-    DepartamentExistenceException,
-    DepartamentNotFoundException
-} = require("../models/Departament/departament.exception");
+const DepartamentService = require("../services/departamentService");
 
 const createDepartament = async (req, res) => {
-    const dp = await Departament.findOne({
-        name: req.body.name,
-        status: 1
-    });
-    if (dp) throw new DepartamentExistenceException();
-    const newDepartament = await Departament({
-        name: req.body.name
-    })
-    await newDepartament.save();
-    delete newDepartament._doc.status;
+    const newDepartament = await DepartamentService.createDepartament(req.body.name)
     return res.status(201).json(newDepartament);
 }
 
 const getAllDepartaments = async (req, res) => {
-    const departaments = await Departament.find({status: 1}, {status: 0});
+    const departaments = await DepartamentService.getAllDepartaments()
     return res.json(departaments);
 };
 
 const deleteDepartament = async (req, res) => {
-    const dp = await Departament.findOne({
-        _id: req.params.idDepartament,
-        status: 1
-    });
-    if (!dp) throw new DepartamentNotFoundException();
-    await Departament.findByIdAndUpdate(req.params.idDepartament, {
-        $set: {
-            status: 0
-        }
-    });
-    await dp.changeStatus(0);
+    await DepartamentService.deleteDepartament(req.params.idDepartament);
     return res.status(204).send();
 }
 
 const updateDepartament = async (req, res) => {
-    const dp = await Departament.findOne({
-        _id: req.params.idDepartament,
-        status: 1
-    });
-    if (!dp) throw new DepartamentNotFoundException();
-    const findDepartamentEqualName = await Departament.findOne({
-        _id: {
-            $ne: req.params.idDepartament
-        },
-        name: req.body.name
-    })
-    if (findDepartamentEqualName) throw new DepartamentExistenceException();
-    const updatedDepartament = await Departament.findByIdAndUpdate(req.params.idDepartament, {
-        $set: req.body
-    }, {
-        new: true
-    });
-    delete updatedDepartament._doc.status;
-    return res.json(updatedDepartament)
+    const dp = await DepartamentService.updateDepartament(req.params.idDepartament, req.body)
+    return res.json(dp);
 }
 
 const findDepartamentById = async (req, res) => {
-    const departament = await Departament.findOne({_id: req.params.idDepartament, status: 1}, {status: 0});
-    if (!departament) throw new DepartamentNotFoundException();
+    const departament = await DepartamentService.findDepartamentById(req.params.idDepartament);
     return res.json(departament);
 };
 
 const deleteAllDepartaments = async (req, res) => {
-    await Departament.updateMany({status: 1}, {
-        $set: {
-            status: 0
-        }
-    });
+    await DepartamentService.deleteAllDepartaments();
     return res.status(204).send();
 }
 

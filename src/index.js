@@ -4,11 +4,11 @@ const logger = require("morgan");
 require("dotenv").config();
 const cors = require("cors");
 const app = express();
-const UserRouter = require("./routers/Users.router");
-const DepartamentRouter = require("./routers/departament.router");
-const ProvinceRouter = require("./routers/province.router");
-const DistrictRouter = require("./routers/district.router");
-const AuthRouter = require("./routers/auth.router");
+const UserRouterV1 = require("./v1/routers/Users.router");
+const DepartamentRouterV1 = require("./v1/routers/departament.router");
+const ProvinceRouterV1 = require("./v1/routers/province.router");
+const DistrictRouterV1 = require("./v1/routers/district.router");
+const AuthRouterV1 = require("./v1/routers/auth.router");
 
 connectMongoDB();
 
@@ -16,11 +16,11 @@ app.use(cors());
 app.use(express.json());
 app.use(logger("dev"));
 
-app.use(`/api/${process.env.API_VERSION}/users`, UserRouter);
-app.use(`/api/${process.env.API_VERSION}/departaments`, DepartamentRouter);
-app.use(`/api/${process.env.API_VERSION}/provinces`, ProvinceRouter);
-app.use(`/api/${process.env.API_VERSION}/districts`, DistrictRouter);
-app.use(`/api/${process.env.API_VERSION}/auth`, AuthRouter);
+app.use(`/api/v1/users`, UserRouterV1);
+app.use(`/api/v1/departaments`, DepartamentRouterV1);
+app.use(`/api/v1/provinces`, ProvinceRouterV1);
+app.use(`/api/v1/districts`, DistrictRouterV1);
+app.use(`/api/v1/auth`, AuthRouterV1);
 
 app.listen(process.env.PORT, () => {
     console.log(`El servidor está escuchando en el puerto ${process.env.PORT}`)
