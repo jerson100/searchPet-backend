@@ -27,6 +27,7 @@ app.listen(process.env.PORT, () => {
 });
 
 app.use((error, req, res, next) => {
+    // console.log(error)
     if (!error.status) {
         if (process.env.TYPE === "DEVELOPMENT") {
             res.status(500).json({

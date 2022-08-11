@@ -2,7 +2,7 @@ const User = require("../models/User/user.model");
 const {verifyToken} = require("../utils/token");
 const { UnauthorizedUserException, TokenException, ForbiddenUserException} = require("../models/User/User.exception");
 
-const authenticate = (typeUser, codeStatus) => {
+const authenticate = (codeStatus) => {
     return async (req, res, next) => {
         const {authorization} = req.headers;
         if(!authorization){
@@ -18,10 +18,6 @@ const authenticate = (typeUser, codeStatus) => {
             const us = await User.findById(token._id);
             if(us.status !== 1) {
                 next(new UnauthorizedUserException("El usuario no se encuentra activo o no existe"));
-                return;
-            }
-            if( typeUser && token.typeUser !== typeUser){
-                next(new ForbiddenUserException());
                 return;
             }
             req.user = token;

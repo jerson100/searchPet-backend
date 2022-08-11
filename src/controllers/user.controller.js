@@ -1,4 +1,5 @@
 const UserService = require("../services/userService");
+const {ExistingUserException} = require("../models/User/User.exception");
 
 const getAllUsers = async (req, res) => {
     const users = await UserService.getAllUsers();
@@ -6,8 +7,14 @@ const getAllUsers = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-    const user = await UserService.createUser(req.body);
-    return res.status(201).json(user);
+    // try{
+    //     const user = await UserService.createUser(req.body);
+    //     console.log("---")
+    //     return res.status(201).json(user);
+    // }catch(e){
+        // console.log(e)
+        throw new ExistingUserException("No se pudo crear el usuario, intente con otra cuenta de email");
+    // }
 };
 
 const deleteUser = async (req, res) => {

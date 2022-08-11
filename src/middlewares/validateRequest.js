@@ -4,6 +4,7 @@ const validateRequest = (cb) => {
             await cb(req, res);
             next();
         }catch(e){
+            console.log(e)
             next(e);
         }
     }

@@ -1,3 +1,5 @@
+const {Error} = require("mongoose");
+
 class TokenException extends Error{
     constructor(msg="El token no es válido", status=401) {
         super(msg);
@@ -54,6 +56,14 @@ class LoginUserException extends Error{
     }
 }
 
+class MyResourceNoTFoundException extends Error{
+    constructor(msg="El recurso no existe", status=404) {
+        super(msg);
+        this.status = status;
+        this.name = "MyResourceNoTFoundException";
+    }
+}
+
 module.exports = {
     TokenException,
     UnauthorizedUserException,
@@ -61,5 +71,6 @@ module.exports = {
     ExistingUserException,
     NotFoundUserException,
     UserCreationException,
-    LoginUserException
+    LoginUserException,
+    MyResourceNoTFoundException
 }

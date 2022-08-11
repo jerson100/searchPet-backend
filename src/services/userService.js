@@ -11,7 +11,7 @@ const getAllUsers = async () => {
 
 const createUser = async (data) => {
     const user = await User.findOne({ email: data.email});
-    if(user) throw new ExistingUserException("No se pudo crear el usuario, intente con otra cuenta de email");
+    if(user) throw new Error();
     // const district = await District.findOne({_id: req.body.district, status: 1});
     // if(!district) throw new UserCreationException("No se pudo crear un usuario porque el distrito no existe");
     const password = await generatePassword(data.password);
