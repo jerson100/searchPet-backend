@@ -17,7 +17,7 @@ const authenticate = (codeStatus) => {
             const token = verifyToken(authorization.slice(7));
             const us = await User.findById(token._id);
             if(us.status !== 1) {
-                next(new UnauthorizedUserException("El usuario no se encuentra activo o no existe"));
+                next(new UnauthorizedUserException("El token no es válido, el usuario no se encuentra activo o no existe"));
                 return;
             }
             req.user = token;

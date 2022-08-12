@@ -18,7 +18,7 @@ const authorizeMyResource = (Schema, paramName, exceptTypeUsers, queryName="_id"
     const { _id : idUser, typeUser } = req.user;
     const data = await Schema.findOne({_id: value, status: 1});
     if(data) {
-        if( exceptTypeUsers?.includes(typeUser) || (data[queryName] && data[queryName] === idUser)){
+        if( exceptTypeUsers?.includes(typeUser) || (data[queryName] && data[queryName]?.toString() === idUser)){
             next();
         }else{
             next(new ForbiddenUserException());

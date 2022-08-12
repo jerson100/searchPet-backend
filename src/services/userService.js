@@ -71,7 +71,7 @@ const findUs = async (query={}, project= { __v: 0}) => {
 }
 
 const deleteUser = async (idUser) => {
-    const us = await User.findOne({_id: idUser, status: 1});
+    const us = await User.findOne({_id: idUser});
     if(!us || !us.status) throw new NotFoundUserException();
     await User.findByIdAndUpdate(idUser, {
         $set: { status: 0 }
@@ -79,7 +79,7 @@ const deleteUser = async (idUser) => {
 };
 
 const updateUser = async (idUser, data) => {
-    const us = await User.findOne({_id: idUser, status: 1});
+    const us = await User.findOne({_id: idUser});
     if(!us || !us.status) throw new NotFoundUserException();
     if(data.email){
         const user = await User.findOne({_id: { $ne: idUser }, email: data.email});
