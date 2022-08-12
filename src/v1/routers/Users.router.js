@@ -8,13 +8,13 @@ const {UserCreationSchemaValidation, UserUpdateSchemaValidation, PatchUserUpdate
 } = require("../../models/User/user.validation");
 const {authenticate} = require("../../middlewares/authenticate");
 const {User: CONSTANTS} = require("../../utils/consts");
-// const {authorizeTypeUser, authorizeMyResource} = require("../../middlewares/authorize");
+const {authorizeTypeUser, authorizeMyResource} = require("../../middlewares/authorize");
 const UserRouter = Router();
 
 UserRouter.route("/")
     .get(
         authenticate(),
-        // authorizeTypeUser([CONSTANTS.TYPES.ADMIN]),
+        authorizeTypeUser([CONSTANTS.TYPES.ADMIN]),
         validateRequest(UserController.getAllUsers)
     )
     .post(
@@ -23,7 +23,7 @@ UserRouter.route("/")
     )
     .delete(
         authenticate(),
-        // authorizeTypeUser([CONSTANTS.TYPES.ADMIN]),
+        authorizeTypeUser([CONSTANTS.TYPES.ADMIN]),
         validateRequest(UserController.deleteAllUser)
     )
 
@@ -35,22 +35,21 @@ UserRouter.route("/:idUser")
     .put(
         validateSchema(UserGetSchemaValidation,"params"),
         authenticate(),
-        // authorizeMyResource(User,"idUser",[CONSTANTS.TYPES.ADMIN]),
+        authorizeMyResource(User,"idUser",[CONSTANTS.TYPES.ADMIN]),
         validateSchema(UserUpdateSchemaValidation),
         validateRequest(UserController.updateUser)
     )
     .patch(
         validateSchema(UserGetSchemaValidation,"params"),
         authenticate(),
-        // authorizeMyResource(User,"idUser",[CONSTANTS.TYPES.ADMIN]),
-        // authorizeMyResource(User, "idUser"),
+        authorizeMyResource(User,"idUser",[CONSTANTS.TYPES.ADMIN]),
         validateSchema(PatchUserUpdateSchemaValidation),
         validateRequest(UserController.updateUser)
     )
     .delete(
         validateSchema(UserGetSchemaValidation,"params"),
         authenticate(),
-        // authorizeMyResource(User,"idUser",[CONSTANTS.TYPES.ADMIN]),
+        authorizeMyResource(User,"idUser",[CONSTANTS.TYPES.ADMIN]),
         validateRequest(UserController.deleteUser)
     )
 

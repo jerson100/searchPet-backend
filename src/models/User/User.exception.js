@@ -1,5 +1,3 @@
-const {Error} = require("mongoose");
-
 class TokenException extends Error{
     constructor(msg="El token no es válido", status=401) {
         super(msg);
@@ -25,7 +23,7 @@ class ForbiddenUserException extends Error{
 }
 
 class ExistingUserException extends Error{
-    constructor(msg="Ya existe un usuario con ese username", status=400) {
+    constructor(msg="Ya existe un usuario con ese email", status=400) {
         super(msg);
         this.status = status;
         this.name = "ExistingUserException";
