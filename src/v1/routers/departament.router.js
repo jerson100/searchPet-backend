@@ -25,18 +25,19 @@ DepartamentRouter.route("/:idDepartament")
         validateRequest(DepartamentController.findDepartamentById)
     )
     .put(
-        authenticate(User.TYPES.ADMIN),
         validateSchema(DepartamentGetSchemaValidation, "params"),
+        authenticate(User.TYPES.ADMIN),
         validateSchema(DepartamentUpdateSchemaValidation),
         validateRequest(DepartamentController.updateDepartament)
     )
     .patch(
-        authenticate(User.TYPES.ADMIN),
         validateSchema(DepartamentGetSchemaValidation, "params"),
+        authenticate(User.TYPES.ADMIN),
         validateSchema(PatchDepartamentUpdateSchemaValidation),
         validateRequest(DepartamentController.updateDepartament)
     )
     .delete(
+        validateSchema(DepartamentGetSchemaValidation, "params"),
         authenticate(User.TYPES.ADMIN),
         validateRequest(DepartamentController.deleteDepartament)
     )

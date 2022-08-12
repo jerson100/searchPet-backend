@@ -29,18 +29,19 @@ DisctrictRouter.route("/:idDistrict")
         validateRequest(DisctrictController.getOneDistrictById)
     )
     .put(
-        authenticate(User.TYPES.ADMIN),
         validateSchema(DistrictGetSchemaValidation, "params"),
+        authenticate(User.TYPES.ADMIN),
         validateSchema(DistrictUpdateSchemaValidation),
         validateRequest(DisctrictController.updateDistrict)
     )
     .patch(
-        authenticate(User.TYPES.ADMIN),
         validateSchema(DistrictGetSchemaValidation, "params"),
+        authenticate(User.TYPES.ADMIN),
         validateSchema(PatchDistrictUpdateSchemaValidation),
         validateRequest(DisctrictController.updateDistrict)
     )
     .delete(
+        validateSchema(DistrictGetSchemaValidation, "params"),
         authenticate(User.TYPES.ADMIN),
         validateRequest(DisctrictController.deleteDistrict)
     )

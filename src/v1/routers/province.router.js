@@ -23,20 +23,20 @@ ProvinceRouter.route("/:idProvince")
         validateRequest(ProvinceController.findProvinceById)
     )
     .put(
-        authenticate(User.TYPES.ADMIN),
         validateSchema(ProvinceGetSchemaValidation, "params"),
+        authenticate(User.TYPES.ADMIN),
         validateSchema(ProvinceUpdateSchemaValidation),
         validateRequest(ProvinceController.updateProvince)
     )
     .patch(
-        authenticate(User.TYPES.ADMIN),
         validateSchema(ProvinceGetSchemaValidation, "params"),
+        authenticate(User.TYPES.ADMIN),
         validateSchema(PatchProvinceUpdateSchemaValidation),
         validateRequest(ProvinceController.updateProvince)
     )
     .delete(
-        authenticate(User.TYPES.ADMIN),
         validateSchema(ProvinceGetSchemaValidation, "params"),
+        authenticate(User.TYPES.ADMIN),
         validateRequest(ProvinceController.deleteProvince)
     )
 
