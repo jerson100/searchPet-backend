@@ -1,7 +1,9 @@
 const express = require("express");
 const {connectMongoDB} = require("./configs/mongodb");
 const logger = require("morgan");
-require("dotenv").config();
+if(process.env.TYPE!=="PRODUCTION"){
+    require("dotenv").config();
+}
 const cors = require("cors");
 const app = express();
 const UserRouterV1 = require("./v1/routers/Users.router");
