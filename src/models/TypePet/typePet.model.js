@@ -8,6 +8,7 @@ const TypePetSchema = new Schema({
         type: Number,
         default: 1
     },
+    description: String,
 }, {timestamps: true})
 
 const TypePet = model("TypePet", TypePetSchema);
