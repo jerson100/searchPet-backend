@@ -13,12 +13,15 @@ const authorizeTypeUser = (typeUsers) => async (req, res, next) => {
     }
 }
 
-const authorizeMyResource = (Schema, paramName, exceptTypeUsers, queryName="_id", path = "params") => async (req, res, next) => {
+const authorizeMyResource = (Schema, paramName, exceptTypeUsers, queryName="_id", path = "params", newRequestPropertyName) => async (req, res, next) => {
     const value = req[path][paramName];
     const { _id : idUser, typeUser } = req.user;
     const data = await Schema.findOne({_id: value, status: 1});
     if(data) {
         if( exceptTypeUsers?.includes(typeUser) || (data[queryName] && data[queryName]?.toString() === idUser)){
+            if(newRequestPropertyName){
+                req[newRequestPropertyName] = data;
+            }
             next();
         }else{
             next(new ForbiddenUserException());
