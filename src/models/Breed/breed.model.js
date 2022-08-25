@@ -7,7 +7,7 @@ const BreedSchema = new Schema({
     },
     name: String,
     description: String,
-    characteristics: {},
+    characteristics: [String],
     images: [String],
     status: {
         type: Number,

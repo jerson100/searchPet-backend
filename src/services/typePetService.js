@@ -34,14 +34,12 @@ const update = async (id, data) => {
 };
 
 const deleteOne = async (id) => {
-    const typePet = await TypePet.findOne({_id:id, status: 1});
-    if(!typePet) throw new NotFoundTypePetException();
-    await TypePet.updateOne({_id:id},{
-        $set:{
-            status:0
-        }
+    const deletedTypePet = await TypePet.findOneAndUpdate(
+        { _id: id, status: 1 },{
+        $set:{ status:0 }
     })
-    return;
+    if(!deletedTypePet) throw new NotFoundTypePetException();
+    await deletedTypePet.changeBreedStatus(0);
 };
 
 const deleteAll  = async () => {
@@ -50,7 +48,7 @@ const deleteAll  = async () => {
             status: 0
         }
     })
-    return;
+    await TypePet.changeBreedStatus(0);
 }
 
 module.exports = {

@@ -12,6 +12,7 @@ const ProvinceRouterV1 = require("./v1/routers/province.router");
 const DistrictRouterV1 = require("./v1/routers/district.router");
 const AuthRouterV1 = require("./v1/routers/auth.router");
 const TypePetV1 = require("./v1/routers/typePet.router");
+const BreedV1 = require("./v1/routers/breed.router");
 
 connectMongoDB();
 
@@ -25,6 +26,7 @@ app.use(`/api/v1/provinces`, ProvinceRouterV1);
 app.use(`/api/v1/districts`, DistrictRouterV1);
 app.use(`/api/v1/auth`, AuthRouterV1);
 app.use(`/api/v1/typePets`, TypePetV1);
+app.use(`/api/v1/breeds`, BreedV1);
 
 app.listen(process.env.PORT, () => {
     console.log(`El servidor está escuchando en el puerto ${process.env.PORT}`)
