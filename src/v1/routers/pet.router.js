@@ -10,6 +10,7 @@ const Router = require("express").Router();
 
 Router.route("/")
     .get(
+        authenticate(),
         validateRequest(PetController.getAll)
     )
     .post(

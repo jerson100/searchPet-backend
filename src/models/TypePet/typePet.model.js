@@ -1,7 +1,6 @@
 const {
     Schema, model
 } = require("mongoose");
-const {Breed} = require("../Breed/breed.model");
 
 const TypePetSchema = new Schema({
     type: String,
@@ -12,6 +11,7 @@ const TypePetSchema = new Schema({
     description: String,
 }, {timestamps: true})
 
+/*
 TypePetSchema.methods.changeBreedStatus = async function (newStatus= 0){
     const idTypePet = this._id;
     await Breed.updateMany({
@@ -30,7 +30,7 @@ TypePetSchema.statics.changeBreedStatus = async function (newStatus = 0) {
           status: newStatus
       }
   })
-}
+}*/
 
 const TypePet = model("TypePet", TypePetSchema);
 

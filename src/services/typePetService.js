@@ -39,16 +39,16 @@ const deleteOne = async (id) => {
         $set:{ status:0 }
     })
     if(!deletedTypePet) throw new NotFoundTypePetException();
-    await deletedTypePet.changeBreedStatus(0);
+    /*await deletedTypePet.changeBreedStatus(0);*/
 };
 
 const deleteAll  = async () => {
-    await TypePet.updateMany({},{
+    await TypePet.updateMany({ status: 1 },{
         $set:{
             status: 0
         }
     })
-    await TypePet.changeBreedStatus(0);
+    /*await TypePet.changeBreedStatus(0);*/
 }
 
 module.exports = {
