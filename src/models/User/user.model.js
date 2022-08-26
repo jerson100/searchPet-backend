@@ -1,4 +1,5 @@
 const {Schema, model} = require("mongoose");
+const {Pet} = require("../Pet/pet.model");
 
 const UserSchema  = new Schema({
     name: String,
@@ -35,6 +36,23 @@ const UserSchema  = new Schema({
 }, {
     timestamps: true
 });
+
+/*
+UserSchema.methods.changeStatus = async function(){
+    const { _id : idUser } = this;
+    await Pet.findOneAndUpdate(
+        {
+            user: idUser,
+            status: 1
+        },
+        {
+            $set: {
+                status: 0
+            }
+        }
+    );
+};
+*/
 
 const User = model("User", UserSchema);
 

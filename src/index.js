@@ -11,8 +11,9 @@ const DepartamentRouterV1 = require("./v1/routers/departament.router");
 const ProvinceRouterV1 = require("./v1/routers/province.router");
 const DistrictRouterV1 = require("./v1/routers/district.router");
 const AuthRouterV1 = require("./v1/routers/auth.router");
-const TypePetV1 = require("./v1/routers/typePet.router");
-const BreedV1 = require("./v1/routers/breed.router");
+const TypePetRouterV1 = require("./v1/routers/typePet.router");
+const BreedRouterV1 = require("./v1/routers/breed.router");
+const PetRouterV1 = require("./v1/routers/pet.router");
 
 connectMongoDB();
 
@@ -25,8 +26,9 @@ app.use(`/api/v1/departaments`, DepartamentRouterV1);
 app.use(`/api/v1/provinces`, ProvinceRouterV1);
 app.use(`/api/v1/districts`, DistrictRouterV1);
 app.use(`/api/v1/auth`, AuthRouterV1);
-app.use(`/api/v1/typePets`, TypePetV1);
-app.use(`/api/v1/breeds`, BreedV1);
+app.use(`/api/v1/typePets`, TypePetRouterV1);
+app.use(`/api/v1/breeds`, BreedRouterV1);
+app.use(`/api/v1/pets`, PetRouterV1);
 
 app.listen(process.env.PORT, () => {
     console.log(`El servidor está escuchando en el puerto ${process.env.PORT}`)

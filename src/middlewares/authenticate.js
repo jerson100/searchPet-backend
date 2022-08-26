@@ -1,6 +1,6 @@
 const User = require("../models/User/user.model");
 const {verifyToken} = require("../utils/token");
-const { UnauthorizedUserException, TokenException, ForbiddenUserException} = require("../models/User/User.exception");
+const { UnauthorizedUserException, TokenException} = require("../models/User/User.exception");
 
 const authenticate = (codeStatus) => {
     return async (req, res, next) => {

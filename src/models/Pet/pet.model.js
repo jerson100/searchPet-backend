@@ -2,11 +2,15 @@ const {Schema, model} = require("mongoose");
 
 const PetSchema  = new Schema({
    name: String,
-   Breed: {
+   user: {
+      type: Schema.Types.ObjectId,
+      ref:"User",
+   },
+   breed: {
       type: Schema.Types.ObjectId,
       ref: "Breed",
    },
-   imageProfile: String,
+   urlImageProfile: String,
    description: String,
    images: [String],
    dateOfBirth: Date,
