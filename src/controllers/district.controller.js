@@ -1,7 +1,7 @@
 const DistrictService = require("../services/districtService");
 
 const createDistrict = async (req, res) => {
-    const newDistrict = await DistrictService.createDistrict(req.data);
+    const newDistrict = await DistrictService.createDistrict(req.body);
     return res.status(201).json(newDistrict);
 }
 

@@ -12,8 +12,12 @@ const getAllUsers = async () => {
 const createUser = async (data) => {
     const user = await User.findOne({ email: data.email});
     if(user) throw new ExistingUserException();
-    // const district = await District.findOne({_id: req.body.district, status: 1});
-    // if(!district) throw new UserCreationException("No se pudo crear un usuario porque el distrito no existe");
+    if(data.district){
+        const existsD = await District.existsDistrict(data.district);
+        if(!existsD){
+            throw new UserCreationException("No se pudo crear el usuario porque el distrito indicado no existe");
+        }
+    }
     const password = await generatePassword(data.password);
     const newUser = await User({
         ...data,
@@ -89,8 +93,10 @@ const updateUser = async (idUser, data) => {
         if(user) throw new ExistingUserException("No se pudo actualizar el usuario, intente con otra cuenta de email");
     }
     if(data.district){
-        const district = await District.findOne({_id: data.district, status: 1});
-        if(!district) throw new UserCreationException("No se pudo actualizar el usuario porque el distrito indicado no existe");
+        const existsD = await District.existsDistrict(data.district);
+        if(!existsD){
+            throw new UserCreationException("No se pudo actualizar el usuario porque el distrito indicado no existe");
+        }
     }
     const updatedUser = await User.findByIdAndUpdate(idUser, {
         $set: data

@@ -10,6 +10,7 @@ const DepartamentSchema = new Schema({
     }
 }, {timestamps: true})
 
+/*
 DepartamentSchema.methods.changeStatus = async function (status = 0) {
     const idDepartament = this._id;
     const provinces = await Province.find({departament: idDepartament, status: 1});
@@ -26,7 +27,7 @@ DepartamentSchema.methods.changeStatus = async function (status = 0) {
     if (provinceIds.length > 0) {
         await District.updateMany({province: {$in: provinceIds}, status: 1}, {$set: {status: status}})
     }
-}
+}*/
 
 const Departament = model("Departament", DepartamentSchema);
 

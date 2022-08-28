@@ -7,12 +7,14 @@ const {ProvinceGetSchemaValidation, ProvinceUpdateSchemaValidation, PatchProvinc
 const {validateSchema} = require("../../middlewares/validateSchema");
 const {authenticate} = require("../../middlewares/authenticate");
 const {User} = require("../../utils/consts");
+const {authorizeTypeUser} = require("../../middlewares/authorize");
 const ProvinceRouter = Router();
 
 ProvinceRouter.route("/")
     .get(validateRequest(ProvinceController.getAllProvinces))
     .post(
-        authenticate(User.TYPES.ADMIN),
+        authenticate(),
+        authorizeTypeUser(User.TYPES.ADMIN),
         validateSchema(ProvinceCreationSchemaValidation),
         validateRequest(ProvinceController.createProvince)
     )
@@ -24,19 +26,22 @@ ProvinceRouter.route("/:idProvince")
     )
     .put(
         validateSchema(ProvinceGetSchemaValidation, "params"),
-        authenticate(User.TYPES.ADMIN),
+        authenticate(),
+        authorizeTypeUser(User.TYPES.ADMIN),
         validateSchema(ProvinceUpdateSchemaValidation),
         validateRequest(ProvinceController.updateProvince)
     )
     .patch(
         validateSchema(ProvinceGetSchemaValidation, "params"),
-        authenticate(User.TYPES.ADMIN),
+        authenticate(),
+        authorizeTypeUser(User.TYPES.ADMIN),
         validateSchema(PatchProvinceUpdateSchemaValidation),
         validateRequest(ProvinceController.updateProvince)
     )
     .delete(
         validateSchema(ProvinceGetSchemaValidation, "params"),
-        authenticate(User.TYPES.ADMIN),
+        authenticate(),
+        authorizeTypeUser(User.TYPES.ADMIN),
         validateRequest(ProvinceController.deleteProvince)
     )
 

@@ -13,6 +13,19 @@ const ProvinceSchema = new Schema({
     }
 }, {timestamps: true})
 
+ProvinceSchema.statics.existsProvince = async (idProvince) => {
+    if(idProvince){
+        const province = await model("Province").findOne({_id: idProvince, status:  1})
+            .populate("departament");
+        if(!province?.status || !province?.departament?.status){
+            return null;
+        }
+        return province;
+    }
+    return null;
+};
+
+/*
 ProvinceSchema.methods.changeStatus = async function (status = 0) {
     const idProvince = this._id;
     await District.updateMany({
@@ -24,7 +37,7 @@ ProvinceSchema.methods.changeStatus = async function (status = 0) {
     })
     return this;
 };
-
+*/
 const Province = model("Province", ProvinceSchema);
 
 module.exports = {Province}

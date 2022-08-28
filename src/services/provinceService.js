@@ -1,17 +1,16 @@
 const {Province} = require("../models/Province/province.model");
 const {
     ProvinceExistenceException,
-    ProvinceNotFoundException, ProvinceUpdateException,
+    ProvinceNotFoundException, ProvinceUpdateException, ProvinceCreationException,
 } = require("../models/Province/province.exception");
 const {Departament} = require("../models/Departament/departament.model");
-const {DepartamentNotFoundException} = require("../models/Departament/departament.exception");
 
 const createProvince = async (data) => {
     const {departament, name} = data;
-    const province = await Province.findOne({name: name, status: 1});
-    if (province) throw new ProvinceExistenceException();
     const departamentObj = await Departament.findOne({_id: departament, status: 1});
-    if (!departamentObj) throw new DepartamentNotFoundException("No existe el departamento especificado", 400);
+    if (!departamentObj) throw new ProvinceCreationException("No se pudo crear la provincia porque no existe el departamento");
+    const province = await Province.findOne({name, departament, status: 1});
+    if (province) throw new ProvinceExistenceException("Ya existe la provincia para el departamento especificado");
     const newProvince = await Province({name, departament});
     await newProvince.save();
     delete newProvince._doc.status;
@@ -19,40 +18,51 @@ const createProvince = async (data) => {
 }
 
 const getAllProvinces = async () => {
-    const provinces = await Province.find({status: 1}, {status: 0});
-    return provinces;
+    let provinces = await Province.find({status: 1}, {status: 0}).populate("departament");
+    return provinces
+        .filter(p => !!p.departament?.status)
+        .map(p => {
+            const id = p._doc.departament._id;
+            delete p._doc.departament;
+            return {...p._doc, departament: id};
+        });
 }
 
 const deleteProvince = async (idProvince) => {
-    const province = await Province.findOne({_id: idProvince, status: 1});
-    if (!province) throw new ProvinceNotFoundException();
-    await Province.findByIdAndUpdate(idProvince, {
+    const p = await Province.findOneAndUpdate({
+        _id: idProvince,
+        status: 1
+    },{
         $set: {
             status: 0
         }
-    })
-    await province.changeStatus(0);
-    return province;
+    }).populate("departament");
+    if (!p || !p._doc.departament?.status) throw new ProvinceNotFoundException();
 }
 
 const updateProvince = async (idProvince, data) => {
-    const province = await Province.findOne({_id: idProvince, status: 1});
+    const province = await Province.existsProvince(idProvince);
     if (!province) throw new ProvinceNotFoundException();
-    if (data.name) {
-        const ProvinceExists = await Province.findOne({
-            _id: {
-                $ne: idProvince,
-            },
-            name: data.name
-        })
-        if(ProvinceExists) throw new ProvinceExistenceException();
-    }
     if(data.departament){
         const departament = await Departament.findOne({ _id: data.departament, status: 1 });
         if(!departament)throw new ProvinceUpdateException("No se actualizó la provincia porque el departamento no existe");
     }
-    const updatedProvince = await Province.findByIdAndUpdate(idProvince, {
-        $set: req.body
+    if (data.name) {
+        const query = {
+            _id: {
+                $ne: idProvince,
+            },
+            name: data.name,
+            status: 1,
+            departament: data.departament || province.departament._doc._id
+        }
+        const ProvinceExists = await Province.findOne(query);
+        console.log(ProvinceExists)
+        console.log(data)
+        if(ProvinceExists) throw new ProvinceExistenceException("Ya existe una provincia con el mismo nombre para el departamento");
+    }
+    const updatedProvince = await Province.findOneAndUpdate({_id:idProvince}, {
+        $set: data
     }, {
         new: true
     });
@@ -61,9 +71,12 @@ const updateProvince = async (idProvince, data) => {
 }
 
 const findProvinceById = async (idProvince) => {
-    const province = await Province.findOne({_id: idProvince, status: 1},{status:0});
+    const province = await Province.existsProvince(idProvince);
     if(!province) throw new ProvinceNotFoundException();
-    return province;
+    const id = province._doc.departament._id;
+    delete province._doc.departament;
+    delete province._doc.status;
+    return {...province._doc, departament: id};
 };
 
 const deleteAllProvinces = async () => {

@@ -24,17 +24,15 @@ const getAllDepartaments = async () => {
 };
 
 const deleteDepartament = async (idDepartament) => {
-    const dp = await Departament.findOne({
+    const d = await Departament.findOneAndUpdate({
         _id: idDepartament,
         status: 1
-    });
-    if (!dp) throw new DepartamentNotFoundException();
-    await Departament.findByIdAndUpdate(idDepartament, {
+    },{
         $set: {
             status: 0
         }
-    });
-    await dp.changeStatus(0);
+    })
+    if (!d) throw new DepartamentNotFoundException();
 }
 
 const updateDepartament = async (idDepartament, data) => {
@@ -47,7 +45,8 @@ const updateDepartament = async (idDepartament, data) => {
         _id: {
             $ne: idDepartament
         },
-        name: data.name
+        name: data.name,
+        status: 1
     })
     if (findDepartamentEqualName) throw new DepartamentExistenceException();
     const updatedDepartament = await Departament.findByIdAndUpdate(idDepartament, {
