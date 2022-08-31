@@ -2,17 +2,23 @@ const {Pet} = require("../models/Pet/pet.model");
 const {Types} = require("mongoose");
 const {CreatePetException, NotFoundPetException, UpdatePetException} = require("../models/Pet/pet.exception");
 const {Breed} = require("../models/Breed/breed.model");
+const fs = require("fs-extra");
 
-const create = async (idUser, {name, breed,...rest}) => {
-    const bd = await Breed.findOne({_id: breed, status: 1})
-        .populate( { path: "typePet" } );
-    if(!bd?.typePet?.status || !bd?.status){
-        throw new CreatePetException("No se pudo crear la mascota porque la raza especificada no existe")
+const create = async (idUser, {name, breed,...rest}, imageProfile) => {
+    if(imageProfile){
+
+        fs.removeSync(imageProfile.tempFilePath);
     }
-    const newPet = await new Pet({name, user: idUser, breed, ...rest});
-    await newPet.save();
-    delete newPet._doc.status;
-    return newPet;
+    // const bd = await Breed.findOne({_id: breed, status: 1})
+    //     .populate( { path: "typePet" } );
+    //
+    // if(!bd?.typePet?.status || !bd?.status){
+    //     throw new CreatePetException("No se pudo crear la mascota porque la raza especificada no existe")
+    // }
+    // const newPet = await new Pet({name, user: idUser, breed, ...rest});
+    // await newPet.save();
+    // delete newPet._doc.status;
+    // return newPet;
 };
 
 const findPets = async (query={}) => {

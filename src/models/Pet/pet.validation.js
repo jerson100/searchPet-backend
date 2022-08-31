@@ -4,7 +4,6 @@ const Joi = require("joi").extend(JoiDate);
 const CreatePetSchemaValidation = Joi.object({
     name: Joi.string().min(2).max(40).required(),
     breed: Joi.string().regex(/^[a-fA-F\d]{24}$/),
-    urlImageProfile: Joi.string(),
     images: Joi.array().items(Joi.string()),
     dateOfBirth: Joi.date().format("DD/MM/YYYY"),
     characteristics: Joi.object({

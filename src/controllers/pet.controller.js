@@ -1,7 +1,7 @@
 const PetService = require("../services/petService");
 
 const create = async (req, res) => {
-    const newPet = await PetService.create(req.user._id,req.body);
+    const newPet = await PetService.create(req.user._id,req.body, req.files?.urlImageProfile);
     return res.status(201).json(newPet);
 }
 
