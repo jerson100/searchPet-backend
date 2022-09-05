@@ -4,6 +4,7 @@ const logger = require("morgan");
 if(process.env.TYPE!=="PRODUCTION"){
     require("dotenv").config();
 }
+const cloudinary = require("cloudinary");
 const cors = require("cors");
 const app = express();
 const UserRouterV1 = require("./v1/routers/Users.router");
@@ -14,11 +15,17 @@ const AuthRouterV1 = require("./v1/routers/auth.router");
 const TypePetRouterV1 = require("./v1/routers/typePet.router");
 const BreedRouterV1 = require("./v1/routers/breed.router");
 const PetRouterV1 = require("./v1/routers/pet.router");
+const {cloudinaryConfig} = require("./configs/cloudinary");
+
+cloudinary.v2.config(cloudinaryConfig);
 
 connectMongoDB();
 
 app.use(cors());
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(logger("dev"));
 
 app.use(`/api/v1/users`, UserRouterV1);

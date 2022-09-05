@@ -1,8 +1,14 @@
 const PetService = require("../services/petService");
 
 const create = async (req, res) => {
-    const newPet = await PetService.create(req.user._id,req.body, req.files?.urlImageProfile);
+    const newPet = await PetService.create(req.user._id,req.body);
     return res.status(201).json(newPet);
+}
+
+const uploadProfile = async (req, res) => {
+    const {files, pet} = req;
+    const urlImageProfile = await PetService.uploadProfile(req.params.idPet, files?.profile, pet);
+    return res.json({ urlImageProfile });
 }
 
 const findById = async (req, res) => {
@@ -41,5 +47,6 @@ module.exports = {
     getAll,
     findById,
     deleteOne,
-    deleteAll
+    deleteAll,
+    uploadProfile
 }

@@ -4,7 +4,6 @@ const Joi = require("joi").extend(JoiDate);
 const CreatePetSchemaValidation = Joi.object({
     name: Joi.string().min(2).max(40).required(),
     breed: Joi.string().regex(/^[a-fA-F\d]{24}$/),
-    images: Joi.array().items(Joi.string()),
     dateOfBirth: Joi.date().format("DD/MM/YYYY"),
     characteristics: Joi.object({
         size: Joi.string().valid("Pequeño","Mediano","Grande"),
@@ -17,7 +16,6 @@ const PutPetSchemaValidation = Joi.object({
     name: Joi.string().min(2).max(40).required(),
     breed: Joi.string().regex(/^[a-fA-F\d]{24}$/).required(),
     urlImageProfile: Joi.string().required(),
-    images: Joi.array().items(Joi.string()).required(),
     dateOfBirth: Joi.date().format("DD/MM/YYYY").required(),
     characteristics: Joi.object({
         size: Joi.string().valid("Pequeño","Mediano","Grande"),
@@ -29,8 +27,6 @@ const PutPetSchemaValidation = Joi.object({
 const PatchPetSchemaValidation = Joi.object({
     name: Joi.string().min(2).max(40),
     breed: Joi.string().regex(/^[a-fA-F\d]{24}$/),
-    urlImageProfile: Joi.string(),
-    images: Joi.array().items(Joi.string()),
     dateOfBirth: Joi.date().format("DD/MM/YYYY"),
     characteristics: Joi.object({
         size: Joi.string().valid("Pequeño","Mediano","Grande"),

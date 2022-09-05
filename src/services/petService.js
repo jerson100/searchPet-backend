@@ -3,23 +3,45 @@ const {Types} = require("mongoose");
 const {CreatePetException, NotFoundPetException, UpdatePetException} = require("../models/Pet/pet.exception");
 const {Breed} = require("../models/Breed/breed.model");
 const fs = require("fs-extra");
+const {upload, destroy} = require("../configs/cloudinary");
 
-const create = async (idUser, {name, breed,...rest}, imageProfile) => {
-    if(imageProfile){
-
-        fs.removeSync(imageProfile.tempFilePath);
+const create = async (idUser, {name, breed,...rest}) => {
+    const bd = await Breed.findOne({_id: breed, status: 1})
+        .populate( { path: "typePet" } );
+    if(!bd?.typePet?.status || !bd?.status){
+        throw new CreatePetException("No se pudo crear la mascota porque la raza especificada no existe")
     }
-    // const bd = await Breed.findOne({_id: breed, status: 1})
-    //     .populate( { path: "typePet" } );
-    //
-    // if(!bd?.typePet?.status || !bd?.status){
-    //     throw new CreatePetException("No se pudo crear la mascota porque la raza especificada no existe")
-    // }
-    // const newPet = await new Pet({name, user: idUser, breed, ...rest});
-    // await newPet.save();
-    // delete newPet._doc.status;
-    // return newPet;
+    const newPet = await new Pet({name, user: idUser, breed, ...rest});
+    await newPet.save();
+    delete newPet._doc.status;
+    return newPet;
 };
+
+const uploadProfile = async (idPet, profile, pet)  => {
+    let urlImageProfile = null;
+    if(profile){
+        try{
+            const uploadedImage = await upload(profile.tempFilePath);
+            urlImageProfile = uploadedImage.secure_url;
+            fs.remove(profile.tempFilePath);
+        }catch(e){
+            fs.remove(profile.tempFilePath);
+            throw new CreatePetException("No se logró subir la imagen.")
+        }
+    }
+    const uploadedPet = await Pet.findOneAndUpdate(
+        { _id: idPet },
+        profile ? { $set: { urlImageProfile }  } : { $unset : { urlImageProfile : 1 } },
+        { new: true }
+    );
+    if(pet.urlImageProfile){
+        const regex = /^.*[/](.*)[.].*$/i;
+        const groups = regex.exec(pet.urlImageProfile);
+        const publicId =  groups?.length === 2 &&`sPet/pets/${groups[1]}`;
+        try{ if(publicId){ await destroy(publicId); } } catch(e) {}
+    }
+    return uploadedPet.urlImageProfile;
+}
 
 const findPets = async (query={}) => {
     const pets = await Pet.aggregate([
@@ -165,5 +187,6 @@ module.exports = {
     getAll,
     update,
     deleteOne,
-    deleteAll
+    deleteAll,
+    uploadProfile
 }
