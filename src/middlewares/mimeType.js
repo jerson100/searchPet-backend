@@ -1,4 +1,4 @@
-const fs = require("fs-extra");
+const {toFileArray, removeFilesFromSystem} = require("../utils/file");
 
 const MIME_TYPE_CONFIG = {
     IMAGES : [
@@ -26,27 +26,16 @@ const mimeType = (mimeTypeConfig) => {
             return;
         };
         const objFiles = req.files;
-        const files = [];
-        for(let file in objFiles){
-            if(!Array.isArray(objFiles[file])){
-                files.push(objFiles[file]);
-            }else{
-                files.push(...objFiles[file]);
-            }
-        }
+        const files = toFileArray(objFiles);
         for(let i = 0; i < files.length; i++){
             if(!mimeTypeConfig.includes(files[i].mimetype.toLowerCase())){
-                removeFiles(files);
+                removeFilesFromSystem(files);
                 next(new MimeTypeException(`El archivo '${files[i].name}' tiene una extensión que no está permitido`));
                 return;
             }
         }
         next();
     }
-};
-
-const removeFiles = (files) => {
-    files?.forEach(f => { fs.remove(f.tempFilePath) });
 };
 
 module.exports = {
