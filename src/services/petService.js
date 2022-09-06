@@ -4,6 +4,9 @@ const {CreatePetException, NotFoundPetException, UpdatePetException} = require("
 const {Breed} = require("../models/Breed/breed.model");
 const fs = require("fs-extra");
 const {upload, destroy} = require("../configs/cloudinary");
+const {toFileArray} = require("../utils/file");
+const {validateSchema} = require("../middlewares/validateSchema");
+const {GetPetSchemaValidation} = require("../models/Pet/pet.validation");
 
 const create = async (idUser, {name, breed,...rest}) => {
     const bd = await Breed.findOne({_id: breed, status: 1})
@@ -16,6 +19,58 @@ const create = async (idUser, {name, breed,...rest}) => {
     delete newPet._doc.status;
     return newPet;
 };
+
+const uploadImages = async (idPet, images) => {
+    if(!images){
+        throw new CreatePetException("Field images is required");
+    }
+    const files = toFileArray(images);
+    const urls = [];
+    try{
+        for(let i = 0; i < files.length; i++){
+            const image = files[i];
+            const uploadedImage = await upload(image.tempFilePath);
+            urls.push(uploadedImage.secure_url);
+            fs.remove(image.tempFilePath);
+        }
+    }catch(e){
+        throw new CreatePetException("No se logró subir las imágenes.")
+    }
+    const uploaded =  await Pet.findOneAndUpdate(
+        { _id: idPet },
+        { $push: { images: { $each: urls } } },
+        { new: true }
+    );
+    return uploaded._doc.images;
+};
+
+const deleteImages = async (idPet, images) => {
+    await Pet.findOneAndUpdate(
+        {
+            _id: idPet
+        },
+        {
+            $pull: {
+                images: {
+                    $in: images
+                }
+            }
+        },
+        {
+            new: true
+        }
+    )
+    const regex = /^.*[/](.*)[.].*$/i;
+    const publicIds = images.map(image=>{
+        const groups = regex.exec(image);
+        return groups?.length === 2 ?`sPet/pets/${groups[1]}` : ""
+    })
+    for(let i = 0; i < publicIds.length; i++){
+        try{
+            if(publicIds[i]) await destroy(publicIds[i]);
+        }catch(e){}
+    }
+}
 
 const uploadProfile = async (idPet, profile, pet)  => {
     let urlImageProfile = null;
@@ -148,7 +203,6 @@ const findById = async (id) => {
 }
 
 const getAll = async (idUser) => {
-    console.log(idUser);
     const pets = await findPets({user: Types.ObjectId(idUser),status: 1});
     return pets;
 }
@@ -188,5 +242,7 @@ module.exports = {
     update,
     deleteOne,
     deleteAll,
-    uploadProfile
+    uploadProfile,
+    uploadImages,
+    deleteImages
 }

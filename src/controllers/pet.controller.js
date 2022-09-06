@@ -11,6 +11,19 @@ const uploadProfile = async (req, res) => {
     return res.json({ urlImageProfile });
 }
 
+const uploadImages = async (req, res) => {
+    const { files } = req;
+    const images = await PetService.uploadImages(req.params.idPet, files?.images);
+    return res.status(201).json({images});
+}
+
+const deleteImages = async (req, res) => {
+    const { images } = req.body;
+    const { idPet } = req.params;
+    const imagesUp = await PetService.deleteImages(idPet, images);
+    return res.status(204).json({ images : imagesUp });
+}
+
 const findById = async (req, res) => {
     const {idPet} = req.params;
     const pet = await PetService.findById(idPet);
@@ -48,5 +61,7 @@ module.exports = {
     findById,
     deleteOne,
     deleteAll,
-    uploadProfile
+    uploadProfile,
+    uploadImages,
+    deleteImages
 }

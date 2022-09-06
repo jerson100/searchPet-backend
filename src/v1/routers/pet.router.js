@@ -4,7 +4,9 @@ const {validateRequest} = require("../../middlewares/validateRequest");
 const {authenticate} = require("../../middlewares/authenticate");
 const {authorizeTypeUser, authorizeMyResource} = require("../../middlewares/authorize");
 const {User : UserC} = require("../../utils/consts");
-const {CreatePetSchemaValidation, GetPetSchemaValidation, PutPetSchemaValidation, PatchPetSchemaValidation} = require("../../models/Pet/pet.validation");
+const {CreatePetSchemaValidation, GetPetSchemaValidation, PutPetSchemaValidation, PatchPetSchemaValidation,
+    ImagesDeleteSchemaValidation
+} = require("../../models/Pet/pet.validation");
 const {Pet} = require("../../models/Pet/pet.model");
 const Router = require("express").Router();
 const fileUpload = require("express-fileupload");
@@ -50,6 +52,34 @@ Router.put(
     mimeType(MIME_TYPE_CONFIG.IMAGES),
     validateRequest(PetController.uploadProfile)
 )
+
+Router.route("/:idPet/images")
+    .post(
+        authenticate(),
+        validateSchema(GetPetSchemaValidation, "params"),
+        authorizeMyResource(Pet, "idPet", [UserC.TYPES.ADMIN], "user", "params","pet"),
+        fileUpload({
+            tempFileDir: "./src/uploads/temp",
+            useTempFiles: true,
+            limits: {
+                fileSize: 3 * 1024 * 1024,
+                files: 10
+            },
+            responseOnLimit: JSON.stringify({
+                message: "El tamaño límite del archivo es 3mb"
+            }),
+            abortOnLimit: true,
+        }),
+        mimeType(MIME_TYPE_CONFIG.IMAGES),
+        validateRequest(PetController.uploadImages)
+    )
+    .delete(
+        authenticate(),
+        validateSchema(GetPetSchemaValidation,"params"),
+        authorizeMyResource(Pet, "idPet", [UserC.TYPES.ADMIN], "user", "params","pet"),
+        validateSchema(ImagesDeleteSchemaValidation, "body"),
+        validateRequest(PetController.deleteImages)
+    )
 
 Router.route("/:idPet")
     .get(

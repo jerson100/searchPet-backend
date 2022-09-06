@@ -35,6 +35,10 @@ const PatchPetSchemaValidation = Joi.object({
     }),
 });
 
+const ImagesDeleteSchemaValidation = Joi.object({
+    images: Joi.array().items(Joi.string()).required()
+})
+
 const GetPetSchemaValidation = Joi.object({
     idPet: Joi.string().regex(/^[a-fA-F\d]{24}$/)
 });
@@ -43,5 +47,6 @@ module.exports = {
     CreatePetSchemaValidation,
     PutPetSchemaValidation,
     PatchPetSchemaValidation,
-    GetPetSchemaValidation
+    GetPetSchemaValidation,
+    ImagesDeleteSchemaValidation
 }
