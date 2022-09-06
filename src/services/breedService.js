@@ -3,8 +3,16 @@ const {ExistsBreedException, CreateBreedException, NotFoundBreedException} = req
 const {TypePet} = require("../models/TypePet/typePet.model");
 
 const getAll = async () => {
-    const breeds = await Breed.find({status: 1}, {status:0});
-    return breeds;
+    const breeds = await Breed.find({status: 1}, {status:0, __v:0}).populate(
+        {
+            path: "typePet",
+            match: {
+                status : 1
+            },
+            select: "-status -createdAt -updatedAt -__v"
+        }
+    );
+    return breeds.filter(breed => !!breed.typePet);
 };
 
 const create = async ({typePet, name, ...rest}) => {
@@ -42,8 +50,14 @@ const update = async (idBreed, data) => {
 };
 
 const findById = async (idBreed) => {
-    const breed = await Breed.findOne({_id: idBreed, status: 1},{status:0});
-    if(!breed) throw new NotFoundBreedException();
+    const breed = await Breed.findOne({_id: idBreed, status: 1},{status:0,__v:0}).populate({
+        path: "typePet",
+        match: {
+            status : 1
+        },
+        select: "-status -createdAt -updatedAt -__v"
+    });
+    if(!breed || !breed.typePet) throw new NotFoundBreedException();
     return breed;
 };
 
