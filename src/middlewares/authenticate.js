@@ -6,7 +6,7 @@ const authenticate = (codeStatus) => {
     return async (req, res, next) => {
         const {authorization} = req.headers;
         if(!authorization){
-            next(new TokenException("La solicitud no tiene el header 'Authorization'", 400));
+            next(new TokenException("La solicitud no tiene el header 'Authorization'", 401));
             return;
         }
         if(!authorization.match(/^[B|b]earer .+$/)){
