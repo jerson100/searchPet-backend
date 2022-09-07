@@ -7,8 +7,8 @@ const CreatePetSchemaValidation = Joi.object({
     dateOfBirth: Joi.date().format("DD/MM/YYYY"),
     characteristics: Joi.object({
         size: Joi.string().valid("Pequeño","Mediano","Grande"),
-        eyeColor: Joi.string(),
-        hairColor: Joi.string()
+        eyeColor: Joi.string().min(2).max(40),
+        hairColor: Joi.string().min(2).max(40)
     }),
 });
 
@@ -19,8 +19,8 @@ const PutPetSchemaValidation = Joi.object({
     dateOfBirth: Joi.date().format("DD/MM/YYYY").required(),
     characteristics: Joi.object({
         size: Joi.string().valid("Pequeño","Mediano","Grande"),
-        eyeColor: Joi.string(),
-        hairColor: Joi.string()
+        eyeColor: Joi.string().min(2).max(40),
+        hairColor: Joi.string().min(2).max(40)
     }).required(),
 });
 
@@ -30,8 +30,8 @@ const PatchPetSchemaValidation = Joi.object({
     dateOfBirth: Joi.date().format("DD/MM/YYYY"),
     characteristics: Joi.object({
         size: Joi.string().valid("Pequeño","Mediano","Grande"),
-        eyeColor: Joi.string(),
-        hairColor: Joi.string()
+        eyeColor: Joi.string().min(2).max(40),
+        hairColor: Joi.string().min(2).max(40)
     }),
 });
 
