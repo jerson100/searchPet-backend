@@ -1,12 +1,12 @@
 const Joi = require("joi").extend(require("@joi/date"))
 
 const UserCreationSchemaValidation = Joi.object({
-    name: Joi.string().min(2).max(30).required().trim(),
-    paternalSurname: Joi.string().regex(/^[a-z]+$/i).min(2).max(30).required().trim(),
-    maternalSurname: Joi.string().regex(/^[a-z]+$/i).min(2).max(30).required().trim(),
+    name: Joi.string().min(2).max(30).required().trim().lowercase(),
+    paternalSurname: Joi.string().min(2).max(30).required().trim().lowercase(),
+    maternalSurname: Joi.string().min(2).max(30).required().trim().lowercase(),
     birthday: Joi.date().format("DD/MM/YYYY"),
-    username: Joi.string().regex(/^[a-z\d]+$/i).required(),
-    email: Joi.string().email().required(),
+    username: Joi.string().regex(/^[a-z\d]+$/i).required().lowercase(),
+    email: Joi.string().email().required().lowercase(),
     address: Joi.string().min(2).max(100).empty("").trim(),
     location: Joi.object({
         latitud: Joi.number().required(),
@@ -26,12 +26,12 @@ const UserCreationSchemaValidation = Joi.object({
 });
 
 const UserUpdateSchemaValidation = Joi.object({
-    name: Joi.string().min(2).max(30).required().trim(),
-    paternalSurname: Joi.string().min(2).max(30).required().trim(),
-    maternalSurname: Joi.string().min(2).max(30).required().trim(),
+    name: Joi.string().min(2).max(30).required().trim().lowercase(),
+    paternalSurname: Joi.string().min(2).max(30).required().trim().lowercase(),
+    maternalSurname: Joi.string().min(2).max(30).required().trim().lowercase(),
     birthday: Joi.date().format("DD/MM/YYYY"),
-    username: Joi.string().regex(/^[a-z\d]+$/i).required(),
-    email: Joi.string().email().required(),
+    username: Joi.string().regex(/^[a-z\d]+$/i).required().lowercase(),
+    email: Joi.string().email().required().lowercase(),
     address: Joi.string().min(2).max(100).allow("").trim(),
     location: Joi.object({
         latitud: Joi.number().required(),
@@ -50,12 +50,12 @@ const UserUpdateSchemaValidation = Joi.object({
 });
 
 const PatchUserUpdateSchemaValidation = Joi.object({
-    name: Joi.string().min(2).max(30).trim(),
-    paternalSurname: Joi.string().min(2).max(30).trim(),
-    maternalSurname: Joi.string().min(2).max(30).trim(),
+    name: Joi.string().min(2).max(30).trim().lowercase(),
+    paternalSurname: Joi.string().min(2).max(30).trim().lowercase(),
+    maternalSurname: Joi.string().min(2).max(30).trim().lowercase(),
     birthday: Joi.date().format("DD/MM/YYYY").allow(""),
-    username: Joi.string().regex(/[a-z\d]+/),
-    email: Joi.string().email(),
+    username: Joi.string().regex(/[a-z\d]+/).lowercase(),
+    email: Joi.string().email().lowercase(),
     address: Joi.string().min(2).max(100).trim().allow(""),
     location: Joi.object({
         latitud: Joi.number(),
