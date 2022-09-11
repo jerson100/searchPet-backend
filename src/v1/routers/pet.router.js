@@ -15,7 +15,6 @@ const {removeFilesFromObject} = require("../../utils/file");
 
 Router.route("/")
     .get(
-        authenticate(),
         validateRequest(PetController.getAll)
     )
     .post(

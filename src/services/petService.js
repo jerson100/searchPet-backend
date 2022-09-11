@@ -202,8 +202,8 @@ const findById = async (id) => {
     return pet[0];
 }
 
-const getAll = async (idUser) => {
-    const pets = await findPets({user: Types.ObjectId(idUser),status: 1});
+const getAll = async () => {
+    const pets = await findPets({status: 1});
     return pets;
 }
 
