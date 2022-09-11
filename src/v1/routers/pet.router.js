@@ -5,7 +5,7 @@ const {authenticate} = require("../../middlewares/authenticate");
 const {authorizeTypeUser, authorizeMyResource} = require("../../middlewares/authorize");
 const {User : UserC} = require("../../utils/consts");
 const {CreatePetSchemaValidation, GetPetSchemaValidation, PutPetSchemaValidation, PatchPetSchemaValidation,
-    ImagesDeleteSchemaValidation
+    ImagesDeleteSchemaValidation, PetFilterSchemaValidation
 } = require("../../models/Pet/pet.validation");
 const {Pet} = require("../../models/Pet/pet.model");
 const Router = require("express").Router();
@@ -15,6 +15,7 @@ const {removeFilesFromObject} = require("../../utils/file");
 
 Router.route("/")
     .get(
+        validateSchema(PetFilterSchemaValidation,"query"),
         validateRequest(PetController.getAll)
     )
     .post(

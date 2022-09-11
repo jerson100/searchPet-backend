@@ -46,10 +46,15 @@ const GetPetSchemaValidation = Joi.object({
     idPet: Joi.string().regex(/^[a-fA-F\d]{24}$/)
 });
 
+const PetFilterSchemaValidation = Joi.object({
+    typepet: Joi.string()
+})
+
 module.exports = {
     CreatePetSchemaValidation,
     PutPetSchemaValidation,
     PatchPetSchemaValidation,
     GetPetSchemaValidation,
-    ImagesDeleteSchemaValidation
+    ImagesDeleteSchemaValidation,
+    PetFilterSchemaValidation
 }

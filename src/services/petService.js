@@ -98,8 +98,8 @@ const uploadProfile = async (idPet, profile, pet)  => {
     return uploadedPet.urlImageProfile;
 }
 
-const findPets = async (query={}) => {
-    const pets = await Pet.aggregate([
+const findPets = async (query={}, typepet) => {
+    const stages = [
         {
             $match: query
         },
@@ -189,7 +189,15 @@ const findPets = async (query={}) => {
                 "user.updatedAt": 0
             }
         }
-    ]);
+    ];
+    if(typepet){
+        stages.splice(7, 0, {
+            $match: {
+                "breed.typePet.type": typepet
+            }
+        })
+    }
+    const pets = await Pet.aggregate(stages);
     return pets;
 }
 
@@ -202,8 +210,13 @@ const findById = async (id) => {
     return pet[0];
 }
 
-const getAll = async () => {
-    const pets = await findPets({status: 1});
+const getAll = async (query) => {
+    console.log(query)
+    const typepet = query.typepet;
+    if(query.typepet){
+        delete query.typepet;
+    }
+    const pets = await findPets({status: 1, ...query}, typepet);
     return pets;
 }
 
