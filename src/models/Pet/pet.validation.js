@@ -47,7 +47,9 @@ const GetPetSchemaValidation = Joi.object({
 });
 
 const PetFilterSchemaValidation = Joi.object({
-    typepet: Joi.string()
+    typepet: Joi.string(),
+    length: Joi.number().default(2),
+    page: Joi.number()
 })
 
 module.exports = {

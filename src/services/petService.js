@@ -98,7 +98,7 @@ const uploadProfile = async (idPet, profile, pet)  => {
     return uploadedPet.urlImageProfile;
 }
 
-const findPets = async (query={}, typepet) => {
+const findPets = async (query={}, typepet, length = 1, page = 1) => {
     const stages = [
         {
             $match: query
@@ -175,6 +175,12 @@ const findPets = async (query={}, typepet) => {
             }
         },
         {
+            $skip: ((page > 0) ? page - 1 : 0) * length
+        },
+        {
+            $limit: length
+        },
+        {
             $project: {
                 status: 0,
                 "breed.status": 0,
@@ -188,10 +194,11 @@ const findPets = async (query={}, typepet) => {
                 "user.createdAt": 0,
                 "user.updatedAt": 0
             }
-        }
+        },
+
     ];
     if(typepet){
-        stages.splice(7, 0, {
+        stages.splice(9, 0, {
             $match: {
                 "breed.typePet.type": typepet
             }
@@ -210,13 +217,8 @@ const findById = async (id) => {
     return pet[0];
 }
 
-const getAll = async (query) => {
-    console.log(query)
-    const typepet = query.typepet;
-    if(query.typepet){
-        delete query.typepet;
-    }
-    const pets = await findPets({status: 1, ...query}, typepet);
+const getAll = async ({typepet, length, page}) => {
+    const pets = await findPets({status: 1}, typepet, length, page);
     return pets;
 }
 

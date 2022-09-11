@@ -31,8 +31,7 @@ const findById = async (req, res) => {
 }
 
 const getAll = async (req, res) => {
-    const query = req.query;
-    const pets = await PetService.getAll(query);
+    const pets = await PetService.getAll(req.query);
     return res.json(pets);
 }
 
