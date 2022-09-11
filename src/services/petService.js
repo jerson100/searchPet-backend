@@ -5,8 +5,6 @@ const {Breed} = require("../models/Breed/breed.model");
 const fs = require("fs-extra");
 const {upload, destroy} = require("../configs/cloudinary");
 const {toFileArray} = require("../utils/file");
-const {validateSchema} = require("../middlewares/validateSchema");
-const {GetPetSchemaValidation} = require("../models/Pet/pet.validation");
 
 const create = async (idUser, {name, breed,...rest}) => {
     const bd = await Breed.findOne({_id: breed, status: 1})
@@ -198,7 +196,7 @@ const findPets = async (query={}, typepet, length = 1, page = 1) => {
 
     ];
     if(typepet){
-        stages.splice(9, 0, {
+        stages.splice(6, 0, {
             $match: {
                 "breed.typePet.type": typepet
             }
