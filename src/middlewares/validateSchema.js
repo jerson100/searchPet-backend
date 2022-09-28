@@ -9,7 +9,7 @@ const validateSchema = (schema, property = "body", errorCallback) => {
             convert: true,
         });
         if (!error) {
-            req[property] = { ...req[property], ...value };
+            req[property] = value ;
             next();
         } else {
             const { details } = error;
