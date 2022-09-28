@@ -96,118 +96,8 @@ const uploadProfile = async (idPet, profile, pet)  => {
     return uploadedPet.urlImageProfile;
 }
 
-const findPets = async (query={}, typepet, length = 1, page = 1) => {
-    const stages = [
-        {
-            $match: query
-        },
-        {
-            $lookup:
-                {
-                    from: "users",
-                    localField: "user",
-                    foreignField: "_id",
-                    as: "user"
-                }
-        },
-        {
-            $unwind: {
-                path: "$user",
-                preserveNullAndEmptyArrays: true
-            }
-        },
-        {
-            $match: {
-                "user.status": 1
-            }
-        },
-        {
-            $lookup:
-                {
-                    from: "breeds",
-                    let: {
-                        idBreed: "$breed"
-                    },
-                    pipeline: [
-                        {
-                            $match: {
-                                $expr:  {
-                                    $eq: ["$_id", "$$idBreed"]
-                                },
-                                status: 1
-                            },
-                        },
-                        {
-                            $lookup:{
-                                from: "typepets",
-                                let: {
-                                    idTypePet: "$typePet"
-                                },
-                                pipeline: [
-                                    {
-                                        $match: {
-                                            $expr: {
-                                                $eq: ["$_id","$$idTypePet"]
-                                            },
-                                            status:1
-                                        }
-                                    }
-                                ],
-                                as: "typePet"
-                            }
-                        },
-                        {
-                            $unwind: {
-                                path: "$typePet",
-                                preserveNullAndEmptyArrays: false,
-                            }
-                        }
-                    ],
-                    as: "breed"
-                }
-        },
-        {
-            $unwind: {
-                path: "$breed",
-                preserveNullAndEmptyArrays: true,
-            }
-        },
-        {
-            $skip: ((page > 0) ? page - 1 : 0) * length
-        },
-        {
-            $limit: length
-        },
-        {
-            $project: {
-                status: 0,
-                "breed.status": 0,
-                "breed.typePet.status": 0,
-                "user.status": 0,
-                "user.password": 0,
-                "user.birthday": 0,
-                "user.location": 0,
-                "user.district": 0,
-                "user.typeUser": 0,
-                "user.createdAt": 0,
-                "user.updatedAt": 0
-            }
-        },
-
-    ];
-    if(typepet){
-        stages.splice(6, 0, {
-            $match: {
-                "breed.typePet.type": typepet
-            }
-        })
-    }
-    const pets = await Pet.aggregate(stages);
-    return pets;
-}
-
 const findById = async (id) => {
-    const pet = await findPets({
+    const pet = await Pet.findPets({
         _id : Types.ObjectId(id),
         status: 1
     });
@@ -216,7 +106,7 @@ const findById = async (id) => {
 }
 
 const getAll = async ({typepet, length, page}) => {
-    const pets = await findPets({status: 1}, typepet, length, page);
+    const pets = await Pet.findPets({ query: {status: 1}, typepet, length, page});
     return pets;
 }
 
