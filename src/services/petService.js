@@ -114,7 +114,7 @@ const update = async (idUser, idPet, data) => {
     //No hay necesidad de buscar si existe la moscota
     //porque ya lo estamos haciendo en el authorizeMyResource
     if(data.breed){
-        const bd = await Breed.findOne({_id: breed, status: 1})
+        const bd = await Breed.findOne({_id: data.breed, status: 1})
             .populate( { path: "typePet" } );
         if(!bd?.typePet?.status || !bd?.status){
             throw new UpdatePetException("No se pudo actualizar la mascota porque la raza especificada no existe")

@@ -16,7 +16,6 @@ const CreatePetSchemaValidation = Joi.object({
 const PutPetSchemaValidation = Joi.object({
     name: Joi.string().min(2).max(40).required(),
     breed: Joi.string().regex(/^[a-fA-F\d]{24}$/).required(),
-    urlImageProfile: Joi.string().required(),
     dateOfBirth: Joi.date().format("DD/MM/YYYY").required(),
     description: Joi.string().max(400).allow(""),
     characteristics: Joi.object({
