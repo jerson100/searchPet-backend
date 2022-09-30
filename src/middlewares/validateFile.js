@@ -29,7 +29,7 @@ const mimeType = (mimeTypeConfig) => {
 
 const validateRequestImageFiles = (requestPropertyName) => (req, res, next) => {
     const { files } = req;
-    if(requestPropertyName && !files && !files[requestPropertyName]){
+    if(requestPropertyName && (!files || (files && !files[requestPropertyName]))){
         next(new FileError(`${requestPropertyName} is required`));
     }else{
         next();
