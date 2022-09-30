@@ -16,6 +16,8 @@ const TypePetRouterV1 = require("./v1/routers/typePet.router");
 const BreedRouterV1 = require("./v1/routers/breed.router");
 const PetRouterV1 = require("./v1/routers/pet.router");
 const {cloudinaryConfig} = require("./configs/cloudinary");
+const LostPetRouterV1 = require("./v1/routers/lostPet.router");
+const {removeFilesFromObject} = require("./utils/file");
 
 cloudinary.v2.config(cloudinaryConfig);
 
@@ -36,6 +38,7 @@ app.use(`/api/v1/auth`, AuthRouterV1);
 app.use(`/api/v1/typePets`, TypePetRouterV1);
 app.use(`/api/v1/breeds`, BreedRouterV1);
 app.use(`/api/v1/pets`, PetRouterV1);
+app.use(`/api/v1/lostpet`, LostPetRouterV1);
 
 app.listen(process.env.PORT, () => {
     console.log(`El servidor está escuchando en el puerto ${process.env.PORT}`)
@@ -43,6 +46,8 @@ app.listen(process.env.PORT, () => {
 
 app.use((error, req, res, next) => {
     // console.log(error)
+    // Eliminamos archivos temporales
+    removeFilesFromObject(req.files);
     if (!error.status) {
         if (process.env.TYPE === "DEVELOPMENT") {
             res.status(500).json({

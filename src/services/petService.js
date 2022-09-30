@@ -19,9 +19,6 @@ const create = async (idUser, {name, breed,...rest}) => {
 };
 
 const uploadImages = async (idPet, images) => {
-    if(!images){
-        throw new CreatePetException("Field images is required");
-    }
     const files = toFileArray(images);
     const urls = [];
     try{
@@ -78,7 +75,6 @@ const uploadProfile = async (idPet, profile, pet)  => {
             urlImageProfile = uploadedImage.secure_url;
             fs.remove(profile.tempFilePath);
         }catch(e){
-            fs.remove(profile.tempFilePath);
             throw new CreatePetException("No se logró subir la imagen.")
         }
     }
@@ -98,8 +94,10 @@ const uploadProfile = async (idPet, profile, pet)  => {
 
 const findById = async (id) => {
     const pet = await Pet.findPets({
-        _id : Types.ObjectId(id),
-        status: 1
+        query: {
+            _id : Types.ObjectId(id),
+            status: 1
+        }
     });
     if(pet.length == 0) throw new NotFoundPetException();
     return pet[0];

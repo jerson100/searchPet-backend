@@ -13,7 +13,7 @@ const uploadProfile = async (req, res) => {
 
 const uploadImages = async (req, res) => {
     const { files } = req;
-    const images = await PetService.uploadImages(req.params.idPet, files?.images);
+    const images = await PetService.uploadImages(req.params.idPet, files);
     return res.status(201).json({images});
 }
 
