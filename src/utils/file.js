@@ -1,7 +1,11 @@
 const fs = require("fs-extra");
 
 const removeFilesFromSystem = (files) => {
-    files?.forEach(f => { fs.remove(f.tempFilePath) });
+    files?.forEach(f => {
+        try{
+            fs.remove(f.tempFilePath)
+        }catch(e){}
+    });
 }
 
 const removeFilesFromObject = (objFiles) => {

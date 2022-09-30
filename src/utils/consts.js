@@ -5,6 +5,20 @@ const User = {
     }
 }
 
+const FILES = {
+    MIME_TYPE : {
+        IMAGES : [
+            "image/jpeg",
+            "image/png",
+            "image/gif",
+            "image/svg+xml"
+        ],
+        PDF : [ "application/pdf" ],
+        WORD : []
+    }
+}
+
 module.exports = {
-    User
+    User,
+    FILES
 }
