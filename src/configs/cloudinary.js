@@ -17,8 +17,14 @@ const destroy = async (publicId) => {
     return await cloudinary.uploader.destroy(publicId);
 }
 
+const getPublicId = (text) => {
+    const groups = /.+\/(.+)\..+$/.exec(text);
+    return groups?.length === 2 && groups[1];
+}
+
 module.exports = {
     cloudinaryConfig,
     upload,
-    destroy
+    destroy,
+    getPublicId
 };
