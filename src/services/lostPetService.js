@@ -39,58 +39,68 @@ const create = async (idUser, {pets, ...props}, images) => {
         ...props,
         pets: petsIds,
     }
-    if(imageIds){
-        newDocument.images = imageIds;
-    }
+    if(imageIds){ newDocument.images = imageIds; }
     const newLostPet = new LostPet(newDocument);
     await newLostPet.save();
     return newLostPet;
 }
 
 const getById = async (idLostPet) => {
-    const lostPets = await LostPet.findOne({_id: idLostPet, status: 1},{status:0, __v:0})
-        .populate({
-            path: "user",
-            select: "-password -status -__v -birthday -createdAt -updatedAt -typeUser -name -paternalSurname -maternalSurname -location",
-            match: { status: 1 }
-        })
-        .populate({
-            path: "pets",
-            select: "-status -__v -user -createdAt -updatedAt -images -description -characteristics",
-            match: { status: 1 },
-            populate: {
-                path: "breed",
-                select: "-status -createdAt -updatedAt -characteristics -images -__v",
-                match: { status: 1 }
-            }
-        });
-    if(!lostPets?._doc?.user) throw new NotFoundLostPetException();
+    const lostPets = await LostPet.findLostPets( { _id: idLostPet, status: 1 } );
+    // const lostPets = await LostPet.findOne({_id: idLostPet, status: 1},{status:0, __v:0})
+    //     .populate({
+    //         path: "user",
+    //         select: "-password -status -__v -birthday -createdAt -updatedAt -typeUser -name -paternalSurname -maternalSurname -location",
+    //         match: { status: 1 }
+    //     })
+    //     .populate({
+    //         path: "pets",
+    //         select: "-status -__v -user -createdAt -updatedAt -images -description -characteristics",
+    //         match: { status: 1 },
+    //         populate: {
+    //             path: "breed",
+    //             select: "-status -createdAt -updatedAt -characteristics -images -__v",
+    //             match: { status: 1 }
+    //         }
+    //     });
+    // if(!lostPets?._doc?.user) throw new NotFoundLostPetException();
+    if(!lostPets) throw new NotFoundLostPetException();
     return lostPets;
 }
 
 const getAll = async (query, pagination) => {
-    const lostPets = await LostPet.find(
-        { status: 1,...query },
-        { status:0, __v:0 }
-    )
-        .populate({
-            path: "user",
-            select: "-password -status -__v -birthday -createdAt -updatedAt -typeUser -name -paternalSurname -maternalSurname -location",
-            match: { status: 1 }
-        })
-        .populate({
-            path: "pets",
-            select: "-status -__v -user -createdAt -updatedAt -images -description -characteristics",
-            match: { status: 1 },
-            populate: {
-                path: "breed",
-                select: "-status -createdAt -updatedAt -characteristics -images -__v",
-                match: { status: 1 }
-            }
-        })
-        .skip((pagination.page > 0 ? pagination.page - 1 : pagination) * pagination.length)
-        .limit(pagination.length);
-    return lostPets.filter(l => !!l.user);
+    const lostPets = await LostPet.findLostPets(
+        {
+            ...query,
+            status: 1
+        },
+        {
+            page: pagination.page,
+            length: pagination.length
+        }
+    );
+    // const lostPets = await LostPet.find(
+    //     { status: 1,...query },
+    //     { status:0, __v:0 }
+    // )
+    //     .populate({
+    //         path: "user",
+    //         select: "-password -status -__v -birthday -createdAt -updatedAt -typeUser -name -paternalSurname -maternalSurname -location",
+    //         match: { status: 1 }
+    //     })
+    //     .populate({
+    //         path: "pets",
+    //         select: "-status -__v -user -createdAt -updatedAt -images -description -characteristics",
+    //         match: { status: 1 },
+    //         populate: {
+    //             path: "breed",
+    //             select: "-status -createdAt -updatedAt -characteristics -images -__v",
+    //             match: { status: 1 }
+    //         }
+    //     })
+    //     .skip((pagination.page > 0 ? pagination.page - 1 : pagination) * pagination.length)
+    //     .limit(pagination.length);
+    return lostPets;
 }
 
 const deleteOne = async (idLostPet) => {
@@ -103,9 +113,7 @@ const deleteOne = async (idLostPet) => {
             status: 1
         }
     })
-    if(!lostPet?._doc?.user){
-        throw new NotFoundLostPetException();
-    }
+    if(!lostPet?._doc?.user) throw new NotFoundLostPetException();
     await LostPet.updateOne({
         _id: idLostPet
     },{
@@ -120,9 +128,7 @@ const deleteOne = async (idLostPet) => {
     imagesIds?.forEach(img => {
        const publicId = getPublicId(img);
        try{
-           if(publicId){
-               destroy(`sPet/pets/${publicId}`)
-           }
+           if(publicId){ destroy(`sPet/pets/${publicId}`) }
        }catch(e){}
     });
 }
