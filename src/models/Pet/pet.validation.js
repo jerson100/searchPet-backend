@@ -6,7 +6,7 @@ const CreatePetSchemaValidation = Joi.object({
     breed: Joi.string().regex(/^[a-fA-F\d]{24}$/).required(),
     dateOfBirth: Joi.date().format("DD/MM/YYYY"),
     description: Joi.string().max(400).empty(""),
-    size: Joi.string().valid("Pequeño","Mediano","Grande"),
+    size: Joi.string().valid("Pequeño","Mediano","Grande").required(),
     eyeColor: Joi.string().regex(/[a-z ]{2,40}/i).empty("").trim(),
     hairColor: Joi.string().regex(/[a-z ]{2,40}/i).empty("").trim()
 });
@@ -16,9 +16,11 @@ const PutPetSchemaValidation = Joi.object({
     breed: Joi.string().regex(/^[a-fA-F\d]{24}$/).required(),
     dateOfBirth: Joi.date().format("DD/MM/YYYY").required(),
     description: Joi.string().max(400).allow(""),
-    size: Joi.string().valid("Pequeño","Mediano","Grande").required(),
-    eyeColor: Joi.string().regex(/[a-z ]{2,40}/i).allow("").trim().required(),
-    hairColor: Joi.string().regex(/[a-z ]{2,40}/i).allow("").trim().required()
+    characteristics: Joi.object({
+        size: Joi.string().valid("Pequeño","Mediano","Grande").required(),
+        eyeColor: Joi.string().regex(/[a-z ]{2,40}/i).allow("").trim().required().allow(""),
+        hairColor: Joi.string().regex(/[a-z ]{2,40}/i).allow("").trim().required().allow("")
+    }).required()
 });
 
 const PatchPetSchemaValidation = Joi.object({
@@ -26,9 +28,11 @@ const PatchPetSchemaValidation = Joi.object({
     breed: Joi.string().regex(/^[a-fA-F\d]{24}$/),
     dateOfBirth: Joi.date().format("DD/MM/YYYY"),
     description: Joi.string().max(400).allow(""),
-    size: Joi.string().valid("Pequeño","Mediano","Grande"),
-    eyeColor: Joi.string().regex(/[a-z ]{2,40}/i).allow("").trim().required(),
-    hairColor: Joi.string().regex(/[a-z ]{2,40}/i).allow("").trim().required()
+    characteristics: Joi.object({
+        size: Joi.string().valid("Pequeño","Mediano","Grande"),
+        eyeColor: Joi.string().regex(/[a-z ]{2,40}/i).allow("").trim().allow(""),
+        hairColor: Joi.string().regex(/[a-z ]{2,40}/i).allow("").trim().allow("")
+    })
 });
 
 const ImagesDeleteSchemaValidation = Joi.object({

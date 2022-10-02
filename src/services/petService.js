@@ -2,11 +2,10 @@ const {Pet} = require("../models/Pet/pet.model");
 const {Types} = require("mongoose");
 const {CreatePetException, NotFoundPetException, UpdatePetException} = require("../models/Pet/pet.exception");
 const {Breed} = require("../models/Breed/breed.model");
-const fs = require("fs-extra");
 const {upload, destroy} = require("../configs/cloudinary");
 const {toFileArray} = require("../utils/file");
 
-const create = async (idUser, {name, breed,...rest}, imageProfile) => {
+const create = async (idUser, {name, breed, size, eyeColor, hairColor, ...rest}, imageProfile) => {
     const bd = await Breed.findOne({_id: breed, status: 1})
         .populate( { path: "typePet" } );
     if(!bd?.typePet?.status || !bd?.status){
@@ -27,6 +26,13 @@ const create = async (idUser, {name, breed,...rest}, imageProfile) => {
     }
     if(urlImageProfile){
         newPetDoc.urlImageProfile = urlImageProfile;
+    }
+    const characteristics = {};
+    if(size) characteristics.size = size;
+    if(eyeColor) characteristics.eyeColor = eyeColor;
+    if(hairColor) characteristics.hairColor = hairColor;
+    if(Object.keys(characteristics).length > 0) {
+        newPetDoc.characteristics = characteristics;
     }
     const newPet = await new Pet(newPetDoc);
     await newPet.save();
