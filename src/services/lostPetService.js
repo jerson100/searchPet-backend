@@ -5,7 +5,7 @@ const {Types} = require("mongoose");
 const {upload, getPublicId, destroy} = require("../configs/cloudinary");
 const fs = require("fs-extra");
 
-const create = async (idUser, {pets, ...props}, images) => {
+const create = async (idUser, {pets, latitude, longitude, ...props}, images) => {
     const petsIds = pets.split(",").map(p => Types.ObjectId(p));
     const foundPets = await Pet.findPets({
         query: {
@@ -37,6 +37,10 @@ const create = async (idUser, {pets, ...props}, images) => {
     const newDocument = {
         user: idUser,
         ...props,
+        location: {
+            longitude,
+            latitude
+        },
         pets: petsIds,
     }
     if(imageIds){ newDocument.images = imageIds; }
@@ -47,23 +51,6 @@ const create = async (idUser, {pets, ...props}, images) => {
 
 const getById = async (idLostPet) => {
     const lostPets = await LostPet.findLostPets( { _id: idLostPet, status: 1 } );
-    // const lostPets = await LostPet.findOne({_id: idLostPet, status: 1},{status:0, __v:0})
-    //     .populate({
-    //         path: "user",
-    //         select: "-password -status -__v -birthday -createdAt -updatedAt -typeUser -name -paternalSurname -maternalSurname -location",
-    //         match: { status: 1 }
-    //     })
-    //     .populate({
-    //         path: "pets",
-    //         select: "-status -__v -user -createdAt -updatedAt -images -description -characteristics",
-    //         match: { status: 1 },
-    //         populate: {
-    //             path: "breed",
-    //             select: "-status -createdAt -updatedAt -characteristics -images -__v",
-    //             match: { status: 1 }
-    //         }
-    //     });
-    // if(!lostPets?._doc?.user) throw new NotFoundLostPetException();
     if(!lostPets) throw new NotFoundLostPetException();
     return lostPets;
 }

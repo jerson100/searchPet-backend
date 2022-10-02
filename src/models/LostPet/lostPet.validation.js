@@ -4,11 +4,9 @@ const CreateLostPetSchemaValidation = Joi.object({
     // user: Joi.string().regex(/^[a-fA-F\d]{24}$/).required(),
     // pets: Joi.array().items(Joi.string().regex(/^[a-fA-F\d]{24}$/)).min(1).required(),
     pets: Joi.string().regex(/^[a-fA-F\d]{24}(?:,[a-fA-F\d]{24}){0,9}$/).required(),
-    location: Joi.object({
-        latitude: Joi.number(),
-        longitude: Joi.number(),
-    }),
-    description:  Joi.string().empty(''),
+    latitude: Joi.number().required(),
+    longitude: Joi.number().required(),
+    description:  Joi.string().max(500).empty(''),
 });
 
 const PutLostPetSchemaValidation = Joi.object({
@@ -16,7 +14,7 @@ const PutLostPetSchemaValidation = Joi.object({
     location: Joi.object({
         latitude: Joi.number(),
         longitude: Joi.number(),
-    }),
+    }).allow({},null).required(),
     description:  Joi.string().max(500).allow("").trim().required()
 });
 
