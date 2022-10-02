@@ -23,7 +23,19 @@ const PetSchema  = new Schema({
    },
 },{timestamps: true});
 
-PetSchema.statics.findPets = async function ({ query={}, typepet, length = 1, page = 1} ){
+PetSchema.statics.findPets = async function ({ query={}, typepet, length = 1, page = 1, project = {
+   status: 0,
+   "breed.status": 0,
+   "breed.typePet.status": 0,
+   "user.status": 0,
+   "user.password": 0,
+   "user.birthday": 0,
+   "user.location": 0,
+   "user.district": 0,
+   "user.typeUser": 0,
+   "user.createdAt": 0,
+   "user.updatedAt": 0
+}} ){
    const stages = [
       {
          $match: query
@@ -106,19 +118,7 @@ PetSchema.statics.findPets = async function ({ query={}, typepet, length = 1, pa
          $limit: length
       },
       {
-         $project: {
-            status: 0,
-            "breed.status": 0,
-            "breed.typePet.status": 0,
-            "user.status": 0,
-            "user.password": 0,
-            "user.birthday": 0,
-            "user.location": 0,
-            "user.district": 0,
-            "user.typeUser": 0,
-            "user.createdAt": 0,
-            "user.updatedAt": 0
-         }
+         $project: project
       },
 
    ];

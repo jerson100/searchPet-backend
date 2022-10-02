@@ -53,5 +53,11 @@ UserRouter.route("/:idUser")
         validateRequest(UserController.deleteUser)
     )
 
+UserRouter.route("/:idUser/pets")
+    .get(
+        validateSchema(UserGetSchemaValidation,"params"),
+        validateRequest(UserController.getMyPets)
+    )
+
 module.exports = UserRouter;
 

@@ -30,11 +30,18 @@ const deleteAllUser = async (req, res) => {
     return res.status(204).send();
 }
 
+const getMyPets = async (req, res) => {
+    const {idUser} = req.params;
+    const pets = await UserService.getMyPets(idUser);
+    return res.json(pets);
+}
+
 module.exports = {
     getAllUsers,
     createUser,
     deleteUser,
     updateUser,
     findUserById,
-    deleteAllUser
+    deleteAllUser,
+    getMyPets
 }

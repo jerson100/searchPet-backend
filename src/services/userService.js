@@ -3,6 +3,7 @@ const {generatePassword} = require("../utils/password");
 const {ExistingUserException, NotFoundUserException, UserCreationException} = require("../models/User/User.exception");
 const {District} = require("../models/District/disctrict.model");
 const {Types} = require("mongoose");
+const {Pet} = require("../models/Pet/pet.model");
 
 const getAllUsers = async () => {
     const users = await findUs({},{password: 0});
@@ -120,11 +121,34 @@ const deleteAllUser = async () => {
     await User.updateMany({status: 1}, { $set: { status: 0 }});
 }
 
+const getMyPets = async (idUser) => {
+    const objIdUser = Types.ObjectId(idUser);
+    const user = await User.findOne( { _id: objIdUser,status: 1 } )
+    if(!user){ throw new NotFoundUserException(); }
+    const pets = await Pet.findPets({
+        query: {
+            user: objIdUser,
+            status: 1
+        },
+        length: 10000,
+        project: {
+            "user": 0,
+            "__v": 0,
+            "breed.__v": 0,
+            "breed.typePet": 0,
+            "breed.status": 0,
+            "status": 0,
+        }
+    });
+    return pets;
+}
+
 module.exports = {
     getAllUsers,
     createUser,
     deleteUser,
     updateUser,
     findUserById,
-    deleteAllUser
+    deleteAllUser,
+    getMyPets
 }
