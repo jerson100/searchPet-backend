@@ -14,11 +14,9 @@ const PetSchema  = new Schema({
    description: String,
    images: [String],
    dateOfBirth: Date,
-   characteristics: {
-      size:  String,
-      eyeColor: String,
-      hairColor: String
-   },
+   size:  String,
+   eyeColor: String,
+   hairColor: String,
    status: {
       type: Number,
       default: 1

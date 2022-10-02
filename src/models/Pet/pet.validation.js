@@ -6,11 +6,9 @@ const CreatePetSchemaValidation = Joi.object({
     breed: Joi.string().regex(/^[a-fA-F\d]{24}$/).required(),
     dateOfBirth: Joi.date().format("DD/MM/YYYY"),
     description: Joi.string().max(400).empty(""),
-    characteristics: Joi.object({
-        size: Joi.string().valid("Pequeño","Mediano","Grande"),
-        eyeColor: Joi.string().regex(/[a-z ]{2,40}/i).empty("").trim(),
-        hairColor: Joi.string().regex(/[a-z ]{2,40}/i).empty("").trim(),
-    }),
+    size: Joi.string().valid("Pequeño","Mediano","Grande"),
+    eyeColor: Joi.string().regex(/[a-z ]{2,40}/i).empty("").trim(),
+    hairColor: Joi.string().regex(/[a-z ]{2,40}/i).empty("").trim()
 });
 
 const PutPetSchemaValidation = Joi.object({
@@ -18,11 +16,9 @@ const PutPetSchemaValidation = Joi.object({
     breed: Joi.string().regex(/^[a-fA-F\d]{24}$/).required(),
     dateOfBirth: Joi.date().format("DD/MM/YYYY").required(),
     description: Joi.string().max(400).allow(""),
-    characteristics: Joi.object({
-        size: Joi.string().valid("Pequeño","Mediano","Grande"),
-        eyeColor: Joi.string().regex(/[a-z ]{2,40}/i).allow("").trim(),
-        hairColor: Joi.string().regex(/[a-z ]{2,40}/i).allow("").trim(),
-    }).required(),
+    size: Joi.string().valid("Pequeño","Mediano","Grande").required(),
+    eyeColor: Joi.string().regex(/[a-z ]{2,40}/i).allow("").trim().required(),
+    hairColor: Joi.string().regex(/[a-z ]{2,40}/i).allow("").trim().required()
 });
 
 const PatchPetSchemaValidation = Joi.object({
@@ -30,11 +26,9 @@ const PatchPetSchemaValidation = Joi.object({
     breed: Joi.string().regex(/^[a-fA-F\d]{24}$/),
     dateOfBirth: Joi.date().format("DD/MM/YYYY"),
     description: Joi.string().max(400).allow(""),
-    characteristics: Joi.object({
-        size: Joi.string().valid("Pequeño","Mediano","Grande"),
-        eyeColor: Joi.string().regex(/[a-z ]{2,40}/i).allow("").trim(),
-        hairColor: Joi.string().regex(/[a-z ]{2,40}/i).allow("").trim(),
-    }),
+    size: Joi.string().valid("Pequeño","Mediano","Grande"),
+    eyeColor: Joi.string().regex(/[a-z ]{2,40}/i).allow("").trim().required(),
+    hairColor: Joi.string().regex(/[a-z ]{2,40}/i).allow("").trim().required()
 });
 
 const ImagesDeleteSchemaValidation = Joi.object({

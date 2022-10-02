@@ -19,6 +19,15 @@ Router.route("/")
     .post(
         authenticate(),
         authorizeTypeUser([CONSTS.User.TYPES.ADMIN, CONSTS.User.TYPES.USER]),
+        validateFile(
+            {
+                limits: {
+                    files: 1,
+                    fileSize: 2 * 1024 * 1024
+                }
+            },
+            CONSTS.FILES.MIME_TYPE.IMAGES
+        ),
         validateSchema(CreatePetSchemaValidation, "body"),
         validateRequest(PetController.create)
     )

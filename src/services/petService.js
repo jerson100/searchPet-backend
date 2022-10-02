@@ -6,13 +6,29 @@ const fs = require("fs-extra");
 const {upload, destroy} = require("../configs/cloudinary");
 const {toFileArray} = require("../utils/file");
 
-const create = async (idUser, {name, breed,...rest}) => {
+const create = async (idUser, {name, breed,...rest}, imageProfile) => {
     const bd = await Breed.findOne({_id: breed, status: 1})
         .populate( { path: "typePet" } );
     if(!bd?.typePet?.status || !bd?.status){
         throw new CreatePetException("No se pudo crear la mascota porque la raza especificada no existe")
     }
-    const newPet = await new Pet({name, user: idUser, breed, ...rest});
+    //save image in cloudinary
+    let urlImageProfile;
+    if(imageProfile){
+        try{
+            const {secure_url} = await upload(imageProfile.tempFilePath);
+            urlImageProfile = secure_url;
+        }catch(e){
+            throw new CreatePetException("No se pudo crear la mascota porque no se logró guardar la imagen, vuelva a intentarlo más tarde, gracias.")
+        }
+    }
+    const newPetDoc = {
+        name, user: idUser, breed, ...rest
+    }
+    if(urlImageProfile){
+        newPetDoc.urlImageProfile = urlImageProfile;
+    }
+    const newPet = await new Pet(newPetDoc);
     await newPet.save();
     delete newPet._doc.status;
     return newPet;
@@ -26,7 +42,6 @@ const uploadImages = async (idPet, images) => {
             const image = files[i];
             const uploadedImage = await upload(image.tempFilePath);
             urls.push(uploadedImage.secure_url);
-            fs.remove(image.tempFilePath);
         }
     }catch(e){
         throw new CreatePetException("No se logró subir las imágenes.")
@@ -73,7 +88,6 @@ const uploadProfile = async (idPet, profile, pet)  => {
         try{
             const uploadedImage = await upload(profile.tempFilePath);
             urlImageProfile = uploadedImage.secure_url;
-            fs.remove(profile.tempFilePath);
         }catch(e){
             throw new CreatePetException("No se logró subir la imagen.")
         }

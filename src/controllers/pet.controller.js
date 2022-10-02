@@ -1,19 +1,23 @@
 const PetService = require("../services/petService");
+const {removeFilesFromObject} = require("../utils/file");
 
 const create = async (req, res) => {
-    const newPet = await PetService.create(req.user._id,req.body);
+    const newPet = await PetService.create(req.user._id,req.body, req.files?.profile);
+    removeFilesFromObject(req.files);
     return res.status(201).json(newPet);
 }
 
 const uploadProfile = async (req, res) => {
     const {files, pet} = req;
     const urlImageProfile = await PetService.uploadProfile(req.params.idPet, files?.profile, pet);
+    removeFilesFromObject(req.files);
     return res.json({ urlImageProfile });
 }
 
 const uploadImages = async (req, res) => {
     const { files } = req;
     const images = await PetService.uploadImages(req.params.idPet, files);
+    removeFilesFromObject(req.files);
     return res.status(201).json({images});
 }
 
