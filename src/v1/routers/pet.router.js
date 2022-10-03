@@ -24,7 +24,10 @@ Router.route("/")
                 limits: {
                     files: 1,
                     fileSize: 2 * 1024 * 1024
-                }
+                },
+                responseOnLimit: JSON.stringify({
+                    message: "El tamaño límite del archivo es 2mb"
+                }),
             },
             CONSTS.FILES.MIME_TYPE.IMAGES
         ),
