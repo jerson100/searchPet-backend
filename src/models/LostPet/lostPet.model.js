@@ -106,7 +106,8 @@ LostPetSchema.statics.findLostPets = async ({_id, ...query}, pagination={page:1,
                       name: 1,
                       username: 1,
                       email: 1,
-                      location: 1
+                      location: 1,
+                      urlImageProfile: 1
                   }
               }
           }
