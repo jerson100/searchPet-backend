@@ -122,9 +122,11 @@ const deleteOne = async (idLostPet) => {
 }
 
 const getCommentsById = async (idLostPet) => {
-    const comments = await LostPetComment.findOne({
+    const comments = await LostPetComment.find({
         lostPet: Types.ObjectId(idLostPet),
         status: 1
+    }).sort({
+        createdAt: -1
     })
     return comments;
 }
