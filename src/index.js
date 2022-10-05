@@ -17,6 +17,7 @@ const BreedRouterV1 = require("./v1/routers/breed.router");
 const PetRouterV1 = require("./v1/routers/pet.router");
 const {cloudinaryConfig} = require("./configs/cloudinary");
 const LostPetRouterV1 = require("./v1/routers/lostPet.router");
+const LostPetCommentV1 = require("./v1/routers/LostPetComment.router");
 const {removeFilesFromObject} = require("./utils/file");
 
 cloudinary.v2.config(cloudinaryConfig);
@@ -39,6 +40,7 @@ app.use(`/api/v1/typePets`, TypePetRouterV1);
 app.use(`/api/v1/breeds`, BreedRouterV1);
 app.use(`/api/v1/pets`, PetRouterV1);
 app.use(`/api/v1/lostpet`, LostPetRouterV1);
+app.use("/api/v1/lostpetcomments", LostPetCommentV1);
 
 app.listen(process.env.PORT, () => {
     console.log(`El servidor está escuchando en el puerto ${process.env.PORT}`)
