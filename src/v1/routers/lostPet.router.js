@@ -10,6 +10,8 @@ const {validateFile} = require("../../middlewares/validateFile");
 const CONSTS = require("../../utils/consts");
 const {authorizeMyResource} = require("../../middlewares/authorize");
 const {LostPet} = require("../../models/LostPet/lostPet.model");
+const {CreateLostPetCommentSchema, GetByIdLostPetCommentSchema} = require("../../models/LostPetComent/LostPetComment.validation");
+const LostPetCommentController = require("../../controllers/LostPetComment.controller");
 
 const LostPetRouter = Router();
 
@@ -46,6 +48,18 @@ LostPetRouter.route("/:idLostPet")
         authorizeMyResource(LostPet,"idLostPet", [CONSTS.User.TYPES.ADMIN],"_id","params"),
         validateSchema(GetLostPetSchemaValidation),
         validateRequest(LosPetController.deleteOne)
+    )
+
+LostPetRouter.route("/:idLostPet/comments")
+    .post(
+        authenticate(),
+        validateSchema(GetLostPetSchemaValidation, "params"),
+        validateSchema(CreateLostPetCommentSchema),
+        validateRequest(LostPetCommentController.create)
+    )
+    .get(
+        validateSchema(GetLostPetSchemaValidation, "params"),
+        validateRequest(LosPetController.getCommentsById)
     )
 
 module.exports = LostPetRouter;

@@ -113,7 +113,7 @@ LostPetSchema.statics.findLostPets = async ({_id, ...query}, pagination={page:1,
           }
       ]
     )
-    return pagination.length === 1 ? (lostPets.length === 1 ? lostPets[0] : lostPets) : lostPets;
+    return pagination.length === 1 ? lostPets[0] || null : lostPets;
 };
 
 const LostPet = model("LostPet", LostPetSchema);

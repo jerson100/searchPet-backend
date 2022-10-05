@@ -23,9 +23,16 @@ const getAll = async (req, res) => {
     return res.json(lostPets);
 }
 
+const getCommentsById = async (req, res) => {
+    const {idLostPet} = req.params;
+    const comments = await LostPetService.getCommentsById(idLostPet);
+    return res.json(comments);
+}
+
 module.exports = {
     create,
     getById,
     deleteOne,
-    getAll
+    getAll,
+    getCommentsById
 }

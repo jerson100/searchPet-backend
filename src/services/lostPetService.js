@@ -4,6 +4,7 @@ const {Pet} = require("../models/Pet/pet.model");
 const {Types} = require("mongoose");
 const {upload, getPublicId, destroy} = require("../configs/cloudinary");
 const fs = require("fs-extra");
+const {LostPetComment} = require("../models/LostPetComent/LostPetComent.model");
 
 const create = async (idUser, {pets, latitude, longitude, ...props}, images) => {
     const petsIds = pets.split(",").map(p => Types.ObjectId(p));
@@ -120,9 +121,18 @@ const deleteOne = async (idLostPet) => {
     });
 }
 
+const getCommentsById = async (idLostPet) => {
+    const comments = await LostPetComment.findOne({
+        lostPet: Types.ObjectId(idLostPet),
+        status: 1
+    })
+    return comments;
+}
+
 module.exports = {
     create,
     getById,
     deleteOne,
-    getAll
+    getAll,
+    getCommentsById
 }
