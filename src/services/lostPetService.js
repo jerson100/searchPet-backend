@@ -125,7 +125,14 @@ const getCommentsById = async (idLostPet) => {
     const comments = await LostPetComment.find({
         lostPet: Types.ObjectId(idLostPet),
         status: 1
-    }).sort({
+    },{status:0}).populate({
+        path:"user",
+        match:{
+            "status": 1
+        },
+        select:"-status -__v -updatedAt -password -district  -paternalSurname -maternalSurname -location -birthday",
+    })
+        .sort({
         createdAt: -1
     })
     return comments;
