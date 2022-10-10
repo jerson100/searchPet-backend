@@ -10,22 +10,90 @@ Hasta el momento se desarrolló los siguientes puntos finales,
 la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enlace [documentación](https://documenter.getpostman.com/view/11171580/Uze4viTq)
 
 ### /api/v1/users
-    GET, POST, PUT, DELETE, PATCH
+    GET, POST, DELETE
+    
+    /:idUser
+    
+      GET, PUT, PATCH, DELETE
+
+    /:idUser/pets
+
+      GET
 
 ### /api/v1/departaments
-    GET, POST, PUT, DELETE, PATCH
+    GET, POST, DELETE
+    
+    /:idDepartament
+    
+      GET, PUT, PATCH, DELETE
 
 ### /api/v1/provinces
-    GET, POST, PUT, DELETE, PATCH
+    GET, POST
+    
+    /:idProvince
+    
+      GET, PUT, PATCH, DELETE
 
 ### /api/v1/districts
-    GET, POST, PUT, DELETE, PATCH
+    GET, POST, DELETE
+
+    /:idDistrict
+
+      GET, PUT, PATCH, DELETE
 
 ### /api/auth/login
     POST
+    
+    /token
+
+      GET
 
 ### /api/v1/pets
-    GET, POST, PUT, DELETE, PATCH
+    GET, POST, DELETE
+
+    /:idPet
+
+      GET, PUT, PATCH, DELETE
+
+    /:idPet/upload-profile
+
+      PATCH
+
+    /:idPet/images
+
+      POST, DELETE
+
+### /api/v1/typePets
+    GET, POST, DELETE
+
+    /:idTypePet
+
+      GET, PUT, DELETE, PATCH
+
+### /api/v1/breeds
+    GET, POST, DELETE
+
+    /:idBreed
+
+      GET, PUT, DELETE, PATCH
+
+### /api/v1/lostpet
+    GET, POST
+
+    /:idLostPet
+    
+      GET, DELETE 
+
+    /:idLostPet/comments
+
+      POST, GET
+
+### /api/v1/lostpetcomments
+    GET, POST
+    
+    /:idLostPetComment
+    
+    DELETE
 
 ## Dependencias Usadas
 
@@ -40,6 +108,11 @@ la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enl
 * "jsonwebtoken": "^8.5.1",
 * "mongoose": "^6.5.0",
 * "morgan": "^1.10.0"
+
+### Dependencias de desarrollo
+
+* "dotenv": "^16.0.1",
+* "nodemon": "^2.0.19"
 
 ## Author
 
