@@ -123,9 +123,10 @@ const deleteOne = async (idLostPet) => {
 
 const getCommentsById = async (idLostPet) => {
     const lostPet = await LostPet.findLostPets({_id: idLostPet, status: 1 });
-    if(!lostPet) throw new NotFoundLostPetException("No se encontraron comentarios para el id especificado");
+    if(!lostPet) throw new NotFoundLostPetException("La publicación no existe");
     const comments = await LostPetComment.find({
-        lostPet: Types.ObjectId(idLostPet)
+        lostPet: Types.ObjectId(idLostPet),
+        status: 1
     },{status:0, __v:0}).populate({
         path:"user",
         match:{
