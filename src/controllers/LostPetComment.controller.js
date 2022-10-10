@@ -17,8 +17,15 @@ const getById = async (req, res) =>  {
     return res.json(lostPetComment);
 }
 
+const deleteOne = async (req, res) => {
+    const { comment, params: {idLostPetComment} } = req;
+    await LostPetComemntService.deleteOne(idLostPetComment, comment);
+    return res.status(204).send();
+}
+
 module.exports = {
     create,
     getAll,
-    getById
+    getById,
+    deleteOne
 }

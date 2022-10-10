@@ -7,7 +7,7 @@ class CreateLostPetCommentException extends Error{
 }
 
 class NotFoundLostPetCommentException extends Error{
-    constructor(msg="No se encontró comentarios para id especificado", status=400) {
+    constructor(msg="No se encontró comentarios para id especificado", status=404) {
         super(msg);
         this.name = "NotFoundLostPetCommentException";
         this.status = status;

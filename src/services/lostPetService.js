@@ -1,5 +1,5 @@
 const {LostPet} = require("../models/LostPet/lostPet.model");
-const {CreateLostPetException, NotFoundLostPetException} = require("../models/LostPet/lostPet.exception")
+const {CreateLostPetException, NotFoundLostPetException } = require("../models/LostPet/lostPet.exception")
 const {Pet} = require("../models/Pet/pet.model");
 const {Types} = require("mongoose");
 const {upload, getPublicId, destroy} = require("../configs/cloudinary");
@@ -122,10 +122,11 @@ const deleteOne = async (idLostPet) => {
 }
 
 const getCommentsById = async (idLostPet) => {
+    const lostPet = await LostPet.findLostPets({_id: idLostPet, status: 1 });
+    if(!lostPet) throw new NotFoundLostPetException("No se encontraron comentarios para el id especificado");
     const comments = await LostPetComment.find({
-        lostPet: Types.ObjectId(idLostPet),
-        status: 1
-    },{status:0}).populate({
+        lostPet: Types.ObjectId(idLostPet)
+    },{status:0, __v:0}).populate({
         path:"user",
         match:{
             "status": 1

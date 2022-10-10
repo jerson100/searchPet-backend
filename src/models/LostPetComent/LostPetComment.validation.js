@@ -9,6 +9,11 @@ const CreateLostPetCommentSchema = Joi.object({
     })
 });
 
+const GetLostPetCommentSchema = Joi.object({
+    idLostPetComment: Joi.string().regex(/^[a-fA-F\d]{24}$/).required()
+})
+
 module.exports = {
-    CreateLostPetCommentSchema
+    CreateLostPetCommentSchema,
+    GetLostPetCommentSchema
 }

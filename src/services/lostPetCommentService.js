@@ -35,8 +35,22 @@ const getById = async (idLostPetComment) => {
     return lostPetComment;
 };
 
+const deleteOne = async (idComment, comment) => {
+    if(!comment) throw new NotFoundLostPetCommentException("El comentario no existe");
+    const lostPet = await LostPet.findLostPets({_id: comment.lostPet, status: 1});
+    if(!lostPet) throw new NotFoundLostPetCommentException("El comentario no existe");
+    await LostPetComment.findOneAndUpdate({
+        _id: idComment
+    }, {
+        $set: {
+            status: 0
+        }
+    })
+};
+
 module.exports = {
     create,
     getAll,
-    getById
+    getById,
+    deleteOne
 }
