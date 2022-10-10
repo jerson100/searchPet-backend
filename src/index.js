@@ -46,6 +46,10 @@ app.listen(process.env.PORT, () => {
     console.log(`El servidor está escuchando en el puerto ${process.env.PORT}`)
 });
 
+app.use((req, res, next) => {
+   res.status(404).json({message: "La solicitud a la uri no existe"})
+});
+
 app.use((error, req, res, next) => {
     // console.log(error)
     // Eliminamos archivos temporales
