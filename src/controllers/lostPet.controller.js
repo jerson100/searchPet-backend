@@ -7,7 +7,7 @@ const create = async (req, res) => {
     const newLostPet = await LostPetService.create(_id, req.body, req.files && req.files.images && toFileArray(req.files));
     await UserActivityService.create(
         {
-            user: _id, model: "LostPet", doc: newLostPet._doc._id, action: "c"
+            user: _id, model: "LostPet", description:"Realizó una publicación de perdida de la mascota(s)",doc: newLostPet._doc._id, action: "c"
         }
     )
     return res.status(201).json(newLostPet);
@@ -24,7 +24,7 @@ const deleteOne = async (req, res) => {
     await LostPetService.deleteOne(idLostPet);
     await UserActivityService.create(
         {
-            user: idUser, model: "LostPet", doc: idLostPet, action: "d"
+            user: idUser, model: "LostPet",description:"Eliminó la mascota", doc: idLostPet, action: "d"
         }
     )
     return res.status(204).send();
