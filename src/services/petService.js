@@ -4,6 +4,7 @@ const {CreatePetException, NotFoundPetException, UpdatePetException} = require("
 const {Breed} = require("../models/Breed/breed.model");
 const {upload, destroy} = require("../configs/cloudinary");
 const {toFileArray} = require("../utils/file");
+const UserActivityService = require("./UserActivityService");
 
 const create = async (idUser, {name, breed, size, eyeColor, hairColor, ...rest}, imageProfile) => {
     const bd = await Breed.findOne({_id: breed, status: 1})
@@ -37,6 +38,11 @@ const create = async (idUser, {name, breed, size, eyeColor, hairColor, ...rest},
     const newPet = await new Pet(newPetDoc);
     await newPet.save();
     delete newPet._doc.status;
+    await UserActivityService.create(
+        {
+            user: idUser, model: "Pet", doc: newPet._doc._id, action: "c"
+        }
+    )
     return newPet;
 };
 

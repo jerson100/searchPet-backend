@@ -4,6 +4,7 @@ const {ExistingUserException, NotFoundUserException, UserCreationException} = re
 const {District} = require("../models/District/disctrict.model");
 const {Types} = require("mongoose");
 const {Pet} = require("../models/Pet/pet.model");
+const UserActivityService = require("./UserActivityService");
 
 const getAllUsers = async () => {
     const users = await findUs({},{password: 0});
@@ -143,6 +144,11 @@ const getMyPets = async (idUser) => {
     return pets;
 }
 
+const getActivities = async (idUser) => {
+    const activities = await UserActivityService.getActivitiesByIdUser(idUser);
+    return activities;
+}
+
 module.exports = {
     getAllUsers,
     createUser,
@@ -150,5 +156,6 @@ module.exports = {
     updateUser,
     findUserById,
     deleteAllUser,
-    getMyPets
+    getMyPets,
+    getActivities
 }

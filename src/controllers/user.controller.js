@@ -1,4 +1,7 @@
 const UserService = require("../services/userService");
+const {User} = require("../utils/consts");
+const  UserModel =  require("../models/User/user.model");
+const {NotFoundUserException} = require("../models/User/User.exception");
 
 const getAllUsers = async (req, res) => {
     const users = await UserService.getAllUsers();
@@ -36,6 +39,14 @@ const getMyPets = async (req, res) => {
     return res.json(pets);
 }
 
+const getActivities = async (req, res) => {
+    const {idUser} = req.params;
+    const user =await UserModel.findOne({_id: idUser, status: 1});
+    if(!user) throw new NotFoundUserException("El usuario no existe");
+    const activities = await UserService.getActivities(idUser);
+    return res.status(200).json(activities);
+}
+
 module.exports = {
     getAllUsers,
     createUser,
@@ -43,5 +54,6 @@ module.exports = {
     updateUser,
     findUserById,
     deleteAllUser,
-    getMyPets
+    getMyPets,
+    getActivities
 }
