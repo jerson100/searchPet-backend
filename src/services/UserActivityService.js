@@ -1,8 +1,8 @@
 const UserActivity = require("../models/UserActivity/UserActivity.model");
 
-const create = async ({  user,userResource, doc, model, action} ) => {
+const create = async ({  user, doc, description, model, action} ) => {
     const newActivity = await new UserActivity({
-         user, userResource, doc, model, action
+         user, doc, model, action, description
      })
     await newActivity.save();
     return newActivity;

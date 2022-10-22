@@ -20,6 +20,7 @@ const UserActivitySchema = new Schema({
       enum: ["c","u","d"],
       required: true
     },
+    description: String,
     status: {
         type: Number,
         default: 1
