@@ -1,9 +1,15 @@
 const LostPetService = require("../services/lostPetService");
 const {toFileArray} = require("../utils/file");
+const UserActivityService = require("../services/UserActivityService");
 
 const create = async (req, res) => {
     const { _id } = req.user;
     const newLostPet = await LostPetService.create(_id, req.body, req.files && req.files.images && toFileArray(req.files));
+    await UserActivityService.create(
+        {
+            user: _id, model: "LostPet", doc: newLostPet._doc._id, action: "c"
+        }
+    )
     return res.status(201).json(newLostPet);
 }
 
@@ -13,7 +19,14 @@ const getById = async (req, res) => {
 }
 
 const deleteOne = async (req, res) => {
-    await LostPetService.deleteOne(req.params.idLostPet);
+    const {idLostPet} = req.params;
+    const {_id:idUser} = req.user;
+    await LostPetService.deleteOne(idLostPet);
+    await UserActivityService.create(
+        {
+            user: idUser, model: "LostPet", doc: idLostPet, action: "d"
+        }
+    )
     return res.status(204).send();
 }
 
