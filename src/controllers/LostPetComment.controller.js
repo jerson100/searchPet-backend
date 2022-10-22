@@ -1,8 +1,14 @@
 const LostPetComemntService = require("../services/lostPetCommentService");
+const UserActivityService = require("../services/UserActivityService");
 
 const create = async (req, res) => {
     const {_id: idUser} = req.user;
     const newLostPetComment = await LostPetComemntService.create(idUser, req.body);
+    await UserActivityService.create(
+        {
+            user: idUser, model: "LostPetComment", doc: newLostPetComment._doc._id, action: "c"
+        }
+    )
     return res.status(201).json(newLostPetComment);
 }
 
@@ -18,8 +24,13 @@ const getById = async (req, res) =>  {
 }
 
 const deleteOne = async (req, res) => {
-    const { comment, params: {idLostPetComment} } = req;
+    const { comment, params: {idLostPetComment}, user: { _id: idUser} } = req;
     await LostPetComemntService.deleteOne(idLostPetComment, comment);
+    await UserActivityService.create(
+        {
+            user: idUser, model: "LostPetComment", doc: idLostPetComment, action: "d"
+        }
+    )
     return res.status(204).send();
 }
 

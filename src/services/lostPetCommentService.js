@@ -3,7 +3,6 @@ const {LostPet} = require("../models/LostPet/lostPet.model");
 const {NotFoundLostPetException} = require("../models/LostPet/lostPet.exception");
 const {Types} = require("mongoose");
 const {NotFoundLostPetCommentException} = require("../models/LostPetComent/LostPetComment.exception");
-const UserActivityService = require("./UserActivityService")
 
 const create = async (idUser, {lostPet:lostPetId, ...rest}) => {
     const lostPet = await LostPet.findLostPets({_id:lostPetId});
@@ -15,11 +14,6 @@ const create = async (idUser, {lostPet:lostPetId, ...rest}) => {
     })
     await newLostPetComment.save();
     delete newLostPetComment._doc.status;
-    await UserActivityService.create(
-        {
-            user: idUser, model: "LostPetComment", doc: newLostPetComment._doc._id, action: "c"
-        }
-    )
     return newLostPetComment;
 }
 
@@ -52,7 +46,6 @@ const deleteOne = async (idComment, comment) => {
             status: 0
         }
     })
-    await UserActivityService.create({description: `Eliminó su comentario '${comment.description} en la publicación con el ${idComment}'`, user: idUser, typeAction: "c"})
 };
 
 module.exports = {
