@@ -38,11 +38,6 @@ const create = async (idUser, {name, breed, size, eyeColor, hairColor, ...rest},
     const newPet = await new Pet(newPetDoc);
     await newPet.save();
     delete newPet._doc.status;
-    await UserActivityService.create(
-        {
-            user: idUser, model: "Pet", doc: newPet._doc._id, action: "c"
-        }
-    )
     return newPet;
 };
 
