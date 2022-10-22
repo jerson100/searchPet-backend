@@ -6,7 +6,7 @@ const create = async (req, res) => {
     const newLostPetComment = await LostPetComemntService.create(idUser, req.body);
     await UserActivityService.create(
         {
-            user: idUser, model: "LostPetComment", doc: newLostPetComment._doc._id, action: "c"
+            user: idUser, model: "LostPetComment", description:"Realizó un comentario", doc: newLostPetComment._doc._id, action: "c"
         }
     )
     return res.status(201).json(newLostPetComment);
@@ -28,7 +28,7 @@ const deleteOne = async (req, res) => {
     await LostPetComemntService.deleteOne(idLostPetComment, comment);
     await UserActivityService.create(
         {
-            user: idUser, model: "LostPetComment", doc: idLostPetComment, action: "d"
+            user: idUser, model: "LostPetComment",description:"Eliminó un comentario", doc: idLostPetComment, action: "d"
         }
     )
     return res.status(204).send();
