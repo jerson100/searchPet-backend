@@ -4,7 +4,7 @@ const {validateSchema} = require("../../middlewares/validateSchema");
 const UserController = require("../../controllers/user.controller");
 const User = require("../../models/User/user.model");
 const {UserCreationSchemaValidation, UserUpdateSchemaValidation, PatchUserUpdateSchemaValidation,
-    UserGetSchemaValidation
+    UserGetSchemaValidation, UserQueryParamsSchemaValidation
 } = require("../../models/User/user.validation");
 const {authenticate} = require("../../middlewares/authenticate");
 const {User: CONSTANTS} = require("../../utils/consts");
@@ -56,6 +56,7 @@ UserRouter.route("/:idUser")
 UserRouter.route("/:idUser/pets")
     .get(
         validateSchema(UserGetSchemaValidation,"params"),
+        validateSchema(UserQueryParamsSchemaValidation, "query"),
         validateRequest(UserController.getMyPets)
     )
 

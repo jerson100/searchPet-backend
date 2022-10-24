@@ -35,7 +35,8 @@ const deleteAllUser = async (req, res) => {
 
 const getMyPets = async (req, res) => {
     const {idUser} = req.params;
-    const pets = await UserService.getMyPets(idUser);
+    console.log(req.query);
+    const pets = await UserService.getMyPets(idUser, req.query);
     return res.json(pets);
 }
 

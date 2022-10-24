@@ -122,7 +122,7 @@ const deleteAllUser = async () => {
     await User.updateMany({status: 1}, { $set: { status: 0 }});
 }
 
-const getMyPets = async (idUser) => {
+const getMyPets = async (idUser, pagination={page, length}) => {
     const objIdUser = Types.ObjectId(idUser);
     const user = await User.findOne( { _id: objIdUser,status: 1 } )
     if(!user){ throw new NotFoundUserException(); }
@@ -131,9 +131,13 @@ const getMyPets = async (idUser) => {
             user: objIdUser,
             status: 1
         },
-        length: 10000,
+        length:pagination.length,
+        page:pagination.page,
         project: {
             "user.password": 0,
+            "user.district": 0,
+            "user.birthday": 0,
+            "user.status": 0,
             "user.__v": 0,
             "user.updatedAt": 0,
             "__v": 0,
