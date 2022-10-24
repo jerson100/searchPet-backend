@@ -133,7 +133,9 @@ const getMyPets = async (idUser) => {
         },
         length: 10000,
         project: {
-            "user": 0,
+            "user.password": 0,
+            "user.__v": 0,
+            "user.updatedAt": 0,
             "__v": 0,
             "breed.__v": 0,
             "breed.typePet": 0,

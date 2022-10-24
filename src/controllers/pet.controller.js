@@ -7,7 +7,7 @@ const create = async (req, res) => {
     removeFilesFromObject(req.files);
     await UserActivityService.create(
         {
-            user: req.user._id, model: "Pet",description:"Creo la mascota", doc: newPet._doc._id, action: "c"
+            user: req.user._id, model: "Pet",description:"Agregó la mascota", doc: newPet._doc._id, action: "c"
         }
     )
     return res.status(201).json(newPet);
