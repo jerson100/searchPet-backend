@@ -82,6 +82,12 @@ const LoginGoogleSchemaValidation = Joi.object({
     token: Joi.string().required()
 });
 
+const LoginFacebookSchemaValidation = Joi.object({
+    name: Joi.string().required(),
+    email: Joi.string().email().required(),
+    urlImageProfile: Joi.string().allow("").required()
+});
+
 const UserGetSchemaValidation = Joi.object({
    idUser: Joi.string().regex(/^[a-fA-F\d]{24}$/).required()
 });
@@ -98,5 +104,6 @@ module.exports = {
     UserGetSchemaValidation,
     LoginSchemaValidation,
     UserQueryParamsSchemaValidation,
-    LoginGoogleSchemaValidation
+    LoginGoogleSchemaValidation,
+    LoginFacebookSchemaValidation
 }

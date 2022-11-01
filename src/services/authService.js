@@ -7,7 +7,8 @@ const {OAuth2Client} = require("google-auth-library");
 const login = async (email, password) => {
     const user = await User.findOne({
         email: email,
-        status: 1
+        status: 1,
+        accountType: "normal"
     }, {status:0});
     if(!user)throw new LoginUserException();
     const ePass = await verifyPassword(password, user._doc.password);
@@ -104,8 +105,57 @@ const googleLogin = async (token) => {
     }
 };
 
+const facebookLogin = async ({email, name, urlImageProfile}) => {
+    let user = await User.findOne({ email: email});
+    const family_name = `${name}  `.split(" ");
+    const doc = {
+        email: email,
+        name: family_name[0],
+        paternalSurname: family_name[1],
+        maternalSurname: family_name[2],
+        accountType: "facebook",
+        urlImageProfile: urlImageProfile,
+    }
+    if(!user){
+        user = await User({
+            ...doc,
+            username: `${doc.name}${new Date().getTime()}`.replaceAll(" ", "").toLowerCase()
+        });
+        await user.save();
+    }else{
+        user = await User.findOneAndUpdate({
+            email: doc.email,
+            accountType: "facebook",
+        },{ $set: doc }, {
+            new: true
+        })
+        if(!user){
+            throw new LoginUserException("La cuenta ya está registrada con otro método, porfavor inicie sesión con ese método");
+        }
+    }
+    if(user.status !== 1) {
+        throw new LoginUserException("Cuenta inactiva, si cree que esto es un error, comuníquese con los administradores.")
+    }
+    const accessToken =  generateAccessToken({
+        _id: user._doc._id,
+        username: user._doc.username,
+        name: user._doc.name,
+        paternalSurname: user._doc.paternalSurname,
+        maternalSurname: user._doc.maternalSurname,
+        typeUser: user._doc.typeUser,
+        accountType: user._doc.accountType
+    });
+    delete user._doc.password;
+    delete user._doc.status;
+    return {
+        accessToken,
+        user: user._doc
+    }
+};
+
 module.exports = {
     login,
     getToken,
-    googleLogin
+    googleLogin,
+    facebookLogin
 }
