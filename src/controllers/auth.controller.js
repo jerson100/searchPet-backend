@@ -12,7 +12,14 @@ const getToken = async (req, res) => {
     return res.json(usandtoken);
 };
 
+const googleLogin = async (req, res) => {
+  const {token} = req.query;
+  const user = await AuthService.googleLogin(token);
+  return res.json(user);
+};
+
 module.exports = {
     login,
-    getToken
+    getToken,
+    googleLogin
 }

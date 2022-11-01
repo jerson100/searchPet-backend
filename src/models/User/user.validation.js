@@ -78,6 +78,10 @@ const LoginSchemaValidation = Joi.object({
     password: Joi.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,20}$/).required()
 });
 
+const LoginGoogleSchemaValidation = Joi.object({
+    token: Joi.string().required()
+});
+
 const UserGetSchemaValidation = Joi.object({
    idUser: Joi.string().regex(/^[a-fA-F\d]{24}$/).required()
 });
@@ -93,5 +97,6 @@ module.exports = {
     PatchUserUpdateSchemaValidation,
     UserGetSchemaValidation,
     LoginSchemaValidation,
-    UserQueryParamsSchemaValidation
+    UserQueryParamsSchemaValidation,
+    LoginGoogleSchemaValidation
 }

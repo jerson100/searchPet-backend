@@ -32,6 +32,11 @@ const UserSchema  = new Schema({
     typeUser: {
         type: String,
         default: "user"
+    },
+    accountType: {
+        type: String,
+        enum: ["google", "facebook", "twitter", "instagram", "normal"],
+        default: "normal"
     }
 }, {
     timestamps: true
