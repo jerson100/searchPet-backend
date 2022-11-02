@@ -1,6 +1,6 @@
 # SearchPet (BACKEND)
 
-Backend de la aplicación SearchPet usando express con mongoDB, con sistema de autenticación.
+Backend de la aplicación SearchPet usando express con mongoDB, con sistema de autenticación normal, google, facebook.
 
 Poco a poco se irá agregando más puntos finales.
 
@@ -17,6 +17,10 @@ la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enl
       GET, PUT, PATCH, DELETE
 
     /:idUser/pets
+
+      GET
+    
+    /:idUser/activities
 
       GET
 
@@ -41,12 +45,18 @@ la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enl
 
       GET, PUT, PATCH, DELETE
 
-### /api/auth/login
+### /api/v1/auth/login
     POST
     
     /token
 
       GET
+
+### /api/v1/auth/google
+    POST
+
+### /api/v1/auth/facebook
+    POST    
 
 ### /api/v1/pets
     GET, POST, DELETE
