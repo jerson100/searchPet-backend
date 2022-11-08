@@ -4,7 +4,7 @@ const {validateSchema} = require("../../middlewares/validateSchema");
 const UserController = require("../../controllers/user.controller");
 const User = require("../../models/User/user.model");
 const {UserCreationSchemaValidation, UserUpdateSchemaValidation, PatchUserUpdateSchemaValidation,
-    UserGetSchemaValidation, UserQueryParamsSchemaValidation
+    UserGetSchemaValidation, UserQueryParamsSchemaValidation, UserLostPetsQueryParamsSchemaValidation
 } = require("../../models/User/user.validation");
 const {authenticate} = require("../../middlewares/authenticate");
 const {User: CONSTANTS} = require("../../utils/consts");
@@ -64,6 +64,13 @@ UserRouter.route("/:idUser/activities")
     .get(
         validateSchema(UserGetSchemaValidation, "params"),
         validateRequest(UserController.getActivities)
+    )
+
+UserRouter.route("/:idUser/lostpets")
+    .get(
+        validateSchema(UserGetSchemaValidation, "params"),
+        validateSchema(UserLostPetsQueryParamsSchemaValidation, "query"),
+        validateRequest(UserController.getMyLostPet)
     )
 
 module.exports = UserRouter;

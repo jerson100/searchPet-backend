@@ -48,6 +48,13 @@ const getActivities = async (req, res) => {
     return res.status(200).json(activities);
 }
 
+const getMyLostPet = async (req, res) => {
+    const {idUser} = req.params;
+    const {length, page} = req.query;
+    const lostPets = await UserService.getMyLostPet(idUser, length, page);
+    return res.json(lostPets);
+}
+
 module.exports = {
     getAllUsers,
     createUser,
@@ -56,5 +63,6 @@ module.exports = {
     findUserById,
     deleteAllUser,
     getMyPets,
-    getActivities
+    getActivities,
+    getMyLostPet
 }

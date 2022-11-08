@@ -92,6 +92,11 @@ const UserGetSchemaValidation = Joi.object({
    idUser: Joi.string().regex(/^[a-fA-F\d]{24}$/).required()
 });
 
+const UserLostPetsQueryParamsSchemaValidation = Joi.object({
+    length: Joi.number().min(1).default(5),
+    page: Joi.number().min(1).default(1)
+})
+
 const UserQueryParamsSchemaValidation = Joi.object({
     length: Joi.number().min(1).default(5),
     page: Joi.number().min(1).default(1)
@@ -105,5 +110,6 @@ module.exports = {
     LoginSchemaValidation,
     UserQueryParamsSchemaValidation,
     LoginGoogleSchemaValidation,
-    LoginFacebookSchemaValidation
+    LoginFacebookSchemaValidation,
+    UserLostPetsQueryParamsSchemaValidation
 }

@@ -5,6 +5,7 @@ const {District} = require("../models/District/disctrict.model");
 const {Types} = require("mongoose");
 const {Pet} = require("../models/Pet/pet.model");
 const UserActivityService = require("./UserActivityService");
+const {LostPet} = require("../models/LostPet/lostPet.model");
 
 const getAllUsers = async () => {
     const users = await findUs({},{password: 0});
@@ -155,6 +156,105 @@ const getActivities = async (idUser) => {
     return activities;
 }
 
+const getMyLostPet = async (idUser, length, page) => {
+    const us = await User.findOne({_id: idUser, status: 1});
+    if(!us) throw new NotFoundUserException();
+    const lostPet = await LostPet.aggregate([
+        {
+            $match: { status: 1 }
+        },
+        {
+            $lookup: // Equality Match
+                {
+                    from: "users",
+                    let: { idUser: "$user" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $eq: ["$_id", "$$idUser"]
+                                },
+                                status: 1
+                            }
+                        }
+                    ],
+                    as: "user"
+                }
+        },
+        {
+            $unwind: {
+                path: "$user",
+                preserveNullAndEmptyArrays: false
+            }
+        },
+        {
+            $match: {
+                "user._id":Types.ObjectId(idUser)
+            }
+        },
+        {
+            $lookup: {
+                from: "pets",
+                localField: "pets",
+                foreignField: "_id",
+                as: "pets"
+            }
+        },
+        {
+            $project: {
+                "user": {
+                    _id: "$user._id",
+                    name: "$user.name",
+                    paternalSurname: "$user.paternalSurname",
+                    maternalSurname: "$user.maternalSurname",
+                    username: "$user.username",
+                    email:"$user.email",
+                    status: "$user.status",
+                    typeUser:"$user.typeUser",
+                    urlImageProfile: "$user.urlImageProfile"
+                },
+                pets: {
+                    $filter: {
+                        input: "$pets",
+                        as: "pet",
+                        cond: {
+                            $eq: ["$$pet.status", 1]
+                        }
+                    }
+                },
+                images: 1,
+                located: 1,
+                createdAt: 1
+            }
+        },
+        // Stage 7
+        {
+            $match: {
+                $expr: {
+                    $gte: [
+                        {
+                            $size: "$pets"
+                        },
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            $sort: {
+                createdAt: -1
+            }
+        },
+        {
+            $skip: (page <= 1 ? 0 : page - 1) * length
+        },
+        {
+            $limit: length
+        }
+    ])
+    return lostPet;
+}
+
 module.exports = {
     getAllUsers,
     createUser,
@@ -163,5 +263,6 @@ module.exports = {
     findUserById,
     deleteAllUser,
     getMyPets,
-    getActivities
+    getActivities,
+    getMyLostPet
 }
