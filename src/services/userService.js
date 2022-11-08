@@ -223,6 +223,7 @@ const getMyLostPet = async (idUser, length, page) => {
                     }
                 },
                 images: 1,
+                description: 1,
                 located: 1,
                 createdAt: 1
             }

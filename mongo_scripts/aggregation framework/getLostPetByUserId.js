@@ -1,4 +1,6 @@
 db.getCollection("lostpets").aggregate(
+
+    // Pipeline
     [
         // Stage 1
         {
@@ -27,7 +29,17 @@ db.getCollection("lostpets").aggregate(
                 ],
                 as: "user"
             }
+            
+            // Uncorrelated Subqueries
+            // (supported as of MongoDB 3.6)
+            // {
+            //    from: "<collection to join>",
+            //    let: { <var_1>: <expression>, …, <var_n>: <expression> },
+            //    pipeline: [ <pipeline to execute on the collection to join> ],
+            //    as: "<output array field>"
+            // }
         },
+
         // Stage 3
         {
             $unwind: {
@@ -77,6 +89,7 @@ db.getCollection("lostpets").aggregate(
                     }
                 },
                 images: 1,
+                description: 1,
                 located: 1,
                 createdAt: 1
             }
@@ -96,4 +109,12 @@ db.getCollection("lostpets").aggregate(
             }
         }
     ],
+
+    // Options
+    {
+
+    }
+
+    // Created with Studio 3T, the IDE for MongoDB - https://studio3t.com/
+
 );
