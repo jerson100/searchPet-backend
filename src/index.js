@@ -39,7 +39,7 @@ app.use(`/api/v1/auth`, AuthRouterV1);
 app.use(`/api/v1/typePets`, TypePetRouterV1);
 app.use(`/api/v1/breeds`, BreedRouterV1);
 app.use(`/api/v1/pets`, PetRouterV1);
-app.use(`/api/v1/lostpet`, LostPetRouterV1);
+app.use(`/api/v1/lostpets`, LostPetRouterV1);
 app.use("/api/v1/lostpetcomments", LostPetCommentV1);
 
 app.listen(process.env.PORT, () => {
