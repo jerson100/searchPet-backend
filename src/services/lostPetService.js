@@ -39,8 +39,8 @@ const create = async (idUser, {pets, latitude, longitude, ...props}, images) => 
         user: idUser,
         ...props,
         location: {
-            longitude,
-            latitude
+            type: "Point",
+            coordinates: [longitude, latitude]
         },
         pets: petsIds,
     }
@@ -56,16 +56,27 @@ const getById = async (idLostPet) => {
     return lostPets;
 }
 
-const getAll = async (query, pagination) => {
+const getAll = async ({currentLocation, minDistance, maxDistance, ...restQuery}, pagination) => {
+    const geoJson = currentLocation ? (query = {}) => {
+        const [latitude, longitude] = currentLocation.split(",");
+        return {
+            near: { type: "Point", coordinates: [new Number(longitude).valueOf(), new Number(latitude).valueOf()] },
+            maxDistance: maxDistance,
+            distanceField: "distance",
+            key:"location",
+            includeLocs: "location",
+            query,
+            spherical: true
+        }
+    } : null;
     const lostPets = await LostPet.findLostPets(
         {
-            ...query,
+            ...restQuery,
             status: 1
         },
-        {
-            page: pagination.page,
-            length: pagination.length
-        }
+        pagination,
+        null,
+        geoJson
     );
     // const lostPets = await LostPet.find(
     //     { status: 1,...query },

@@ -39,7 +39,10 @@ const PetLostPetSchemaValidation = Joi.object({
 const LostPetQueryParamsSchemaValidation = Joi.object({
     located: Joi.bool(),
     length: Joi.number().min(1).default(5),
-    page: Joi.number().min(1).default(1)
+    page: Joi.number().min(1).default(1),
+    currentLocation: Joi.string().regex(/^.+,.+$/),
+    maxDistance: Joi.number().min(5000).default(10000),
+    minDistance: Joi.number().min(1).default(1)
 });
 
 module.exports = {

@@ -50,6 +50,7 @@ app.use((error, req, res, next) => {
     removeFilesFromObject(req.files);
     if (!error.status) {
         if (process.env.TYPE === "DEVELOPMENT") {
+            console.log(error.stack)
             res.status(500).json({
                 message: "Ocurrió un error en el servidor",
                 stack: error.stack,
