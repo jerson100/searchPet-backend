@@ -62,9 +62,8 @@ const getAll = async ({currentLocation, minDistance, maxDistance, ...restQuery},
         return {
             near: { type: "Point", coordinates: [new Number(longitude).valueOf(), new Number(latitude).valueOf()] },
             maxDistance: maxDistance,
-            distanceField: "distance",
+            distanceField: "location.distance",
             key:"location",
-            includeLocs: "location",
             query,
             spherical: true
         }
@@ -78,6 +77,7 @@ const getAll = async ({currentLocation, minDistance, maxDistance, ...restQuery},
         null,
         geoJson
     );
+    console.log(lostPets)
     // const lostPets = await LostPet.find(
     //     { status: 1,...query },
     //     { status:0, __v:0 }

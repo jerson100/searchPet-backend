@@ -84,6 +84,7 @@ LostPetSchema.statics.findLostPets = async ({_id, ...query}, pagination={page:1,
         },
         {
             $sort: {
+                "location.distance": 1,
                 createdAt: -1
             }
         },
