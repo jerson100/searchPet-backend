@@ -10,10 +10,16 @@ const LostPetCommentSchema = new Schema({
         ref: "User"
     },
     description: String,
-    location: {
-        latitude: Number,
-        longitude: Number
-    },
+    locations: [
+        {
+            type: {
+                type: String,
+                enum: ["Point"],
+                default: "Point"
+            },
+            coordinates: [Number],
+        }
+    ],
     status: {
         type: Number,
         default: 1

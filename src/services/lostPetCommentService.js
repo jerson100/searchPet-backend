@@ -4,12 +4,16 @@ const {NotFoundLostPetException} = require("../models/LostPet/lostPet.exception"
 const {Types} = require("mongoose");
 const {NotFoundLostPetCommentException} = require("../models/LostPetComent/LostPetComment.exception");
 
-const create = async (idUser, {lostPet:lostPetId, ...rest}) => {
+const create = async (idUser, {lostPet:lostPetId, locations, ...rest}) => {
     const lostPet = await LostPet.findLostPets({_id:lostPetId});
     if(!lostPet) throw new NotFoundLostPetException("El registro de la mascota perdida con el id especificado(lostPet) no existe.");
     const newLostPetComment = await new LostPetComment({
         lostPet: lostPetId,
         user: idUser,
+        locations: locations?.map(l=>({
+            type: "Point",
+            coordinates: [l[1], l[0]]
+        })),
         ...rest
     })
     await newLostPetComment.save();
