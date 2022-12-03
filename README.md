@@ -115,6 +115,7 @@ la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enl
 * "express-fileupload": "^1.4.0",
 * "fs-extra": "^10.1.0",
 * "joi": "^17.6.0",
+* "google-auth-library": "^8.6.0",
 * "jsonwebtoken": "^8.5.1",
 * "mongoose": "^6.5.0",
 * "morgan": "^1.10.0"
