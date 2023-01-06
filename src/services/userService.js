@@ -37,7 +37,7 @@ const createUser = async (data) => {
   });
 
   try {
-    await sendRegisterTokenEmail(data.email, registerToken);
+    await sendRegisterTokenEmail(data.email, registerToken, data.name);
   } catch (e) {
     throw new LoginUserException(
       "No se pudo crear el usuario, porfavor verifique si el email indicado es correcto"
