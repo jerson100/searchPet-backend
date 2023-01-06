@@ -1,7 +1,8 @@
-const {Schema, model} = require("mongoose");
-const {Pet} = require("../Pet/pet.model");
+const { Schema, model } = require("mongoose");
+const { Pet } = require("../Pet/pet.model");
 
-const UserSchema  = new Schema({
+const UserSchema = new Schema(
+  {
     name: String,
     paternalSurname: String,
     maternalSurname: String,
@@ -11,36 +12,39 @@ const UserSchema  = new Schema({
     email: String,
     address: String,
     location: {
-        latitud: Number,
-        longitud: Number
+      latitud: Number,
+      longitud: Number,
     },
     district: {
-        type: Schema.Types.ObjectId,
-        ref: "District"
+      type: Schema.Types.ObjectId,
+      ref: "District",
     },
     socialNetWorks: {
-        facebook: String,
-        twitter: String,
-        instagram: String,
-        whatsapp: String
+      facebook: String,
+      twitter: String,
+      instagram: String,
+      whatsapp: String,
     },
     urlImageProfile: String,
     status: {
-        type: Number,
-        default: 1
+      type: Number,
+      default: 1,
     },
     typeUser: {
-        type: String,
-        default: "user"
+      type: String,
+      default: "user",
     },
     accountType: {
-        type: String,
-        enum: ["google", "facebook", "twitter", "instagram", "normal"],
-        default: "normal"
-    }
-}, {
-    timestamps: true
-});
+      type: String,
+      enum: ["google", "facebook", "twitter", "instagram", "normal"],
+      default: "normal",
+    },
+    registerToken: String,
+  },
+  {
+    timestamps: true,
+  }
+);
 
 /*
 UserSchema.methods.changeStatus = async function(){
@@ -61,4 +65,4 @@ UserSchema.methods.changeStatus = async function(){
 
 const User = model("User", UserSchema);
 
-module.exports = User
+module.exports = User;
