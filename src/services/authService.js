@@ -8,17 +8,17 @@ const {
 const { OAuth2Client } = require("google-auth-library");
 
 const login = async (email, password) => {
-  const user = await User.findOne(
-    {
-      email: email,
-      status: 1,
-      accountType: "normal",
-    },
-    { status: 0 }
-  );
+  const user = await User.findOne({
+    email: email,
+    accountType: "normal",
+  });
   if (!user) throw new LoginUserException();
   const ePass = await verifyPassword(password, user._doc.password);
   if (!ePass) throw new LoginUserException();
+  if (user.status === 3)
+    throw new LoginUserException(
+      "Necesita confirmar su cuenta, para ello haga click en el link que se le envió a su correo."
+    );
   const accessToken = generateAccessToken({
     _id: user._doc._id,
     username: user._doc.username,
