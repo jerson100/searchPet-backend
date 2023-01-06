@@ -9,6 +9,10 @@ Poco a poco se irá agregando más puntos finales.
 Hasta el momento se desarrolló los siguientes puntos finales, 
 la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enlace [documentación](https://documenter.getpostman.com/view/11171580/Uze4viTq)
 
+## Lo nuevo
+
+Los usuarios nuevos que se registren en la app mediante el registro normal se le envia un email a su correo para que confirmen que son ellos.
+
 ### /api/v1/users
     GET, POST, DELETE
     
@@ -50,7 +54,7 @@ la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enl
     
     /token
 
-      GET
+      GET, POST
 
 ### /api/v1/auth/google
     POST
