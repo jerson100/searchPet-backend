@@ -1,6 +1,7 @@
 const { Server } = require("socket.io");
 const { InMemorySessionStore } = require("../utils/session");
 const { v4: uuidv4 } = require("uuid");
+const { NOTIFICATIONS } = require("../utils/consts");
 
 const sessionStore = new InMemorySessionStore();
 
@@ -21,6 +22,16 @@ class Socket {
       });
       // emit session details
       socket.emit("session", { sessionID, userID, connected: true });
+      socket.on("notification", ({ from, to, type, message, data }) => {
+        // console.log(from, to, type, message, data);
+        socket.to(to).emit("notification", {
+          from: from,
+          to: to,
+          type: type,
+          message: message,
+          data: data,
+        });
+      });
       // join the "userID" room
       socket.join(userID);
     });
