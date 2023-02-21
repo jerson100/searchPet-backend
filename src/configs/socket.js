@@ -1,7 +1,7 @@
 const { Server } = require("socket.io");
 const { InMemorySessionStore } = require("../utils/session");
 const { v4: uuidv4 } = require("uuid");
-const { NOTIFICATIONS } = require("../utils/consts");
+// const { NOTIFICATIONS } = require("../utils/consts");
 
 const sessionStore = new InMemorySessionStore();
 
