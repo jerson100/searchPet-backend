@@ -34,6 +34,7 @@ const login = async (email, password) => {
   delete user._doc.status;
   const seen_notifications = await Notification.find({
     to: user._doc._id,
+    seen: false,
   }).count();
   return {
     accessToken: accessToken,
@@ -55,6 +56,7 @@ const getToken = async (idUser) => {
   delete user._doc.status;
   const seen_notifications = await Notification.find({
     to: user._doc._id,
+    seen: false,
   }).count();
   return {
     user: user._doc,
@@ -132,6 +134,7 @@ const googleLogin = async (token) => {
   delete user._doc.status;
   const seen_notifications = await Notification.find({
     to: user._doc._id,
+    seen: false,
   }).count();
   return {
     accessToken,
@@ -194,6 +197,7 @@ const facebookLogin = async ({ email, name, urlImageProfile }) => {
   delete user._doc.status;
   const seen_notifications = await Notification.find({
     to: user._doc._id,
+    seen: false,
   }).count();
   return {
     accessToken,

@@ -18,7 +18,7 @@ const create = async ({ from, to, type, content, seen = false, path }) => {
     seen,
     path,
   });
-  console.log(`New notification -> ${newNotification}`);
+  //   console.log(`New notification -> ${newNotification}`);
   await newNotification.save();
   return newNotification;
 };
