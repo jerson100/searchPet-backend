@@ -6,6 +6,7 @@ const {
   UnauthorizedUserException,
 } = require("../models/User/User.exception");
 const { OAuth2Client } = require("google-auth-library");
+const { Notification } = require("../models/Notification/Notification.model");
 
 const login = async (email, password) => {
   const user = await User.findOne({
@@ -31,9 +32,13 @@ const login = async (email, password) => {
   });
   delete user._doc.password;
   delete user._doc.status;
+  const seen_notifications = await Notification.find({
+    to: user._doc._id,
+  }).count();
   return {
     accessToken: accessToken,
     user: user._doc,
+    seen_notifications: seen_notifications,
   };
 };
 
@@ -48,8 +53,12 @@ const getToken = async (idUser) => {
   if (!user) throw new UnauthorizedUserException();
   delete user._doc.password;
   delete user._doc.status;
+  const seen_notifications = await Notification.find({
+    to: user._doc._id,
+  }).count();
   return {
     user: user._doc,
+    seen_notifications: seen_notifications,
   };
 };
 
@@ -121,9 +130,13 @@ const googleLogin = async (token) => {
   });
   delete user._doc.password;
   delete user._doc.status;
+  const seen_notifications = await Notification.find({
+    to: user._doc._id,
+  }).count();
   return {
     accessToken,
     user: user._doc,
+    seen_notifications,
   };
 };
 
@@ -179,9 +192,13 @@ const facebookLogin = async ({ email, name, urlImageProfile }) => {
   });
   delete user._doc.password;
   delete user._doc.status;
+  const seen_notifications = await Notification.find({
+    to: user._doc._id,
+  }).count();
   return {
     accessToken,
     user: user._doc,
+    seen_notifications,
   };
 };
 
