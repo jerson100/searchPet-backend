@@ -23,6 +23,18 @@ const create = async ({ from, to, type, content, seen = false, path }) => {
   return newNotification;
 };
 
+const updateSeen = async ({ idNotification }) => {
+  const updatedNotification = await Notification.updateOne(
+    { _id: idNotification },
+    {
+      $set: {
+        seen: true,
+      },
+    }
+  );
+  return updatedNotification;
+};
+
 const allByUserId = async ({ userId }, { sort = -1, length = 5, page = 0 }) => {
   const notifications = await Notification.find({
     to: userId,
@@ -45,4 +57,5 @@ const allByUserId = async ({ userId }, { sort = -1, length = 5, page = 0 }) => {
 module.exports = {
   create,
   allByUserId,
+  updateSeen,
 };

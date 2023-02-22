@@ -10,6 +10,15 @@ const allByUserId = async (req, res) => {
   res.status(200).json(allNotifications);
 };
 
+const updateSeen = async (req, res) => {
+  const { idNotification } = req.params;
+  const updatedNotification = await NotificationService.updateSeen({
+    idNotification,
+  });
+  return res.status(200).json(updatedNotification);
+};
+
 module.exports = {
   allByUserId,
+  updateSeen,
 };
