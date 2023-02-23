@@ -9,8 +9,8 @@ const { Types } = require("mongoose");
 const {
   NotFoundLostPetCommentException,
 } = require("../models/LostPetComent/LostPetComment.exception");
-const NotificationService = require("./notificationService");
-const { NOTIFICATIONS } = require("../utils/consts");
+// const NotificationService = require("./notificationService");
+// const { NOTIFICATIONS } = require("../utils/consts");
 
 const create = async (
   idUser,
@@ -32,14 +32,14 @@ const create = async (
     ...rest,
   });
   await newLostPetComment.save();
-  await NotificationService.create({
-    from: idUser,
-    to: lostPet.user,
-    type: NOTIFICATIONS.LOST_PET_COMMENT,
-    content: `${username} comentó tu publicación: "${newLostPetComment.description}"`,
-    path: `/pets/lost/${lostPetId}`,
-    seen: false,
-  });
+  //   await NotificationService.create({
+  //     from: idUser,
+  //     to: lostPet.user,
+  //     type: NOTIFICATIONS.LOST_PET_COMMENT,
+  //     content: `${username} comentó tu publicación: "${newLostPetComment.description}"`,
+  //     path: `/pets/lost/${lostPetId}`,
+  //     seen: false,
+  //   });
   delete newLostPetComment._doc.status;
   return newLostPetComment;
 };
