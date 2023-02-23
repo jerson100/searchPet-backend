@@ -13,8 +13,8 @@ const login = async (email, password) => {
     email: email,
     accountType: "normal",
   });
-  if (user.status === 0) throw new LoginUserException("La cuenta no existe");
   if (!user) throw new LoginUserException();
+  if (user.status === 0) throw new LoginUserException("La cuenta no existe");
   const ePass = await verifyPassword(password, user._doc.password);
   if (!ePass) throw new LoginUserException();
   if (user.status === 3)
