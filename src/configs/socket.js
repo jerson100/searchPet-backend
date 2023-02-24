@@ -51,10 +51,16 @@ class Socket {
       );
       // join the "userID" room
       socket.join(userID);
+
+      socket.on("disconnect", (socket) => {
+        if (socket.userID) {
+          sessionStore.removeSession(socket.userID);
+        }
+      });
     });
-    this.io.on("disconnect", () => {
-      console.log("usuario desconectado.");
-    });
+    // this.io.on("disconnect", (socket) => {
+    //   console.log(socket);
+    // });
   }
   middlewares() {
     this.io.use((socket, next) => {
