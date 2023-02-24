@@ -43,10 +43,13 @@ class Socket {
           //     message: message,
           //     data: data,
           //   });
+          socket
+            .to(to)
+            .emit("new notification", { ...newNotification.toObject(), data });
 
           socket
             .to(to)
-            .emit("notification", { ...newNotification.toObject(), data });
+            .emit("notifications", { ...newNotification.toObject(), data });
         }
       );
       // join the "userID" room
