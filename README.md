@@ -11,7 +11,8 @@ la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enl
 
 ## Lo nuevo
 
-Los usuarios nuevos que se registren en la app mediante el registro normal se le envia un email a su correo para que confirmen que son ellos.
+* Los usuarios nuevos que se registren en la app mediante el registro normal se le envia un email a su correo para que confirmen que son ellos.
+* Notificaciones en tiempo real
 
 ### /api/v1/users
     GET, POST, DELETE
@@ -108,6 +109,9 @@ Los usuarios nuevos que se registren en la app mediante el registro normal se le
     /:idLostPetComment
     
     DELETE
+
+### /api/v1/notifications
+    GET, POST    
 
 ## Dependencias Usadas
 
