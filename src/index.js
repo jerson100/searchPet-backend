@@ -51,7 +51,7 @@ app.use("/api/v1/notifications", NotificationsV1);
 // socket.init(httpServeer);
 new Socket(httpServeer, {
   cors: {
-    origin: "https://localhost:3000",
+    origin: "*",
   },
 });
 
