@@ -6,14 +6,15 @@ const {
   UnauthorizedUserException,
 } = require("../models/User/User.exception");
 const { OAuth2Client } = require("google-auth-library");
+const { Notification } = require("../models/Notification/Notification.model");
 
 const login = async (email, password) => {
   const user = await User.findOne({
     email: email,
     accountType: "normal",
   });
-  if (user.status === 0) throw new LoginUserException("La cuenta no existe");
   if (!user) throw new LoginUserException();
+  if (user.status === 0) throw new LoginUserException("La cuenta no existe");
   const ePass = await verifyPassword(password, user._doc.password);
   if (!ePass) throw new LoginUserException();
   if (user.status === 3)
@@ -31,9 +32,14 @@ const login = async (email, password) => {
   });
   delete user._doc.password;
   delete user._doc.status;
+  const seen_notifications = await Notification.find({
+    to: user._doc._id,
+    seen: false,
+  }).count();
   return {
     accessToken: accessToken,
     user: user._doc,
+    seen_notifications: seen_notifications,
   };
 };
 
@@ -48,8 +54,13 @@ const getToken = async (idUser) => {
   if (!user) throw new UnauthorizedUserException();
   delete user._doc.password;
   delete user._doc.status;
+  const seen_notifications = await Notification.find({
+    to: user._doc._id,
+    seen: false,
+  }).count();
   return {
     user: user._doc,
+    seen_notifications: seen_notifications,
   };
 };
 
@@ -121,9 +132,14 @@ const googleLogin = async (token) => {
   });
   delete user._doc.password;
   delete user._doc.status;
+  const seen_notifications = await Notification.find({
+    to: user._doc._id,
+    seen: false,
+  }).count();
   return {
     accessToken,
     user: user._doc,
+    seen_notifications,
   };
 };
 
@@ -179,9 +195,14 @@ const facebookLogin = async ({ email, name, urlImageProfile }) => {
   });
   delete user._doc.password;
   delete user._doc.status;
+  const seen_notifications = await Notification.find({
+    to: user._doc._id,
+    seen: false,
+  }).count();
   return {
     accessToken,
     user: user._doc,
+    seen_notifications,
   };
 };
 

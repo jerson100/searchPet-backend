@@ -1,12 +1,14 @@
 const express = require("express");
-const {connectMongoDB} = require("./configs/mongodb");
+const { connectMongoDB } = require("./configs/mongodb");
 const logger = require("morgan");
-if(process.env.TYPE!=="PRODUCTION"){
-    require("dotenv").config();
+if (process.env.TYPE !== "PRODUCTION") {
+  require("dotenv").config();
 }
 const cloudinary = require("cloudinary");
 const cors = require("cors");
 const app = express();
+const { createServer } = require("http");
+const httpServeer = createServer(app);
 const UserRouterV1 = require("./v1/routers/Users.router");
 const DepartamentRouterV1 = require("./v1/routers/departament.router");
 const ProvinceRouterV1 = require("./v1/routers/province.router");
@@ -15,10 +17,13 @@ const AuthRouterV1 = require("./v1/routers/auth.router");
 const TypePetRouterV1 = require("./v1/routers/typePet.router");
 const BreedRouterV1 = require("./v1/routers/breed.router");
 const PetRouterV1 = require("./v1/routers/pet.router");
-const {cloudinaryConfig} = require("./configs/cloudinary");
+const { cloudinaryConfig } = require("./configs/cloudinary");
 const LostPetRouterV1 = require("./v1/routers/lostPet.router");
 const LostPetCommentV1 = require("./v1/routers/LostPetComment.router");
-const {removeFilesFromObject} = require("./utils/file");
+const NotificationsV1 = require("./v1/routers/notification.router");
+const { removeFilesFromObject } = require("./utils/file");
+// const socket = require("./configs/socket");
+const { Socket } = require("./configs/socket");
 
 cloudinary.v2.config(cloudinaryConfig);
 
@@ -41,27 +46,35 @@ app.use(`/api/v1/breeds`, BreedRouterV1);
 app.use(`/api/v1/pets`, PetRouterV1);
 app.use(`/api/v1/lostpets`, LostPetRouterV1);
 app.use("/api/v1/lostpetcomments", LostPetCommentV1);
+app.use("/api/v1/notifications", NotificationsV1);
 
-app.listen(process.env.PORT, () => {
-    console.log(`El servidor está escuchando en el puerto ${process.env.PORT}`)
+// socket.init(httpServeer);
+new Socket(httpServeer, {
+  cors: {
+    origin: "*",
+  },
+});
+
+httpServeer.listen(process.env.PORT, () => {
+  console.log(`El servidor está escuchando en el puerto ${process.env.PORT}`);
 });
 
 app.use((error, req, res, next) => {
-    removeFilesFromObject(req.files);
-    if (!error.status) {
-        if (process.env.TYPE === "DEVELOPMENT") {
-            console.log(error.stack)
-            res.status(500).json({
-                message: "Ocurrió un error en el servidor",
-                stack: error.stack,
-            });
-        } else {
-            //console.log(error);
-            res.status(500).json({
-                message: "Ocurrió un error en el servidor",
-            });
-        }
+  removeFilesFromObject(req.files);
+  if (!error.status) {
+    if (process.env.TYPE === "DEVELOPMENT") {
+      console.log(error.stack);
+      res.status(500).json({
+        message: "Ocurrió un error en el servidor",
+        stack: error.stack,
+      });
     } else {
-        res.status(error.status).json({message: error.message});
+      //console.log(error);
+      res.status(500).json({
+        message: "Ocurrió un error en el servidor",
+      });
     }
+  } else {
+    res.status(error.status).json({ message: error.message });
+  }
 });
