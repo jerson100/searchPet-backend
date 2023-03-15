@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const { User } = require("../../utils/consts");
+const { User, MESSAGES } = require("../../utils/consts");
 
 const MessageSchema = new Schema(
   {
@@ -10,6 +10,11 @@ const MessageSchema = new Schema(
     sender: {
       type: Schema.Types.ObjectId,
       ref: "User",
+    },
+    type: {
+      type: String,
+      enum: [MESSAGES.TYPES.COORDS, MESSAGES.TYPES.IMAGE, MESSAGES.TYPES.TEXT],
+      default: MESSAGES.TYPES.TEXT,
     },
     text: String,
     image: String,

@@ -21,6 +21,8 @@ const { cloudinaryConfig } = require("./configs/cloudinary");
 const LostPetRouterV1 = require("./v1/routers/lostPet.router");
 const LostPetCommentV1 = require("./v1/routers/LostPetComment.router");
 const NotificationsV1 = require("./v1/routers/notification.router");
+const ChatsV1 = require("./v1/routers/chat.router");
+const MessageV1 = require("./v1/routers/message.router");
 const { removeFilesFromObject } = require("./utils/file");
 // const socket = require("./configs/socket");
 const { Socket } = require("./configs/socket");
@@ -47,6 +49,8 @@ app.use(`/api/v1/pets`, PetRouterV1);
 app.use(`/api/v1/lostpets`, LostPetRouterV1);
 app.use("/api/v1/lostpetcomments", LostPetCommentV1);
 app.use("/api/v1/notifications", NotificationsV1);
+app.use("/api/v1/messages", MessageV1);
+app.use("/api/v1/chats", ChatsV1);
 
 // socket.init(httpServeer);
 new Socket(httpServeer, {

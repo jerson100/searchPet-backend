@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const { CHATS } = require("../../utils/consts");
+const { CHATS, User } = require("../../utils/consts");
 
 const ChatSchema = new Schema(
   {

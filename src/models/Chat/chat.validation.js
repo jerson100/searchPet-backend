@@ -9,6 +9,12 @@ const CreateChatSchema = Joi.object({
     .min(2),
 });
 
+const QueryParamsChatsSchema = Joi.object({
+  length: Joi.number().min(1).default(50),
+  page: Joi.number().min(1).default(1),
+});
+
 module.exports = {
   CreateChatSchema,
+  QueryParamsChatsSchema,
 };

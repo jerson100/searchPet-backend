@@ -15,7 +15,7 @@ const create = async (req, res) => {
 const getAllByUserId = async (req, res) => {
   const { length, page } = req.query;
   const { _id: userId } = req.user;
-  const chats = await ChatService.getAllByUserId({ lengh, page, userId });
+  const chats = await ChatService.getAllByUserId({ length, page, userId });
   res.json(chats);
 };
 

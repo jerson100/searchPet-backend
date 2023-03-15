@@ -45,7 +45,7 @@ const create = async ({ name, type, users, admin }) => {
   }
 };
 
-const getAllByUserId = async ({ userId, lengh, page }) => {
+const getAllByUserId = async ({ userId, length, page }) => {
   const chats = await Chat.find({
     status: 1,
     users: userId,
@@ -64,9 +64,8 @@ const getAllByUserId = async ({ userId, lengh, page }) => {
         "-password -birthday -accountType -district -location -address -status",
     })
     .sort({ createdAt: -1 })
-    .skip((page >= 1 ? page - 1 : 0) * lengh)
+    .skip((page >= 1 ? page - 1 : 0) * length)
     .limit(length);
-  console.log(chats);
   return chats;
 };
 

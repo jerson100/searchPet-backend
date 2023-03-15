@@ -27,9 +27,18 @@ const CHATS = {
   GROUP: "GROUP",
 };
 
+const MESSAGES = {
+  TYPES: {
+    TEXT: "TEXT",
+    COORDS: "COORDS",
+    IMAGE: "IMAGE",
+  },
+};
+
 module.exports = {
   User,
   FILES,
   NOTIFICATIONS,
   CHATS,
+  MESSAGES,
 };
