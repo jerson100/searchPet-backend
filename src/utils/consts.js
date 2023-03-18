@@ -23,15 +23,15 @@ const NOTIFICATIONS = {
 };
 
 const CHATS = {
-  PRIVATE: "PRIVATE",
-  GROUP: "GROUP",
+  PRIVATE: "private",
+  GROUP: "group",
 };
 
 const MESSAGES = {
   TYPES: {
-    TEXT: "TEXT",
-    COORDS: "COORDS",
-    IMAGE: "IMAGE",
+    TEXT: "text",
+    CORDS: "cords",
+    IMAGE: "image",
   },
 };
 

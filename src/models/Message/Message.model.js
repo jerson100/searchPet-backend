@@ -13,7 +13,7 @@ const MessageSchema = new Schema(
     },
     type: {
       type: String,
-      enum: [MESSAGES.TYPES.COORDS, MESSAGES.TYPES.IMAGE, MESSAGES.TYPES.TEXT],
+      enum: [MESSAGES.TYPES.CORDS, MESSAGES.TYPES.IMAGE, MESSAGES.TYPES.TEXT],
       default: MESSAGES.TYPES.TEXT,
     },
     text: String,

@@ -52,6 +52,10 @@ class Socket {
             .emit("notifications", { ...newNotification.toObject(), data });
         }
       );
+      //enviamos el nuevo chat a todas las instancias del usuario
+      socket.on("new-chat", (newChat) => {
+        socket.to(userID).emit("new-chat", newChat);
+      });
       // join the "userID" room
       socket.join(userID);
 

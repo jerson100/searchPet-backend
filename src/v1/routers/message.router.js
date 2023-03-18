@@ -7,7 +7,7 @@ const {
 } = require("../../models/Message/message.validation");
 const MessageRouter = require("express").Router();
 
-MessageRouter.route("/").get(
+MessageRouter.route("/").post(
   authenticate(),
   validateSchema(CreateMessageValidationSchema, "body"),
   validateRequest(MessageController.create)

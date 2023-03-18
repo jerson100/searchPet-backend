@@ -21,9 +21,12 @@ const create = async ({ name, type, users, admin }) => {
     }
   );
   if (_users.lengh === users.lengh) {
-    let _urlImageProfile = urlImageProfile;
+    let _urlImageProfile = null;
     if (type === CHATS.PRIVATE) {
-      _urlImageProfile = admin.urlImageProfile;
+      const userAdm = _users.find((us) => {
+        return users[1] === us._id.toHexString();
+      });
+      _urlImageProfile = userAdm.urlImageProfile;
     } else if (type === CHATS.GROUP) {
       //image x default
     }

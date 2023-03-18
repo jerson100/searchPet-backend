@@ -9,7 +9,8 @@ const CreateMessageValidationSchema = Joi.object({
     .regex(/^[a-fA-F\d]{24}(?:,[a-fA-F\d]{24}){0,9}$/)
     .required(),
   type: Joi.string()
-    .valid(MESSAGES.TYPES.COORDS, MESSAGES.TYPES.IMAGE, MESSAGES.TYPES.TEXT)
+    .valid(MESSAGES.TYPES.CORDS, MESSAGES.TYPES.IMAGE, MESSAGES.TYPES.TEXT)
+    .lowercase()
     .required(),
   text: Joi.string(),
   // image: Joi.
