@@ -7,6 +7,7 @@ const { validateSchema } = require("../../middlewares/validateSchema");
 const {
   CreateChatSchema,
   QueryParamsChatsSchema,
+  GetMessagesSchemaValidation,
 } = require("../../models/Chat/chat.validation");
 // const { User: USER_CONSTS } = require("../../utils/consts");
 
@@ -26,5 +27,11 @@ ChatRouter.route("/")
     validateRequest(ChatController.getAllByUserId)
     // authorizeMyResource(Chat, "users", [USER_CONSTS.TYPES.USER], "_id", "user")
   );
+
+ChatRouter.route("/:idChat/messages").get(
+  authenticate(),
+  validateSchema(GetMessagesSchemaValidation, "params"),
+  validateRequest(ChatController.getMessagesByIdChat)
+);
 
 module.exports = ChatRouter;
