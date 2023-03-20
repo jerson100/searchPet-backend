@@ -53,11 +53,25 @@ class Socket {
         }
       );
       //enviamos el nuevo chat a todas las instancias del usuario
-      socket.on("new-chat", (newChat) => {
-        socket.to(userID).emit("new-chat", newChat);
+      socket.on("join-chat", (room) => {
+        // console.log(newChat._id);
+        socket.join(room._id);
+        // socket.to(newChat._id).emit("join-chat", newChat);
       });
-      // join the "userID" room
-      socket.join(userID);
+
+      socket.on("switch-join", (data) => {
+        const { prev, current } = data;
+        if (prev) socket.leave(prev);
+        if (current) socket.join(current);
+      });
+
+      socket.on("send-message", (newMessage) => {
+        console.log(newMessage);
+        socket.to(newMessage.chat).emit("new-message", newMessage);
+      });
+
+      socket // join the "userID" room
+        .join(userID);
 
       socket.on("disconnect", (socket) => {
         if (socket.userID) {
