@@ -17,7 +17,7 @@ const MessageSchema = new Schema(
       default: MESSAGES.TYPES.TEXT,
     },
     text: String,
-    image: String,
+    images: [String],
     cords: [
       {
         type: {

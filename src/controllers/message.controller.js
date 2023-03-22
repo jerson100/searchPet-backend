@@ -1,12 +1,13 @@
 const MessageService = require("../services/messageService");
+const { toFileArray } = require("../utils/file");
 
 const create = async (req, res) => {
-  const { chat, sender, text, image, cords, type } = req.body;
+  const { chat, sender, text, cords, type } = req.body;
   const newMessage = await MessageService.create({
     chat,
     sender,
     text,
-    image,
+    images: req.files && req.files.images && toFileArray(req.files),
     cords,
     type,
   });
