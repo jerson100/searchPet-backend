@@ -59,15 +59,25 @@ class Socket {
         // socket.to(newChat._id).emit("join-chat", newChat);
       });
 
-      socket.on("switch-join", (data) => {
+      socket.on("switch-chat", (data) => {
         const { prev, current } = data;
-        if (prev) socket.leave(prev);
-        if (current) socket.join(current);
+        console.log(prev._id, current._id);
+        if (prev) socket.leave(prev._id);
+        if (current) socket.join(current._id);
       });
 
       socket.on("send-message", (newMessage) => {
-        console.log(newMessage);
         socket.to(newMessage.chat).emit("new-message", newMessage);
+      });
+
+      socket.on("typing", ({ room, user }) => {
+        socket.to(room).emit("typing", { /*room,*/ username: user.username });
+      });
+
+      socket.on("stop-typing", ({ room, user }) => {
+        socket
+          .to(room)
+          .emit("stop-typing", { /*room,*/ username: user.username });
       });
 
       socket // join the "userID" room
