@@ -6,15 +6,14 @@ Poco a poco se irá agregando más puntos finales.
 
 ## Puntos finales - URI
 
-Hasta el momento se desarrolló los siguientes puntos finales, 
-la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enlace [documentación](https://documenter.getpostman.com/view/11171580/Uze4viTq)
+Hasta el momento se desarrolló los siguientes puntos finales, la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enlace [documentación](https://documenter.getpostman.com/view/11171580/Uze4viTq)
 
 ## Lo nuevo
 
-* Los usuarios nuevos que se registren en la app mediante el registro normal se le envia un email a su correo para que confirmen que son ellos.
-* Notificaciones en tiempo real
+* Chat en tiempo real, se pueden enviar mensajes de texto e imágenes, falta en adaptarlo 100% a móvil y arreglar algunas cosas.
 
 ### /api/v1/users
+
     GET, POST, DELETE
     
     /:idUser
@@ -30,6 +29,7 @@ la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enl
       GET
 
 ### /api/v1/departaments
+
     GET, POST, DELETE
     
     /:idDepartament
@@ -37,6 +37,7 @@ la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enl
       GET, PUT, PATCH, DELETE
 
 ### /api/v1/provinces
+
     GET, POST
     
     /:idProvince
@@ -44,6 +45,7 @@ la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enl
       GET, PUT, PATCH, DELETE
 
 ### /api/v1/districts
+
     GET, POST, DELETE
 
     /:idDistrict
@@ -51,6 +53,7 @@ la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enl
       GET, PUT, PATCH, DELETE
 
 ### /api/v1/auth/login
+
     POST
     
     /token
@@ -58,12 +61,15 @@ la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enl
       GET, POST
 
 ### /api/v1/auth/google
+
     POST
 
 ### /api/v1/auth/facebook
+
     POST    
 
 ### /api/v1/pets
+
     GET, POST, DELETE
 
     /:idPet
@@ -79,6 +85,7 @@ la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enl
       POST, DELETE
 
 ### /api/v1/typePets
+
     GET, POST, DELETE
 
     /:idTypePet
@@ -86,6 +93,7 @@ la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enl
       GET, PUT, DELETE, PATCH
 
 ### /api/v1/breeds
+
     GET, POST, DELETE
 
     /:idBreed
@@ -93,6 +101,7 @@ la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enl
       GET, PUT, DELETE, PATCH
 
 ### /api/v1/lostpet
+
     GET, POST
 
     /:idLostPet
@@ -104,6 +113,7 @@ la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enl
       POST, GET
 
 ### /api/v1/lostpetcomments
+
     GET, POST
     
     /:idLostPetComment
@@ -111,7 +121,20 @@ la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enl
     DELETE
 
 ### /api/v1/notifications
-    GET, POST    
+
+    GET, POST
+
+## /api/v1/chats
+
+    GET, POST
+
+## /api/v1/chats/:idChat/messages
+
+    GET
+
+## /api/v1/messages
+
+    POST
 
 ## Dependencias Usadas
 
@@ -127,6 +150,9 @@ la documentación la iré mejorando de a poco, lo pueden ver en el siguiente enl
 * "jsonwebtoken": "^8.5.1",
 * "mongoose": "^6.5.0",
 * "morgan": "^1.10.0"
+* "nodemailer": "^6.8.0",
+* "socket.io": "^4.6.0",
+* "uuid": "^9.0.0"
 
 ### Dependencias de desarrollo
 
